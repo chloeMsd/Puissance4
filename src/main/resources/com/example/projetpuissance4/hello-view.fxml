@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.paint.Color?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="myAnchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.projetpuissance4.HelloController">
+    <ImageView preserveRatio="true" x="0" y="0" fitWidth = "1000.0">
+        <image>
+            <Image url="@Board.png"/>
+        </image>
+    </ImageView>
+
+    <Label text="PUISSANCE 4" layoutX="410.0" layoutY="20" >
+        <textFill>
+            <Color fx:constant="BLACK" />
+        </textFill>
+        <font>
+            <Font name="Poppins SemiBold" size="30.0" />
+        </font>
+    </Label>
+
+    <Label text="Joueur 1 :" layoutX="20.0" layoutY="15" >
+        <textFill>
+            <Color fx:constant="BLACK" />
+        </textFill>
+        <font>
+            <Font name="Arial" size="20.0" />
+        </font>
+        <style>
+            -fx-underline: true;
+        </style>
+    </Label>
+
+    <ImageView preserveRatio="true" x="0" y="17" fitWidth = "20.0">
+        <image>
+            <Image url="@RedToken.png"/>
+        </image>
+    </ImageView>
+
+    <Label text="Joueur 2 :" layoutX="20.0" layoutY="40" >
+        <textFill>
+            <Color fx:constant="BLACK" />
+        </textFill>
+        <font>
+            <Font name="Arial" size="20.0" />
+        </font>
+        <style>
+            -fx-underline: true;
+        </style>
+    </Label>
+
+    <ImageView preserveRatio="true" x="0" y="42" fitWidth = "20.0">
+        <image>
+            <Image url="@YellowToken.png"/>
+        </image>
+    </ImageView>
+
+</AnchorPane>
