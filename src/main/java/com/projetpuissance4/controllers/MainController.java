@@ -1,11 +1,11 @@
-package com.projetpuissance4;
+package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.models.P4;
 
 import java.util.Scanner;
 
-public class Main {
-    public static void main(String[] args) {
+public class MainController {
+    public MainController(){
         P4 p = new P4();
         System.out.println(p.toString());
         int i = 0;

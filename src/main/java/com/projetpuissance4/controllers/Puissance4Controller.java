@@ -1,8 +1,9 @@
-package com.projetpuissance4;
+package com.projetpuissance4.controllers;
 
+import com.projetpuissance4.Puissance4;
+import com.projetpuissance4.views.PseudoView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -11,9 +12,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.Optional;
-
-public class HelloController {
+public class Puissance4Controller {
     @FXML
     private AnchorPane myAnchorPane;
 
@@ -70,7 +69,7 @@ public class HelloController {
 
     private ImageView CreationRedToken(double width, double height)
     {
-        Image image = new Image(HelloApplication.class.getResourceAsStream("RedToken.png"));
+        Image image = new Image(Puissance4.class.getResourceAsStream("RedToken.png"));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
@@ -79,7 +78,7 @@ public class HelloController {
 
     private ImageView CreationYellowToken(double width, double height)
     {
-        Image image = new Image(HelloApplication.class.getResourceAsStream("YellowToken.png"));
+        Image image = new Image(Puissance4.class.getResourceAsStream("YellowToken.png"));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
@@ -139,13 +138,8 @@ public class HelloController {
 
     private String SaisirPseudo()
     {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Pseudo");
-        dialog.setHeaderText("Veuillez saisir votre pseudo :");
-        dialog.setContentText("Pseudo :");
-        Optional<String> result = dialog.showAndWait();
-        String name = result.get();
-        return name;
+        PseudoView P = new PseudoView();
+        return P.Pseudo();
     }
 
     private void AfficherPseudo(String name)

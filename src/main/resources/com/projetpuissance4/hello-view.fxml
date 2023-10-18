@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="myAnchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.projetpuissance4.HelloController">
+<AnchorPane fx:id="myAnchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.projetpuissance4.controllers.Puissance4Controller">
     <ImageView preserveRatio="true" x="0" y="0" fitWidth = "1000.0">
         <image>
             <Image url="@Board.png"/>
