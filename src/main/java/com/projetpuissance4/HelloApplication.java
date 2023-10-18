@@ -1,4 +1,4 @@
-package com.example.projetpuissance4;
+package com.projetpuissance4;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
