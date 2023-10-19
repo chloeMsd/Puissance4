@@ -1,7 +1,10 @@
 package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.Puissance4;
+import com.projetpuissance4.models.P4;
 import com.projetpuissance4.views.PseudoView;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -12,9 +15,27 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Scanner;
+
+import static java.lang.Thread.sleep;
+
 public class Puissance4Controller {
     @FXML
     private AnchorPane myAnchorPane;
+    private P4 Grille = new P4();
+    private boolean isRunning = true;
+    private Button invisibleButtonColumn1;
+    private Button invisibleButtonColumn2;
+    private Button invisibleButtonColumn3;
+    private Button invisibleButtonColumn4;
+    private Button invisibleButtonColumn5;
+    private Button invisibleButtonColumn6;
+    private Button invisibleButtonColumn7;
+    private static int whoPlay = 0;
 
     public void initialize() {
         double initialX = 150;
@@ -22,13 +43,14 @@ public class Puissance4Controller {
         double imageWidth = 100.0;
         double imageHeight = 100.0;
 
-        Button invisibleButtonColumn1 = CreationInvisibleButton(1);
-        Button invisibleButtonColumn2 = CreationInvisibleButton(2);
-        Button invisibleButtonColumn3 = CreationInvisibleButton(3);
-        Button invisibleButtonColumn4 = CreationInvisibleButton(4);
-        Button invisibleButtonColumn5 = CreationInvisibleButton(5);
-        Button invisibleButtonColumn6 = CreationInvisibleButton(6);
-        Button invisibleButtonColumn7 = CreationInvisibleButton(7);
+        invisibleButtonColumn1 = CreationInvisibleButton(1);
+        invisibleButtonColumn2 = CreationInvisibleButton(2);
+        invisibleButtonColumn3 = CreationInvisibleButton(3);
+        invisibleButtonColumn4 = CreationInvisibleButton(4);
+        invisibleButtonColumn5 = CreationInvisibleButton(5);
+        invisibleButtonColumn6 = CreationInvisibleButton(6);
+        invisibleButtonColumn7 = CreationInvisibleButton(7);
+
 
         Polygon triangle1 = CreateTriangle(1);
         Polygon triangle2 = CreateTriangle(2);
@@ -48,13 +70,30 @@ public class Puissance4Controller {
         CursorAppear(invisibleButtonColumn7, triangle7);
 
 
-        invisibleButtonColumn1.setOnAction(event -> AddRedToken(CreationRedToken(100,100),1,1));
-        invisibleButtonColumn2.setOnAction(event -> AddRedToken(CreationYellowToken(100,100),2,4));
+        invisibleButtonColumn1.setOnAction(event -> ButtonPlay(1));
+        invisibleButtonColumn2.setOnAction(event -> ButtonPlay(2));
+        invisibleButtonColumn3.setOnAction(event -> ButtonPlay(3));
+        invisibleButtonColumn4.setOnAction(event -> ButtonPlay(4));
+        invisibleButtonColumn5.setOnAction(event -> ButtonPlay(5));
+        invisibleButtonColumn6.setOnAction(event -> ButtonPlay(6));
+        invisibleButtonColumn7.setOnAction(event -> ButtonPlay(7));
 
         //invisibleButtonColumn1.setOnAction(event -> PrintWon());
         AfficherPseudo(SaisirPseudo());
     }
-
+    private void ButtonPlay(int iButton)
+    {
+        if(whoPlay % 2 == 0){
+            AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+            Grille.setMatValeur(iButton-1,1);
+        }
+        else {
+            AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+            Grille.setMatValeur(iButton-1,2);
+        }
+        whoPlay++;
+        System.out.println(Grille.toString());
+    }
     private Button CreationInvisibleButton(int column)
     {
         Button invisibleButton = new Button();
@@ -76,6 +115,10 @@ public class Puissance4Controller {
         return imageView;
     }
 
+    private void playergame()
+    {
+        System.out.println("oipzdnziond");
+    }
     private ImageView CreationYellowToken(double width, double height)
     {
         Image image = new Image(Puissance4.class.getResourceAsStream("YellowToken.png"));
@@ -153,5 +196,4 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(message);
     }
 
-    
 }

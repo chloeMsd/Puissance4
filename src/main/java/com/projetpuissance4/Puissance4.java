@@ -1,6 +1,7 @@
 package com.projetpuissance4;
 
 import com.projetpuissance4.controllers.MainController;
+import com.projetpuissance4.controllers.Puissance4Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,8 +17,6 @@ public class Puissance4 extends Application {
         stage.setTitle("Puissance 4");
         stage.setScene(scene);
         stage.show();
-        //MainController M = new MainController();
-
     }
 
     public static void main(String[] args) {
