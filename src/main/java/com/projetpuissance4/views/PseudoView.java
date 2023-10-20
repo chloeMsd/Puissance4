@@ -5,16 +5,16 @@ import javafx.scene.control.TextInputDialog;
 import java.util.Optional;
 
 public class PseudoView {
-    private TextInputDialog dialog = new TextInputDialog();
+    private TextInputDialog dialog;
 
     public PseudoView() {
         dialog = null;
     }
-    public String Pseudo()
+    public String Pseudo(int numerojoueur)
     {
         dialog = new TextInputDialog();
         dialog.setTitle("Pseudo");
-        dialog.setHeaderText("Veuillez saisir votre pseudo :");
+        dialog.setHeaderText("Pseudo Joueur " + numerojoueur + " :");
         dialog.setContentText("Pseudo :");
         Optional<String> result = dialog.showAndWait();
         String name = result.get();

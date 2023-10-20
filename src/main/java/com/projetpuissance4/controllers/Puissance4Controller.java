@@ -1,7 +1,9 @@
 package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.Puissance4;
+import com.projetpuissance4.models.Options;
 import com.projetpuissance4.models.P4;
+import com.projetpuissance4.views.OptionView;
 import com.projetpuissance4.views.PseudoView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,13 +17,6 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Scanner;
-
-import static java.lang.Thread.sleep;
 
 public class Puissance4Controller {
     @FXML
@@ -78,8 +73,11 @@ public class Puissance4Controller {
         invisibleButtonColumn6.setOnAction(event -> ButtonPlay(6));
         invisibleButtonColumn7.setOnAction(event -> ButtonPlay(7));
 
+        PrintGameOption();
         //invisibleButtonColumn1.setOnAction(event -> PrintWon());
-        AfficherPseudo(SaisirPseudo());
+        AfficherPseudoJoueur1(SaisirPseudo(1));
+        AfficherPseudoJoueur2(SaisirPseudo(2));
+
     }
     private void ButtonPlay(int iButton)
     {
@@ -179,13 +177,13 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(message);
     }
 
-    private String SaisirPseudo()
+    private String SaisirPseudo(int numeroJoueur)
     {
         PseudoView P = new PseudoView();
-        return P.Pseudo();
+        return P.Pseudo(numeroJoueur);
     }
 
-    private void AfficherPseudo(String name)
+    private void AfficherPseudoJoueur1(String name)
     {
         Text message = new Text();
         message.setText(name);
@@ -195,5 +193,26 @@ public class Puissance4Controller {
         message.setFont(Font.font("Arial", 20));
         myAnchorPane.getChildren().add(message);
     }
+    private void AfficherPseudoJoueur2(String name)
+    {
+        Text message = new Text();
+        message.setText(name);
+        message.setLayoutX(120);
+        message.setLayoutY(59);
+        message.setFill(Color.BLACK);
+        message.setFont(Font.font("Arial", 20));
+        myAnchorPane.getChildren().add(message);
+    }
 
+    private void PrintGameOption()
+    {
+        OptionView option = new OptionView();
+        Text message = new Text();
+        message.setText(option.GameOptions());
+        message.setLayoutX(700);
+        message.setLayoutY(50);
+        message.setFill(Color.BLACK);
+        message.setFont(Font.font("Arial", 20));
+        myAnchorPane.getChildren().add(message);
+    }
 }
