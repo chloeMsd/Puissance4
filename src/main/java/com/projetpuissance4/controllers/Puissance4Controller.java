@@ -73,11 +73,27 @@ public class Puissance4Controller {
         invisibleButtonColumn6.setOnAction(event -> ButtonPlay(6));
         invisibleButtonColumn7.setOnAction(event -> ButtonPlay(7));
 
-        PrintGameOption();
-        //invisibleButtonColumn1.setOnAction(event -> PrintWon());
-        AfficherPseudoJoueur1(SaisirPseudo(1));
-        AfficherPseudoJoueur2(SaisirPseudo(2));
+        String gameOption = PrintGameOption();
+        if (gameOption.equals("Jeu contre un autre joueur")) {
+            AfficherPseudoJoueur1(SaisirPseudo(1));
+            AfficherPseudoJoueur2(SaisirPseudo(2));
+        } else if (gameOption.equals("Jeu contre une IA débutante")) {
+            AfficherPseudoJoueur1(SaisirPseudo(1));
+            AfficherPseudoJoueur2("IA débutante");
+        }else if (gameOption.equals("Jeu contre une IA intermédiaire")) {
+            AfficherPseudoJoueur1(SaisirPseudo(1));
+            AfficherPseudoJoueur2("IA intermédiaire");
+        }else if (gameOption.equals("Jeu contre une IA experte")) {
+            AfficherPseudoJoueur1(SaisirPseudo(1));
+            AfficherPseudoJoueur2("IA experte");
+        }
 
+        if (Grille.JoueurGagnant(1)) {
+            PrintWon(1);
+        }
+        if (Grille.JoueurGagnant(2)) {
+            PrintWon(2);
+        }
     }
     private void ButtonPlay(int iButton)
     {
@@ -91,7 +107,17 @@ public class Puissance4Controller {
         }
         whoPlay++;
         System.out.println(Grille.toString());
+        if (Grille.JoueurGagnant(2))
+        {
+            PrintWon(2);
+        }
+        if (Grille.JoueurGagnant(1))
+        {
+            PrintWon(1);
+        }
     }
+
+
     private Button CreationInvisibleButton(int column)
     {
         Button invisibleButton = new Button();
@@ -155,25 +181,15 @@ public class Puissance4Controller {
         button.setOnMouseExited(event -> triangle.setVisible(false));
     }
 
-    private void PrintWon()
+    private void PrintWon(int numero)
     {
         Text message = new Text();
-        message.setText("Gagné");
-        message.setLayoutX(200);
-        message.setLayoutY(425);
+        message.setText("Joueur " + numero + "\nGagnant");
+        message.setLayoutX(100);
+        message.setLayoutY(275);
         message.setFill(Color.RED);
         message.setFont(Font.font("Arial", 200));
-        myAnchorPane.getChildren().add(message);
-    }
 
-    private void PrintLost()
-    {
-        Text message = new Text();
-        message.setText("Perdu");
-        message.setLayoutX(235);
-        message.setLayoutY(425);
-        message.setFill(Color.RED);
-        message.setFont(Font.font("Arial", 200));
         myAnchorPane.getChildren().add(message);
     }
 
@@ -204,7 +220,7 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(message);
     }
 
-    private void PrintGameOption()
+    private String PrintGameOption()
     {
         OptionView option = new OptionView();
         Text message = new Text();
@@ -214,5 +230,7 @@ public class Puissance4Controller {
         message.setFill(Color.BLACK);
         message.setFont(Font.font("Arial", 20));
         myAnchorPane.getChildren().add(message);
+        String texte = message.getText();
+        return texte;
     }
 }
