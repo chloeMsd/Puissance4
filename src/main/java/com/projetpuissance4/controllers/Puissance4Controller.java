@@ -17,6 +17,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.lang.reflect.GenericArrayType;
+
 
 public class Puissance4Controller {
     @FXML
@@ -88,12 +90,7 @@ public class Puissance4Controller {
             AfficherPseudoJoueur2("IA experte");
         }
 
-        if (Grille.JoueurGagnant(1)) {
-            PrintWon(1);
-        }
-        if (Grille.JoueurGagnant(2)) {
-            PrintWon(2);
-        }
+
     }
     private void ButtonPlay(int iButton)
     {
@@ -111,9 +108,13 @@ public class Puissance4Controller {
         {
             PrintWon(2);
         }
-        if (Grille.JoueurGagnant(1))
+        else if (Grille.JoueurGagnant(1))
         {
             PrintWon(1);
+        }
+        else if (Grille.TestEgalite())
+        {
+            PrintEqual();
         }
     }
 
@@ -187,7 +188,19 @@ public class Puissance4Controller {
         message.setText("Joueur " + numero + "\nGagnant");
         message.setLayoutX(100);
         message.setLayoutY(275);
-        message.setFill(Color.RED);
+        message.setFill(Color.BLACK);
+        message.setFont(Font.font("Arial", 200));
+
+        myAnchorPane.getChildren().add(message);
+    }
+
+    private void PrintEqual()
+    {
+        Text message = new Text();
+        message.setText("Egalité");
+        message.setLayoutX(195);
+        message.setLayoutY(400);
+        message.setFill(Color.BLACK);
         message.setFont(Font.font("Arial", 200));
 
         myAnchorPane.getChildren().add(message);
@@ -233,4 +246,6 @@ public class Puissance4Controller {
         String texte = message.getText();
         return texte;
     }
+
+
 }

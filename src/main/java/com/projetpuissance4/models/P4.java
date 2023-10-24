@@ -35,6 +35,12 @@ public class P4 {
         return mat;
     }
 
+
+    public int getPoint(int line, int column)
+    {
+        return mat[line][column];
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -101,5 +107,17 @@ public class P4 {
             }
         }
         return false;
+    }
+
+    public boolean TestEgalite()
+    {
+        for (int i=0; i<7 ;i++)
+        {
+            if (getPoint(0,i) == 0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
