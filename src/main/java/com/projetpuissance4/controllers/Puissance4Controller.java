@@ -1,6 +1,7 @@
 package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.Puissance4;
+import com.projetpuissance4.models.IAnv0;
 import com.projetpuissance4.models.Options;
 import com.projetpuissance4.models.P4;
 import com.projetpuissance4.views.OptionView;
@@ -45,14 +46,10 @@ public class Puissance4Controller {
     private Polygon triangle5;
     private Polygon triangle6;
     private Polygon triangle7 ;
-
+    private IAnv0 IA = new IAnv0();
     private static int whoPlay = 0;
 
     public void initialize() {
-        double initialX = 150;
-        double initialY = 93.0;
-        double imageWidth = 100.0;
-        double imageHeight = 100.0;
 
         invisibleButtonColumn1 = CreationInvisibleButton(1);
         invisibleButtonColumn2 = CreationInvisibleButton(2);
@@ -78,25 +75,34 @@ public class Puissance4Controller {
         CursorAppear(invisibleButtonColumn6, triangle6);
         CursorAppear(invisibleButtonColumn7, triangle7);
 
-        invisibleButtonColumn1.setOnAction(event -> ButtonPlay(1));
-        invisibleButtonColumn2.setOnAction(event -> ButtonPlay(2));
-        invisibleButtonColumn3.setOnAction(event -> ButtonPlay(3));
-        invisibleButtonColumn4.setOnAction(event -> ButtonPlay(4));
-        invisibleButtonColumn5.setOnAction(event -> ButtonPlay(5));
-        invisibleButtonColumn6.setOnAction(event -> ButtonPlay(6));
-        invisibleButtonColumn7.setOnAction(event -> ButtonPlay(7));
-
         String gameOption = PrintGameOption();
         if (gameOption.equals("Jeu contre un autre joueur")) {
             AfficherPseudoJoueur1(SaisirPseudo(1));
             AfficherPseudoJoueur2(SaisirPseudo(2));
-        } else if (gameOption.equals("Jeu contre une IA débutante")) {
+            invisibleButtonColumn1.setOnAction(event -> ButtonPlay(1));
+            invisibleButtonColumn2.setOnAction(event -> ButtonPlay(2));
+            invisibleButtonColumn3.setOnAction(event -> ButtonPlay(3));
+            invisibleButtonColumn4.setOnAction(event -> ButtonPlay(4));
+            invisibleButtonColumn5.setOnAction(event -> ButtonPlay(5));
+            invisibleButtonColumn6.setOnAction(event -> ButtonPlay(6));
+            invisibleButtonColumn7.setOnAction(event -> ButtonPlay(7));
+        }
+        else if (gameOption.equals("Jeu contre une IA débutante")) {
             AfficherPseudoJoueur1(SaisirPseudo(1));
             AfficherPseudoJoueur2("IA débutante");
-        }else if (gameOption.equals("Jeu contre une IA intermédiaire")) {
+            invisibleButtonColumn1.setOnAction(event -> ButtonPlayIAnv0(1));
+            invisibleButtonColumn2.setOnAction(event -> ButtonPlayIAnv0(2));
+            invisibleButtonColumn3.setOnAction(event -> ButtonPlayIAnv0(3));
+            invisibleButtonColumn4.setOnAction(event -> ButtonPlayIAnv0(4));
+            invisibleButtonColumn5.setOnAction(event -> ButtonPlayIAnv0(5));
+            invisibleButtonColumn6.setOnAction(event -> ButtonPlayIAnv0(6));
+            invisibleButtonColumn7.setOnAction(event -> ButtonPlayIAnv0(7));
+        }
+        else if (gameOption.equals("Jeu contre une IA intermédiaire")) {
             AfficherPseudoJoueur1(SaisirPseudo(1));
             AfficherPseudoJoueur2("IA intermédiaire");
-        }else if (gameOption.equals("Jeu contre une IA experte")) {
+        }
+        else if (gameOption.equals("Jeu contre une IA experte")) {
             AfficherPseudoJoueur1(SaisirPseudo(1));
             AfficherPseudoJoueur2("IA experte");
         }
@@ -148,6 +154,50 @@ public class Puissance4Controller {
         }
     }
 
+    public void ButtonPlayIAnv0(int iButton)
+    {
+        if(Play)
+        {
+            AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+            int ligne = 6 - Grille.checkGraviter(iButton-1);
+            Halo.setX(152 + (iButton - 1)*100);
+            Halo.setY(594 - (ligne - 1)*100);
+            Halo.setVisible(true);
+            Grille.setMatValeur(iButton-1,1);
+
+            int column = IA.jouer();
+            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
+            ligne = 6 - Grille.checkGraviter(column);
+            Halo.setX(152 + (column)*100);
+            Halo.setY(594 - (ligne - 1)*100);
+            Halo.setVisible(true);
+            Grille.setMatValeur(column,2);
+
+            whoPlay++;
+            System.out.println(Grille.toString());
+            int[] Joueur1 = Grille.JoueurGagnant(1);
+            int[] Joueur2 = Grille.JoueurGagnant(2);
+            if (Joueur2[0] == 1)
+            {
+                PrintWonTokens(Joueur2);
+                PrintWon(2);
+                Play = false;
+                setOpacityTriangle(0);
+            }
+            else if (Joueur1[0] == 1)
+            {
+                PrintWonTokens(Joueur1);
+                PrintWon(1);
+                Play = false;
+                setOpacityTriangle(0);
+            }
+            else if (Grille.TestEgalite())
+            {
+                PrintEqual();
+                Play = false;
+            }
+        }
+    }
     public void setOpacityTriangle(double opacity)
     {
         triangle1.setOpacity(opacity);
