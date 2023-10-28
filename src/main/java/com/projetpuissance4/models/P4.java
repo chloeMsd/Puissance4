@@ -28,7 +28,10 @@ public class P4 {
 
     public void setMatValeur(int Col, int Val) {
         int nvLig = checkGraviter(Col);
-        this.mat[nvLig][Col] = Val;
+        if(nvLig < 6)
+        {
+            this.mat[nvLig][Col] = Val;
+        }
     }
 
     public int[][] getMat() {
@@ -68,7 +71,7 @@ public class P4 {
         return ligne;
     }
 
-    public boolean JoueurGagnant(int player) {
+    /*public boolean JoueurGagnant(int player) {
         // Vérifiez les directions horizontales, verticales et diagonales
         for (int row = 0; row < LIGNE; row++) {
             for (int col = 0; col < COLONNE; col++) {
@@ -107,6 +110,65 @@ public class P4 {
             }
         }
         return false;
+    }*/
+
+    public int[] JoueurGagnant(int player) {
+        int[] retour = new int[9];
+        retour[0] = 0;
+        // Vérifiez les directions horizontales, verticales et diagonales
+        for (int row = 0; row < LIGNE; row++) {
+            for (int col = 0; col < COLONNE; col++) {
+                // Vérifiez l'horizontale (gauche à droite)
+                if (col + 3 < COLONNE &&
+                        this.mat[row][col] == player &&
+                        this.mat[row][col + 1] == player &&
+                        this.mat[row][col + 2] == player &&
+                        this.mat[row][col + 3] == player) {
+                    retour[0] = 1;
+                    for (int i=1; i<5; i++){
+                        retour[2*i -1] = row;
+                        retour[2*i] = col + i - 1;
+                    }
+                }
+                // Vérifiez la verticale (bas vers le haut)
+                if (row + 3 < LIGNE &&
+                        this.mat[row][col] == player &&
+                        this.mat[row + 1][col] == player &&
+                        this.mat[row + 2][col] == player &&
+                        this.mat[row + 3][col] == player) {
+                    retour[0] = 1;
+                    for (int i=1; i<5; i++){
+                        retour[2*i -1] = row + i - 1;
+                        retour[2*i] = col;
+                    }
+                }
+                // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
+                if (row + 3 < LIGNE && col + 3 < COLONNE &&
+                        this.mat[row][col] == player &&
+                        this.mat[row + 1][col + 1] == player &&
+                        this.mat[row + 2][col + 2] == player &&
+                        this.mat[row + 3][col + 3] == player) {
+                    retour[0] = 1;
+                    for (int i=1; i<5; i++){
+                        retour[2*i -1] = row + i - 1;
+                        retour[2*i] = col + i - 1;
+                    }
+                }
+                // Vérifiez la diagonale descendante (haut gauche vers bas droite)
+                if (row - 3 >= 0 && col + 3 < COLONNE &&
+                        this.mat[row][col] == player &&
+                        this.mat[row - 1][col + 1] == player &&
+                        this.mat[row - 2][col + 2] == player &&
+                        this.mat[row - 3][col + 3] == player) {
+                    retour[0] = 1;
+                    for (int i=1; i<5; i++){
+                        retour[2*i -1] = row - i + 1;
+                        retour[2*i] = col + i - 1;
+                    }
+                }
+            }
+        }
+        return retour;
     }
 
     public boolean TestEgalite()

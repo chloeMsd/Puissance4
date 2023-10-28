@@ -23,7 +23,12 @@ import java.lang.reflect.GenericArrayType;
 public class Puissance4Controller {
     @FXML
     private AnchorPane myAnchorPane;
+    @FXML
+    private ImageView board;
+    @FXML
+    private ImageView Halo;
     private P4 Grille = new P4();
+    private boolean Play = true;
     private boolean isRunning = true;
     private Button invisibleButtonColumn1;
     private Button invisibleButtonColumn2;
@@ -32,6 +37,15 @@ public class Puissance4Controller {
     private Button invisibleButtonColumn5;
     private Button invisibleButtonColumn6;
     private Button invisibleButtonColumn7;
+
+    private Polygon triangle1;
+    private Polygon triangle2;
+    private Polygon triangle3;
+    private Polygon triangle4;
+    private Polygon triangle5;
+    private Polygon triangle6;
+    private Polygon triangle7 ;
+
     private static int whoPlay = 0;
 
     public void initialize() {
@@ -48,15 +62,13 @@ public class Puissance4Controller {
         invisibleButtonColumn6 = CreationInvisibleButton(6);
         invisibleButtonColumn7 = CreationInvisibleButton(7);
 
-
-        Polygon triangle1 = CreateTriangle(1);
-        Polygon triangle2 = CreateTriangle(2);
-        Polygon triangle3 = CreateTriangle(3);
-        Polygon triangle4 = CreateTriangle(4);
-        Polygon triangle5 = CreateTriangle(5);
-        Polygon triangle6 = CreateTriangle(6);
-        Polygon triangle7 = CreateTriangle(7);
-
+        triangle1 = CreateTriangle(1);
+        triangle2 = CreateTriangle(2);
+        triangle3 = CreateTriangle(3);
+        triangle4 = CreateTriangle(4);
+        triangle5 = CreateTriangle(5);
+        triangle6 = CreateTriangle(6);
+        triangle7 = CreateTriangle(7);
 
         CursorAppear(invisibleButtonColumn1, triangle1);
         CursorAppear(invisibleButtonColumn2, triangle2);
@@ -65,7 +77,6 @@ public class Puissance4Controller {
         CursorAppear(invisibleButtonColumn5, triangle5);
         CursorAppear(invisibleButtonColumn6, triangle6);
         CursorAppear(invisibleButtonColumn7, triangle7);
-
 
         invisibleButtonColumn1.setOnAction(event -> ButtonPlay(1));
         invisibleButtonColumn2.setOnAction(event -> ButtonPlay(2));
@@ -90,36 +101,64 @@ public class Puissance4Controller {
             AfficherPseudoJoueur2("IA experte");
         }
 
-
     }
-    private void ButtonPlay(int iButton)
+    public void ButtonPlay(int iButton)
     {
-        if(whoPlay % 2 == 0){
-            AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-            Grille.setMatValeur(iButton-1,1);
-        }
-        else {
-            AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-            Grille.setMatValeur(iButton-1,2);
-        }
-        whoPlay++;
-        System.out.println(Grille.toString());
-        if (Grille.JoueurGagnant(2))
+        if(Play)
         {
-            PrintWon(2);
-        }
-        else if (Grille.JoueurGagnant(1))
-        {
-            PrintWon(1);
-        }
-        else if (Grille.TestEgalite())
-        {
-            PrintEqual();
+            if(whoPlay % 2 == 0){
+                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+                int ligne = 6 - Grille.checkGraviter(iButton-1);
+                Halo.setX(152 + (iButton - 1)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValeur(iButton-1,1);
+            }
+            else {
+                AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+                int ligne = 6 - Grille.checkGraviter(iButton-1);
+                Halo.setX(152 + (iButton - 1)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValeur(iButton-1,2);
+            }
+            whoPlay++;
+            System.out.println(Grille.toString());
+            int[] Joueur1 = Grille.JoueurGagnant(1);
+            int[] Joueur2 = Grille.JoueurGagnant(2);
+            if (Joueur2[0] == 1)
+            {
+                PrintWonTokens(Joueur2);
+                PrintWon(2);
+                Play = false;
+                setOpacityTriangle(0);
+            }
+            else if (Joueur1[0] == 1)
+            {
+                PrintWonTokens(Joueur1);
+                PrintWon(1);
+                Play = false;
+                setOpacityTriangle(0);
+            }
+            else if (Grille.TestEgalite())
+            {
+                PrintEqual();
+                Play = false;
+            }
         }
     }
 
-
-    private Button CreationInvisibleButton(int column)
+    public void setOpacityTriangle(double opacity)
+    {
+        triangle1.setOpacity(opacity);
+        triangle2.setOpacity(opacity);
+        triangle3.setOpacity(opacity);
+        triangle4.setOpacity(opacity);
+        triangle5.setOpacity(opacity);
+        triangle6.setOpacity(opacity);
+        triangle7.setOpacity(opacity);
+    }
+    public Button CreationInvisibleButton(int column)
     {
         Button invisibleButton = new Button();
         invisibleButton.setOpacity(0);
@@ -131,7 +170,7 @@ public class Puissance4Controller {
         return invisibleButton;
     }
 
-    private ImageView CreationRedToken(double width, double height)
+    public ImageView CreationRedToken(double width, double height)
     {
         Image image = new Image(Puissance4.class.getResourceAsStream("RedToken.png"));
         ImageView imageView = new ImageView(image);
@@ -140,11 +179,7 @@ public class Puissance4Controller {
         return imageView;
     }
 
-    private void playergame()
-    {
-        System.out.println("oipzdnziond");
-    }
-    private ImageView CreationYellowToken(double width, double height)
+    public ImageView CreationYellowToken(double width, double height)
     {
         Image image = new Image(Puissance4.class.getResourceAsStream("YellowToken.png"));
         ImageView imageView = new ImageView(image);
@@ -153,20 +188,20 @@ public class Puissance4Controller {
         return imageView;
     }
 
-    private void AddRedToken(ImageView jetonRouge, int column, int line)
+    public void AddRedToken(ImageView jetonRouge, int column, int line)
     {
         AnchorPane.setLeftAnchor(jetonRouge, 150 + (column-1) * jetonRouge.getFitHeight());
         AnchorPane.setTopAnchor(jetonRouge, 593 - (line-1) * jetonRouge.getFitWidth());
         myAnchorPane.getChildren().add(jetonRouge);
     }
 
-    private void AddYellowToken(ImageView jetonJaune, int column, int line)
+    public void AddYellowToken(ImageView jetonJaune, int column, int line)
     {
         AnchorPane.setLeftAnchor(jetonJaune,  150 + (column-1) * jetonJaune.getFitHeight());
         AnchorPane.setTopAnchor(jetonJaune,  593 - (line-1) * jetonJaune.getFitWidth());
         myAnchorPane.getChildren().add(jetonJaune);
     }
-    private Polygon CreateTriangle(int column)
+    public Polygon CreateTriangle(int column)
     {
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(185.0 + (column - 1) * 100,80.0,215.0 + (column - 1) * 100,80.0,200.0 + (column - 1) * 100,100.0);
@@ -176,43 +211,43 @@ public class Puissance4Controller {
         return triangle;
     }
 
-    private void CursorAppear(Button button, Polygon triangle)
+    public void CursorAppear(Button button, Polygon triangle)
     {
         button.setOnMouseEntered(event -> triangle.setVisible(true));
         button.setOnMouseExited(event -> triangle.setVisible(false));
     }
 
-    private void PrintWon(int numero)
+    public void PrintWon(int numero)
     {
+        board.setOpacity(0.5);
         Text message = new Text();
         message.setText("Joueur " + numero + "\nGagnant");
         message.setLayoutX(100);
         message.setLayoutY(275);
         message.setFill(Color.BLACK);
         message.setFont(Font.font("Arial", 200));
-
         myAnchorPane.getChildren().add(message);
     }
 
-    private void PrintEqual()
+    public void PrintEqual()
     {
+        board.setOpacity(0.5);
         Text message = new Text();
         message.setText("Egalité");
         message.setLayoutX(195);
         message.setLayoutY(400);
         message.setFill(Color.BLACK);
         message.setFont(Font.font("Arial", 200));
-
         myAnchorPane.getChildren().add(message);
     }
 
-    private String SaisirPseudo(int numeroJoueur)
+    public String SaisirPseudo(int numeroJoueur)
     {
         PseudoView P = new PseudoView();
         return P.Pseudo(numeroJoueur);
     }
 
-    private void AfficherPseudoJoueur1(String name)
+    public void AfficherPseudoJoueur1(String name)
     {
         Text message = new Text();
         message.setText(name);
@@ -222,7 +257,7 @@ public class Puissance4Controller {
         message.setFont(Font.font("Arial", 20));
         myAnchorPane.getChildren().add(message);
     }
-    private void AfficherPseudoJoueur2(String name)
+    public void AfficherPseudoJoueur2(String name)
     {
         Text message = new Text();
         message.setText(name);
@@ -233,7 +268,7 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(message);
     }
 
-    private String PrintGameOption()
+    public String PrintGameOption()
     {
         OptionView option = new OptionView();
         Text message = new Text();
@@ -247,5 +282,38 @@ public class Puissance4Controller {
         return texte;
     }
 
+    public void PrintWonTokens(int[] token)
+    {
+        Image halo1 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
+        ImageView im1 = new ImageView(halo1);
+        im1.setFitWidth(96.0);
+        im1.setFitHeight(96.0);
+        im1.setX(152  + (token[2])*100);
+        im1.setY(594 - (5 - token[1])*100);
+        myAnchorPane.getChildren().add(im1);
 
+        Image halo2 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
+        ImageView im2 = new ImageView(halo1);
+        im2.setFitWidth(96.0);
+        im2.setFitHeight(96.0);
+        im2.setX(152  + (token[4])*100);
+        im2.setY(594 - (5 - token[3])*100);
+        myAnchorPane.getChildren().add(im2);
+
+        Image halo3 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
+        ImageView im3 = new ImageView(halo1);
+        im3.setFitWidth(96.0);
+        im3.setFitHeight(96.0);
+        im3.setX(152  + (token[6])*100);
+        im3.setY(594 - (5 - token[5])*100);
+        myAnchorPane.getChildren().add(im3);
+
+        Image halo4 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
+        ImageView im4 = new ImageView(halo1);
+        im4.setFitWidth(96.0);
+        im4.setFitHeight(96.0);
+        im4.setX(152  + (token[8])*100);
+        im4.setY(594 - (5 - token[7])*100);
+        myAnchorPane.getChildren().add(im4);
+    }
 }

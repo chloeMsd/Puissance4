@@ -11,7 +11,7 @@
 
 
 <AnchorPane fx:id="myAnchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.projetpuissance4.controllers.Puissance4Controller">
-    <ImageView preserveRatio="true" x="0" y="0" fitWidth = "1000.0">
+    <ImageView fx:id= "board" preserveRatio="true" x="0" y="0" fitWidth = "1000.0">
         <image>
             <Image url="@Board.png"/>
         </image>
@@ -61,5 +61,12 @@
             <Image url="@YellowToken.png"/>
         </image>
     </ImageView>
+
+    <ImageView fx:id="Halo" visible="false" preserveRatio="true" x="152" y="594" fitWidth = "96.0">
+        <image>
+            <Image url="@halo.png"/>
+        </image>
+    </ImageView>
+
 
 </AnchorPane>
