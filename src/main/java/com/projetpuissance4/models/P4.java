@@ -28,8 +28,10 @@ public class P4 {
 
     public void setMatValeur(int Col, int Val) {
         int nvLig = checkGraviter(Col);
-        if(nvLig < 6)
+        System.out.println(nvLig);
+        if(nvLig < LIGNE && nvLig >= 0)
         {
+            System.out.println("dedans");
             this.mat[nvLig][Col] = Val;
         }
     }
@@ -60,20 +62,35 @@ public class P4 {
         }
         return builder.toString();
     }
-
+    public boolean colonneFull(int colonne)
+    {
+        int ligne = 0;
+        for(int i = 0 ; i< LIGNE; i++)
+        {
+            if(mat[i][colonne] == 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public int checkGraviter(int colonne)
     {
-        int ligne = LIGNE - 1;
-        while(mat[ligne][colonne] != 0)
+        if(!colonneFull(colonne))
         {
-            ligne--;
+            int ligne = LIGNE - 1;
+
+            while(mat[ligne][colonne] != 0)
+            {
+                System.out.println("ligne : " + ligne);
+                ligne--;
+            }
+            return ligne;
         }
-        return ligne;
+        return -10;
     }
 
     public boolean isJoueurGagnantWithThisToken(int player, int column) {
-        // on chercher la ligne avec checkGraviter et onajoute un pion à la colonne column et ligne qu'on a trouver
-        int line = checkGraviter(column);
         setMatValeur(column, player);
         // Vérifiez les directions horizontales, verticales et diagonales
         for (int row = 0; row < LIGNE; row++) {
@@ -112,7 +129,6 @@ public class P4 {
                 }
             }
         }
-        this.mat[line][column]=0;
         return false;
     }
 

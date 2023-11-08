@@ -56,7 +56,7 @@ public class IAminimax {
         int[] validPositions = new int[7];
         for (int i=0; i<7; i++)
         {
-            if (Grille.checkGraviter(i) != 6)
+            if (Grille.checkGraviter(i) != 6 && Grille.checkGraviter(i) >= 0)
                 validPositions[i] = 1;
             else
                 validPositions[i] = 0;
@@ -79,12 +79,16 @@ public class IAminimax {
         int eval =0;
         int consecutiveToken = 0;
         int emptyToken = 0;
-        int line = Grille.checkGraviter(column);
+        int line = -1;
+        if(Grille.checkGraviter(column) >= 0)
+        {
+            line = Grille.checkGraviter(column);
+        }
 
         for (int i=-3; i<=3; i++)
         {
             int currentCol = column + i;
-            if (currentCol< 7 && currentCol>=0)
+            if (currentCol< 7 && currentCol>=0 && line >= 0)
             {
                 if (Grille.getPoint(line,currentCol) == player)
                 {
@@ -107,7 +111,11 @@ public class IAminimax {
         int eval =0;
         int consecutiveToken = 0;
         int emptyToken = 0;
-        int line = Grille.checkGraviter(column);
+        int line = -1;
+        if(Grille.checkGraviter(column) >= 0)
+        {
+            line = Grille.checkGraviter(column);
+        }
 
         for (int i=-3; i<=3; i++)
         {
@@ -135,7 +143,11 @@ public class IAminimax {
         int eval =0;
         int consecutiveToken = 0;
         int emptyToken = 0;
-        int line = Grille.checkGraviter(column);
+        int line = -1;
+        if(Grille.checkGraviter(column) >= 0)
+        {
+            line = Grille.checkGraviter(column);
+        }
 
         for (int i=-3; i<=3; i++)
         {

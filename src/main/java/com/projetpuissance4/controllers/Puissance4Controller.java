@@ -124,52 +124,55 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            if(whoPlay % 2 == 0){
-                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-                int ligne = 6 - Grille.checkGraviter(iButton-1);
-                Halo.setX(152 + (iButton - 1)*100);
-                Halo.setY(594 - (ligne - 1)*100);
-                Halo.setVisible(true);
-                Grille.setMatValeur(iButton-1,1);
-            }
-            else {
-                AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-                int ligne = 6 - Grille.checkGraviter(iButton-1);
-                Halo.setX(152 + (iButton - 1)*100);
-                Halo.setY(594 - (ligne - 1)*100);
-                Halo.setVisible(true);
-                Grille.setMatValeur(iButton-1,2);
-            }
-            whoPlay++;
-            System.out.println(Grille.toString());
-            int[] Joueur1 = Grille.JoueurGagnant(1);
-            int[] Joueur2 = Grille.JoueurGagnant(2);
-            if (Joueur2[0] == 1)
+            if(Grille.checkGraviter(iButton-1) >= 0)
             {
-                PrintWonTokens(Joueur2);
-                PrintWon(2);
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
+                if(whoPlay % 2 == 0){
+                    AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+                    int ligne = 6 - Grille.checkGraviter(iButton-1);
+                    Halo.setX(152 + (iButton - 1)*100);
+                    Halo.setY(594 - (ligne - 1)*100);
+                    Halo.setVisible(true);
+                    Grille.setMatValeur(iButton-1,1);
+                }
+                else {
+                    AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+                    int ligne = 6 - Grille.checkGraviter(iButton-1);
+                    Halo.setX(152 + (iButton - 1)*100);
+                    Halo.setY(594 - (ligne - 1)*100);
+                    Halo.setVisible(true);
+                    Grille.setMatValeur(iButton-1,2);
+                }
+                whoPlay++;
+                System.out.println(Grille.toString());
+                int[] Joueur1 = Grille.JoueurGagnant(1);
+                int[] Joueur2 = Grille.JoueurGagnant(2);
+                if (Joueur2[0] == 1)
+                {
+                    PrintWonTokens(Joueur2);
+                    PrintWon(2);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
 
-            }
-            else if (Joueur1[0] == 1)
-            {
-                PrintWonTokens(Joueur1);
-                PrintWon(1);
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
-            }
-            else if (Grille.TestEgalite())
-            {
-                PrintEqual();
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
+                }
+                else if (Joueur1[0] == 1)
+                {
+                    PrintWonTokens(Joueur1);
+                    PrintWon(1);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Grille.TestEgalite())
+                {
+                    PrintEqual();
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
             }
         }
     }
@@ -178,50 +181,53 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-            int ligne = 6 - Grille.checkGraviter(iButton-1);
-            Halo.setX(152 + (iButton - 1)*100);
-            Halo.setY(594 - (ligne - 1)*100);
-            Halo.setVisible(true);
-            Grille.setMatValeur(iButton-1,1);
+            if(Grille.checkGraviter(iButton -1) >= 0)
+            {
+                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+                int ligne = 6 - Grille.checkGraviter(iButton-1);
+                Halo.setX(152 + (iButton - 1)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValeur(iButton-1,1);
 
-            int column = IA.jouer();
-            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
-            ligne = 6 - Grille.checkGraviter(column);
-            Halo.setX(152 + (column)*100);
-            Halo.setY(594 - (ligne - 1)*100);
-            Halo.setVisible(true);
-            Grille.setMatValeur(column,2);
+                int column = IA.jouer();
+                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
+                ligne = 6 - Grille.checkGraviter(column);
+                Halo.setX(152 + (column)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValeur(column,2);
 
-            whoPlay++;
-            System.out.println(Grille.toString());
-            int[] Joueur1 = Grille.JoueurGagnant(1);
-            int[] Joueur2 = Grille.JoueurGagnant(2);
-            if (Joueur2[0] == 1)
-            {
-                PrintWonTokens(Joueur2);
-                PrintWon(2);
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
-            }
-            else if (Joueur1[0] == 1)
-            {
-                PrintWonTokens(Joueur1);
-                PrintWon(1);
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
-            }
-            else if (Grille.TestEgalite())
-            {
-                PrintEqual();
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
+                whoPlay++;
+                System.out.println(Grille.toString());
+                int[] Joueur1 = Grille.JoueurGagnant(1);
+                int[] Joueur2 = Grille.JoueurGagnant(2);
+                if (Joueur2[0] == 1)
+                {
+                    PrintWonTokens(Joueur2);
+                    PrintWon(2);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Joueur1[0] == 1)
+                {
+                    PrintWonTokens(Joueur1);
+                    PrintWon(1);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Grille.TestEgalite())
+                {
+                    PrintEqual();
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
             }
         }
     }
@@ -230,50 +236,53 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-            int ligne = 6 - Grille.checkGraviter(iButton-1);
-            Halo.setX(152 + (iButton - 1)*100);
-            Halo.setY(594 - (ligne - 1)*100);
-            Halo.setVisible(true);
-            Grille.setMatValeur(iButton-1,1);
+            if(Grille.checkGraviter(iButton -1) >= 0)
+            {
+                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+                int ligne = 6 - Grille.checkGraviter(iButton-1);
+                Halo.setX(152 + (iButton - 1)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValeur(iButton-1,1);
 
-            int column = IAminimax.jouer(2, Grille);
-            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
-            ligne = 6 - Grille.checkGraviter(column);
-            Halo.setX(152 + (column)*100);
-            Halo.setY(594 - (ligne - 1)*100);
-            Halo.setVisible(true);
-            Grille.setMatValeur(column,2);
+                int column = IAminimax.jouer(2, Grille);
+                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
+                ligne = 6 - Grille.checkGraviter(column);
+                Halo.setX(152 + (column)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValeur(column,2);
 
-            whoPlay++;
-            System.out.println(Grille.toString());
-            int[] Joueur1 = Grille.JoueurGagnant(1);
-            int[] Joueur2 = Grille.JoueurGagnant(2);
-            if (Joueur2[0] == 1)
-            {
-                PrintWonTokens(Joueur2);
-                PrintWon(2);
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
-            }
-            else if (Joueur1[0] == 1)
-            {
-                PrintWonTokens(Joueur1);
-                PrintWon(1);
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
-            }
-            else if (Grille.TestEgalite())
-            {
-                PrintEqual();
-                Play = false;
-                setOpacityTriangle(0);
-                replay.setVisible(true);
-                replay.setOnAction(event -> replay());
+                whoPlay++;
+                System.out.println(Grille.toString());
+                int[] Joueur1 = Grille.JoueurGagnant(1);
+                int[] Joueur2 = Grille.JoueurGagnant(2);
+                if (Joueur2[0] == 1)
+                {
+                    PrintWonTokens(Joueur2);
+                    PrintWon(2);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Joueur1[0] == 1)
+                {
+                    PrintWonTokens(Joueur1);
+                    PrintWon(1);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Grille.TestEgalite())
+                {
+                    PrintEqual();
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
             }
         }
     }
