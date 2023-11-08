@@ -6,7 +6,7 @@ public enum Options {
     OPTION_3("Jeu contre une IA intermédiaire"),
     OPTION_4("Jeu contre une IA experte");
 
-    private String label;
+    private final String label;
 
     Options(String option) {
         this.label=option;

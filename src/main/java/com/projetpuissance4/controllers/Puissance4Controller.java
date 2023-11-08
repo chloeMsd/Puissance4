@@ -1,15 +1,17 @@
 package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.Puissance4;
+import com.projetpuissance4.models.IAminimax;
 import com.projetpuissance4.models.IAnv0;
-import com.projetpuissance4.models.Options;
 import com.projetpuissance4.models.P4;
 import com.projetpuissance4.views.OptionView;
 import com.projetpuissance4.views.PseudoView;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -17,8 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.lang.reflect.GenericArrayType;
 
 
 public class Puissance4Controller {
@@ -28,6 +28,8 @@ public class Puissance4Controller {
     private ImageView board;
     @FXML
     private ImageView Halo;
+    @FXML
+    private Button replay;
     private P4 Grille = new P4();
     private boolean Play = true;
     private boolean isRunning = true;
@@ -47,7 +49,9 @@ public class Puissance4Controller {
     private Polygon triangle6;
     private Polygon triangle7 ;
     private IAnv0 IA = new IAnv0();
+    private IAminimax IAminimax = new IAminimax();
     private static int whoPlay = 0;
+    private int compteurToken =0;
 
     public void initialize() {
 
@@ -101,13 +105,21 @@ public class Puissance4Controller {
         else if (gameOption.equals("Jeu contre une IA intermédiaire")) {
             AfficherPseudoJoueur1(SaisirPseudo(1));
             AfficherPseudoJoueur2("IA intermédiaire");
+            invisibleButtonColumn1.setOnAction(event -> ButtonPlayIAminimax(1));
+            invisibleButtonColumn2.setOnAction(event -> ButtonPlayIAminimax(2));
+            invisibleButtonColumn3.setOnAction(event -> ButtonPlayIAminimax(3));
+            invisibleButtonColumn4.setOnAction(event -> ButtonPlayIAminimax(4));
+            invisibleButtonColumn5.setOnAction(event -> ButtonPlayIAminimax(5));
+            invisibleButtonColumn6.setOnAction(event -> ButtonPlayIAminimax(6));
+            invisibleButtonColumn7.setOnAction(event -> ButtonPlayIAminimax(7));
         }
         else if (gameOption.equals("Jeu contre une IA experte")) {
             AfficherPseudoJoueur1(SaisirPseudo(1));
             AfficherPseudoJoueur2("IA experte");
         }
-
+        System.out.println(Grille.checkGraviter(1));
     }
+
     public void ButtonPlay(int iButton)
     {
         if(Play)
@@ -138,6 +150,9 @@ public class Puissance4Controller {
                 PrintWon(2);
                 Play = false;
                 setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
+
             }
             else if (Joueur1[0] == 1)
             {
@@ -145,11 +160,16 @@ public class Puissance4Controller {
                 PrintWon(1);
                 Play = false;
                 setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
             }
             else if (Grille.TestEgalite())
             {
                 PrintEqual();
                 Play = false;
+                setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
             }
         }
     }
@@ -183,6 +203,8 @@ public class Puissance4Controller {
                 PrintWon(2);
                 Play = false;
                 setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
             }
             else if (Joueur1[0] == 1)
             {
@@ -190,11 +212,68 @@ public class Puissance4Controller {
                 PrintWon(1);
                 Play = false;
                 setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
             }
             else if (Grille.TestEgalite())
             {
                 PrintEqual();
                 Play = false;
+                setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
+            }
+        }
+    }
+
+    public void ButtonPlayIAminimax(int iButton)
+    {
+        if(Play)
+        {
+            AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
+            int ligne = 6 - Grille.checkGraviter(iButton-1);
+            Halo.setX(152 + (iButton - 1)*100);
+            Halo.setY(594 - (ligne - 1)*100);
+            Halo.setVisible(true);
+            Grille.setMatValeur(iButton-1,1);
+
+            int column = IAminimax.jouer(2, Grille);
+            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
+            ligne = 6 - Grille.checkGraviter(column);
+            Halo.setX(152 + (column)*100);
+            Halo.setY(594 - (ligne - 1)*100);
+            Halo.setVisible(true);
+            Grille.setMatValeur(column,2);
+
+            whoPlay++;
+            System.out.println(Grille.toString());
+            int[] Joueur1 = Grille.JoueurGagnant(1);
+            int[] Joueur2 = Grille.JoueurGagnant(2);
+            if (Joueur2[0] == 1)
+            {
+                PrintWonTokens(Joueur2);
+                PrintWon(2);
+                Play = false;
+                setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
+            }
+            else if (Joueur1[0] == 1)
+            {
+                PrintWonTokens(Joueur1);
+                PrintWon(1);
+                Play = false;
+                setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
+            }
+            else if (Grille.TestEgalite())
+            {
+                PrintEqual();
+                Play = false;
+                setOpacityTriangle(0);
+                replay.setVisible(true);
+                replay.setOnAction(event -> replay());
             }
         }
     }
@@ -365,5 +444,30 @@ public class Puissance4Controller {
         im4.setX(152  + (token[8])*100);
         im4.setY(594 - (5 - token[7])*100);
         myAnchorPane.getChildren().add(im4);
+    }
+
+    private void clearBoard()
+    {
+        ObservableList<Node> children = myAnchorPane.getChildren();
+        ObservableList<Node> nodesToKeep = FXCollections.observableArrayList();
+
+        for (Node child : children) {
+            if ("board".equals(child.getId()) || "minRedToken".equals(child.getId()) || "minYellowToken".equals(child.getId()) || "Halo".equals(child.getId()) || child instanceof Label || child instanceof Button) {
+                nodesToKeep.add(child);
+            }
+        }
+        board.setOpacity(1);
+        myAnchorPane.getChildren().clear();
+        myAnchorPane.getChildren().setAll(nodesToKeep);
+    }
+
+    private void replay()
+    {
+        clearBoard();
+        initialize();
+        Grille.MatriceZero();
+        Halo.setVisible(false);
+        Play = true;
+        replay.setVisible(false);
     }
 }

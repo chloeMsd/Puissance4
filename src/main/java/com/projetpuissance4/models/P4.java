@@ -71,7 +71,10 @@ public class P4 {
         return ligne;
     }
 
-    /*public boolean JoueurGagnant(int player) {
+    public boolean isJoueurGagnantWithThisToken(int player, int column) {
+        // on chercher la ligne avec checkGraviter et onajoute un pion à la colonne column et ligne qu'on a trouver
+        int line = checkGraviter(column);
+        setMatValeur(column, player);
         // Vérifiez les directions horizontales, verticales et diagonales
         for (int row = 0; row < LIGNE; row++) {
             for (int col = 0; col < COLONNE; col++) {
@@ -109,8 +112,9 @@ public class P4 {
                 }
             }
         }
+        this.mat[line][column]=0;
         return false;
-    }*/
+    }
 
     public int[] JoueurGagnant(int player) {
         int[] retour = new int[9];
@@ -181,5 +185,15 @@ public class P4 {
             }
         }
         return true;
+    }
+    public void MatriceZero()
+    {
+        for(int i = 0; i<LIGNE;i++)
+        {
+            for(int j = 0; j<COLONNE;j++)
+            {
+                mat[i][j] = 0;
+            }
+        }
     }
 }
