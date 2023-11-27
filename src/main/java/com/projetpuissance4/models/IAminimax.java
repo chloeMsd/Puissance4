@@ -90,6 +90,78 @@ public class IAminimax {
         return validPositions;
     }
 
+    public int minimaxIT1(int player, P4 Grille)
+    {
+        int[] score = new int[7];
+        int col = -1;
+        int min = 0;
+        for(int i = 0;i<7;i++)
+        {
+            P4 Grille2 = new P4(Grille.getMat());
+            if(!Grille2.colonneFull(i))
+            {
+                Grille2.setMatValeur(i,player);
+                //System.out.println(Grille2.toString());
+                score[i] = -evaluation(player,i,Grille2,true);
+                System.out.println("score " + score[i]);
+                if(score[i] < min) {
+                    min = score[i];
+                    col = i;
+                }
+            }
+        }
+        return col;
+    }
+
+    public int minimaxIT2(int player, P4 Grille)
+    {
+        int player2 = 0;
+        if(player == 2)
+        {
+            player2 = 1;
+        }
+        else if(player == 1)
+        {
+            player2 = 2;
+        }
+        int col = -1;
+        int[] score = new int[7];
+        int max = -999999;
+        for(int i = 0;i<7;i++)
+        {
+            P4 Grille2 = new P4(Grille.getMat());
+            if(!Grille2.colonneFull(i))
+            {
+                Grille2.setMatValeur(i,player);
+                int min = 99999;
+                for(int j = 0;j<7;j++)
+                {
+                    int[] score2 = new int[7];
+                    P4 Grille3 = new P4(Grille2.getMat());
+                    if(!Grille3.colonneFull(j))
+                    {
+                        Grille3.setMatValeur(j,player2);
+
+                        score2[j] = evaluation(player,j,Grille3,true);
+                        System.out.println("score2 " +j + " "+ score2[j]);
+                        if(score2[j] < min) {
+                            min = score2[j];
+                        }
+                    }
+                }
+                score[i] = min;
+                System.out.println("score " + score[i]);
+            }
+            if(score[i] > max) {
+                max = score[i];
+                col = i;
+            }
+        }
+        System.out.println("score final : " + max);
+        System.out.println("col : " + col);
+        return col;
+    }
+
     public int evaluation(int player, int column, P4 Grille, boolean isMaximise) {
         int eval = 0;
         int line = 0;
@@ -106,55 +178,47 @@ public class IAminimax {
             player2 =1;
         }
 
-        if (isMaximise) {
-            eval += tab[column];
-        }
-        else {
-            eval -= tab[column];
-        }
+        eval += tab[column];
+
         if (Grille.JoueurGagnant(player)[0] == 1) {
-            eval = 100 + tab[column];
+            eval = 1000;
         }
-        else if (Grille.JoueurGagnant(player2)[0] == 1) {
-            eval = -100 - tab[column];
+        if (Grille.JoueurGagnant(player2)[0] == 1) {
+            eval = -1000;
         }
-        System.out.println("colonne eval = " + column);
-        System.out.println("ligne eval = " + line);
+        //System.out.println("colonne eval = " + column);
+        //System.out.println("ligne eval = " + line);
 
         for (int row = line - 2; row < line + 2; row++) {
             for (int col = column - 2; col < column + 2; col++) {
                 if (col >=0 && row >=0 && col < COLONNE && row < LIGNE){
                     // Vérifiez l'horizontale (gauche à droite)
                     if (col + 2 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row,col + 1) == player && Grille.getPoint(row,col + 2) == player) {
-                        if (isMaximise) {
-                            eval = eval + 50;
-                        } else {
-                            eval = eval - 50;
-                        }
+                        eval = eval + 50;
+                    }
+                    if (col + 2 < COLONNE && Grille.getPoint(row,col) == player2 && Grille.getPoint(row,col + 1) == player2 && Grille.getPoint(row,col + 2) == player2) {
+                        eval = eval - 50;
                     }
                     // Vérifiez la verticale (bas vers le haut)
                     if (row + 2 < LIGNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col) == player && Grille.getPoint(row + 2,col) == player) {
-                        if (isMaximise) {
-                            eval = eval + 50;
-                        } else {
-                            eval = eval - 50;
-                        }
+                        eval = eval + 50;
+                    }
+                    if (row + 2 < LIGNE && Grille.getPoint(row,col) == player2 && Grille.getPoint(row + 1,col) == player2 && Grille.getPoint(row + 2,col) == player2) {
+                        eval = eval - 50;
                     }
                     // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
                     if (row + 2 < LIGNE && col + 2 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col + 1) == player && Grille.getPoint(row + 2,col + 2) == player) {
-                        if (isMaximise) {
-                            eval = eval + 50;
-                        } else {
-                            eval = eval - 50;
-                        }
+                        eval = eval + 50;
+                    }
+                    if (row + 2 < LIGNE && col + 2 < COLONNE && Grille.getPoint(row,col) == player2 && Grille.getPoint(row + 1,col + 1) == player2 && Grille.getPoint(row + 2,col + 2) == player2) {
+                        eval = eval - 50;
                     }
                     // Vérifiez la diagonale descendante (haut gauche vers bas droite)
                     if (row - 2 >= 0 && col + 2 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row - 1,col + 1) == player && Grille.getPoint(row - 2,col + 2) == player) {
-                        if (isMaximise) {
-                            eval = eval + 50;
-                        } else {
-                            eval = eval - 50;
-                        }
+                        eval = eval + 50;
+                    }
+                    if (row - 2 >= 0 && col + 2 < COLONNE && Grille.getPoint(row,col) == player2 && Grille.getPoint(row - 1,col + 1) == player2 && Grille.getPoint(row - 2,col + 2) == player2) {
+                        eval = eval - 50;
                     }
                 }
             }
@@ -162,46 +226,41 @@ public class IAminimax {
 
         for (int row = line - 1; row < line + 1; row++) {
             for (int col = column - 1; col < column + 1; col++) {
-                System.out.println("row = " + row + "   col = " + col);
+                //System.out.println("row = " + row + "   col = " + col);
                 if (col >=0 && row >=0){
-                    System.out.println("    je passe le if");
+                    //System.out.println("    je passe le if");
                     // Vérifiez l'horizontale (gauche à droite)
                     if (col + 1 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row,col + 1) == player) {
-                        System.out.println("    je passe le horizontale à 2 jetons (gauche à droite)");
-                        if (isMaximise) {
-                            eval = eval + 10;
-                        } else {
-                            eval = eval - 10;
-                        }
+                        eval = eval + 10;
+                    }
+                    if (col + 1 < COLONNE && Grille.getPoint(row,col) == player2 && Grille.getPoint(row,col + 1) == player2) {
+                        eval = eval - 10;
                     }
                     // Vérifiez la verticale (bas vers le haut)
                     if (row + 1 < LIGNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col) == player) {
-                        if (isMaximise) {
-                            eval = eval + 10;
-                        } else {
-                            eval = eval - 10;
-                        }
+                        eval = eval + 10;
+                    }
+                    if (row + 1 < LIGNE && Grille.getPoint(row,col) == player2 && Grille.getPoint(row + 1,col) == player2) {
+                        eval = eval - 10;
                     }
                     // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
                     if (row + 1 < LIGNE && col + 1 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col + 1) == player) {
-                        if (isMaximise) {
-                            eval = eval + 10;
-                        } else {
-                            eval = eval - 10;
-                        }
+                        eval = eval + 10;
+                    }
+                    if (row + 1 < LIGNE && col + 1 < COLONNE && Grille.getPoint(row,col) == player2 && Grille.getPoint(row + 1,col + 1) == player2) {
+                        eval = eval - 10;
                     }
                     // Vérifiez la diagonale descendante (haut gauche vers bas droite)
                     if (row - 1 >= 0 && col + 1 < COLONNE &&  Grille.getPoint(row,col) == player && Grille.getPoint(row - 1,col + 1) == player) {
-                        if (isMaximise) {
-                            eval = eval + 10;
-                        } else {
-                            eval = eval - 10;
-                        }
+                        eval = eval + 10;
+                    }
+                    if (row - 1 >= 0 && col + 1 < COLONNE &&  Grille.getPoint(row,col) == player2 && Grille.getPoint(row - 1,col + 1) == player2) {
+                        eval = eval - 10;
                     }
                 }
             }
         }
-        return eval;
+        return eval + 6-Grille.checkGraviter(column);
     }
 
     public int jouer(int player, P4 Grille)
