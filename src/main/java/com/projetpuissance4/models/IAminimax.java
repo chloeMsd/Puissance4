@@ -14,54 +14,69 @@ public class IAminimax {
 
     }
 
-    public int minimax(int player, int position, int depth, boolean maximizingPlayer, P4 Grille)
+    /*public int minimaxIteratif(int player, int position, int depth, boolean maximizingPlayer, P4 Grille)
     {
-        if(player == 1){
-            player++;
+        for (int currentDepth = 0; currentDepth < depth; currentDepth++)
+        {
+
         }
-        else if (player == 2){
-            player--;
-        }
+        return 0;
+    }*/
+
+    public int minimax(int player, int position, int depth, boolean maximizingPlayer, P4 Grille) {
         P4 Grille2 = new P4(Grille.getMat());
-        Grille2.setMatValeur(position,player);
+        Grille2.setMatValeur(position, player);
         System.out.println("grille2 : " + Grille2.toString());
+
         int[] validPosition = getValidPosition(Grille2);
         int eval;
 
-        if (depth == 0 || Grille2.JoueurGagnant(player)[0] == 1)
-        {
-            System.out.println("eval enfait : "+evaluation(player, position, Grille2,maximizingPlayer));
-            return evaluation(player, position, Grille2,maximizingPlayer);
+        if (depth == 0 || Grille2.JoueurGagnant(player)[0] == 1) {
+            //System.out.println("eval enfait : "+evaluation(player, position, Grille2,maximizingPlayer));
+            return evaluation(player, position, Grille2, maximizingPlayer);
         }
-
-        if (maximizingPlayer)
-        {
+        if (maximizingPlayer) {
             int maxEval = -infinity;
-            for (int i=0; i<7; i++)
-            {
-                if (validPosition[i] == 1)
-                {
-                    eval = minimax(player, i, depth - 1, false, Grille2);
-                    maxEval= max(maxEval, eval);
-                }
+            if (player == 1) {
+                player++;
+            } else if (player == 2) {
+                player--;
             }
+            if (maximizingPlayer) {
+                maximizingPlayer = false;
+            } else {
+                maximizingPlayer = true;
+            }
+            for (int i = 0; i < 7; i++) {
+                //System.out.println("bonjour : maximizing player " + player);
+                eval = minimax(player, i, depth - 1, false, Grille2);
+                System.out.println("maximizing player " + player + " score eval on column " + i + " = " + eval + " on depth = " + depth);
+                maxEval = max(maxEval, eval);
+            }
+            System.out.println("MAX EVAL = " + maxEval);
             return maxEval;
-        }
-        else
-        {
+        } else {
             int minEval = infinity;
-            for (int i=0; i<7; i++)
-            {
-                if (validPosition[i] == 1)
-                {
-                    eval = minimax(player, i, depth - 1, true, Grille2);
-                    minEval= min(minEval, eval);
-                }
+            if (player == 1) {
+                player++;
+            } else if (player == 2) {
+                player--;
             }
+            if (maximizingPlayer) {
+                maximizingPlayer = false;
+            } else {
+                maximizingPlayer = true;
+            }
+            for (int i = 0; i < 7; i++) {
+                eval = minimax(player, i, depth - 1, true, Grille2);
+                System.out.println("minimizing player " + player + " score eval on column " + i + " = " + eval + " on depth = " + depth);
+                minEval = min(minEval, eval);
+            }
+            System.out.println("MIN EVAL = " + minEval);
             return minEval;
         }
-    }
 
+    }
     public int[] getValidPosition(P4 Grille)
     {
         int[] validPositions = new int[7];
@@ -76,166 +91,148 @@ public class IAminimax {
     }
 
     public int evaluation(int player, int column, P4 Grille, boolean isMaximise) {
-        /*int eval = 0;
-        eval += evaluateLines(column, player, Grille);
-        eval += evaluateColumns(column, player, Grille);
-        eval += evaluateDiagonals(column, player, Grille);*/
         int eval = 0;
+        int line = 0;
+        if (Grille.checkGraviter(column) >= 0) {
+            line = Grille.checkGraviter(column)+1;
+        }
+
         int[] tab = {1,2,3,4,3,2,1};
+
         int player2;
-        if(player == 1) {player2 = 2;}
-        else{player2 =1;}
-        if(isMaximise)
-        {
+        if (player == 1) {
+            player2 = 2;
+        } else{
+            player2 =1;
+        }
+
+        if (isMaximise) {
             eval += tab[column];
         }
         else {
             eval -= tab[column];
         }
-        if(Grille.JoueurGagnant(player)[0] == 1)
-        {
+        if (Grille.JoueurGagnant(player)[0] == 1) {
             eval = 100 + tab[column];
         }
-        else if (Grille.JoueurGagnant(player2)[0] == 1)
-        {
+        else if (Grille.JoueurGagnant(player2)[0] == 1) {
             eval = -100 - tab[column];
         }
+        System.out.println("colonne eval = " + column);
+        System.out.println("ligne eval = " + line);
 
-        return eval;
-    }
-
-    public int evaluateLines(int column, int player, P4 Grille)
-    {
-        int eval =0;
-        int consecutiveToken = 0;
-        int emptyToken = 0;
-        int line = -1;
-        if(Grille.checkGraviter(column) >= 0)
-        {
-            line = Grille.checkGraviter(column);
-        }
-
-        for (int i=-3; i<=3; i++)
-        {
-            int currentCol = column + i;
-            if (currentCol< 7 && currentCol>=0 && line >= 0)
-            {
-                if (Grille.getPoint(line,currentCol) == player)
-                {
-                    consecutiveToken++;
-                } else if(Grille.getPoint(line,currentCol) == 0){
-                    emptyToken++;
+        for (int row = line - 2; row < line + 2; row++) {
+            for (int col = column - 2; col < column + 2; col++) {
+                if (col >=0 && row >=0 && col < COLONNE && row < LIGNE){
+                    // Vérifiez l'horizontale (gauche à droite)
+                    if (col + 2 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row,col + 1) == player && Grille.getPoint(row,col + 2) == player) {
+                        if (isMaximise) {
+                            eval = eval + 50;
+                        } else {
+                            eval = eval - 50;
+                        }
+                    }
+                    // Vérifiez la verticale (bas vers le haut)
+                    if (row + 2 < LIGNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col) == player && Grille.getPoint(row + 2,col) == player) {
+                        if (isMaximise) {
+                            eval = eval + 50;
+                        } else {
+                            eval = eval - 50;
+                        }
+                    }
+                    // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
+                    if (row + 2 < LIGNE && col + 2 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col + 1) == player && Grille.getPoint(row + 2,col + 2) == player) {
+                        if (isMaximise) {
+                            eval = eval + 50;
+                        } else {
+                            eval = eval - 50;
+                        }
+                    }
+                    // Vérifiez la diagonale descendante (haut gauche vers bas droite)
+                    if (row - 2 >= 0 && col + 2 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row - 1,col + 1) == player && Grille.getPoint(row - 2,col + 2) == player) {
+                        if (isMaximise) {
+                            eval = eval + 50;
+                        } else {
+                            eval = eval - 50;
+                        }
+                    }
                 }
             }
         }
 
-        if (consecutiveToken > 0)
-        {
-            eval = evaluateConsecutiveToken(consecutiveToken, emptyToken);
-        }
-        return eval;
-    }
-
-    public int evaluateColumns(int column, int player, P4 Grille)
-    {
-        int eval =0;
-        int consecutiveToken = 0;
-        int emptyToken = 0;
-        int line = -1;
-        if(Grille.checkGraviter(column) >= 0)
-        {
-            line = Grille.checkGraviter(column);
-        }
-
-        for (int i=-3; i<=3; i++)
-        {
-            int currentLine = line + i;
-            if (currentLine< 6 && currentLine>=0)
-            {
-                if (Grille.getPoint(currentLine,column) == player)
-                {
-                    consecutiveToken++;
-                } else if(Grille.getPoint(currentLine,column) == 0){
-                    emptyToken++;
+        for (int row = line - 1; row < line + 1; row++) {
+            for (int col = column - 1; col < column + 1; col++) {
+                System.out.println("row = " + row + "   col = " + col);
+                if (col >=0 && row >=0){
+                    System.out.println("    je passe le if");
+                    // Vérifiez l'horizontale (gauche à droite)
+                    if (col + 1 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row,col + 1) == player) {
+                        System.out.println("    je passe le horizontale à 2 jetons (gauche à droite)");
+                        if (isMaximise) {
+                            eval = eval + 10;
+                        } else {
+                            eval = eval - 10;
+                        }
+                    }
+                    // Vérifiez la verticale (bas vers le haut)
+                    if (row + 1 < LIGNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col) == player) {
+                        if (isMaximise) {
+                            eval = eval + 10;
+                        } else {
+                            eval = eval - 10;
+                        }
+                    }
+                    // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
+                    if (row + 1 < LIGNE && col + 1 < COLONNE && Grille.getPoint(row,col) == player && Grille.getPoint(row + 1,col + 1) == player) {
+                        if (isMaximise) {
+                            eval = eval + 10;
+                        } else {
+                            eval = eval - 10;
+                        }
+                    }
+                    // Vérifiez la diagonale descendante (haut gauche vers bas droite)
+                    if (row - 1 >= 0 && col + 1 < COLONNE &&  Grille.getPoint(row,col) == player && Grille.getPoint(row - 1,col + 1) == player) {
+                        if (isMaximise) {
+                            eval = eval + 10;
+                        } else {
+                            eval = eval - 10;
+                        }
+                    }
                 }
             }
-        }
-
-        if (consecutiveToken > 0)
-        {
-            eval = evaluateConsecutiveToken(consecutiveToken, emptyToken);
-        }
-        return eval;
-    }
-
-    public int evaluateDiagonals(int column, int player, P4 Grille)
-    {
-        int eval =0;
-        int consecutiveToken = 0;
-        int emptyToken = 0;
-        int line = -1;
-        if(Grille.checkGraviter(column) >= 0)
-        {
-            line = Grille.checkGraviter(column);
-        }
-
-        for (int i=-3; i<=3; i++)
-        {
-            int currentLine = line + i;
-            int currentColumn = column + 1;
-            if (currentLine< 6 && currentLine>=0 && currentColumn < 7 && currentLine >= 0)
-            {
-                if (Grille.getPoint(currentLine,currentColumn) == player)
-                {
-                    consecutiveToken++;
-                } else if(Grille.getPoint(currentLine,currentColumn) == 0){
-                    emptyToken++;
-                }
-            }
-        }
-
-        if (consecutiveToken > 0)
-        {
-            eval = evaluateConsecutiveToken(consecutiveToken, emptyToken);
-        }
-        return eval;
-    }
-    public int evaluateConsecutiveToken(int consecutiveToken, int emptyToken)
-    {
-        int eval = 0;
-
-        if (consecutiveToken == 3 && emptyToken == 1)
-        {
-            eval = eval + 1000;
-        } else if (consecutiveToken == 2 && emptyToken == 2){
-            eval = eval + 100;
-        } else if (consecutiveToken == 1 && emptyToken == 3){
-            eval = eval + 10;
         }
         return eval;
     }
 
     public int jouer(int player, P4 Grille)
     {
-        int maxEval = -1;
+        int maxEval = -infinity;
         int eval = 0;
         int columnToPlay = 0;
-        for (int i=0; i<7; i++)
-        {
-            eval = minimax(player,i,1,true,Grille);
-            if (eval >= maxEval)
-            {
-                System.out.println("ouiii");
-                maxEval = eval;
-                columnToPlay = i;
+        if(player == 1){
+            player++;
+        }
+        else if (player == 2){
+            player--;
+        }
+        for (int i=0; i<7; i++) {
+            if (!Grille.colonneFull(i)){
+                eval = minimax(player,i,2,true,Grille);
+                System.out.println("colonne" + i + ", eval = " + eval);
+                if (eval >= maxEval) {
+                    if (eval == maxEval && i == 3) {
+                        maxEval = eval;
+                        columnToPlay = i;
+                    }
+                    else if (eval > maxEval) {
+                        maxEval = eval;
+                        columnToPlay = i;
+                    }
+                }
             }
         }
         System.out.println("maxEvalaution = " + maxEval);
         System.out.println("columnToPlay = " + columnToPlay);
-        if (Grille.getPoint(0, columnToPlay) == 0 && columnToPlay<=6 && columnToPlay>=0) {
-            return columnToPlay;
-        } else {
-            return (columnToPlay -2);
-        }
+        return columnToPlay;
     }
 }

@@ -236,7 +236,7 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            if(Grille.checkGraviter(iButton -1) >= 0)
+            if(Grille.checkGraviter(iButton -1) >= 0 )
             {
                 AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
                 int ligne = 6 - Grille.checkGraviter(iButton-1);
@@ -245,13 +245,16 @@ public class Puissance4Controller {
                 Halo.setVisible(true);
                 Grille.setMatValeur(iButton-1,1);
 
-                int column = IAminimax.jouer(2, Grille);
-                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
-                ligne = 6 - Grille.checkGraviter(column);
-                Halo.setX(152 + (column)*100);
-                Halo.setY(594 - (ligne - 1)*100);
-                Halo.setVisible(true);
-                Grille.setMatValeur(column,2);
+                if (((Grille.JoueurGagnant(1))[0])==0)
+                {
+                    int column = IAminimax.jouer(2, Grille);
+                    AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
+                    ligne = 6 - Grille.checkGraviter(column);
+                    Halo.setX(152 + (column)*100);
+                    Halo.setY(594 - (ligne - 1)*100);
+                    Halo.setVisible(true);
+                    Grille.setMatValeur(column,2);
+                }
 
                 whoPlay++;
                 System.out.println(Grille.toString());
