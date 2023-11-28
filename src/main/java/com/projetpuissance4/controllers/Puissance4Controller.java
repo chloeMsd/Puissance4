@@ -247,7 +247,7 @@ public class Puissance4Controller {
                 if (((Grille.JoueurGagnant(1))[0])==0)
                 {
                     System.out.println("Grille av minimax \n"+Grille.toString());
-                    int column = IAminimax.minimaxIT2(2,Grille);
+                    int column = IAminimax.jouer(2,Grille);
                     AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
                     ligne = 6 - Grille.checkGraviter(column);
                     Halo.setX(152 + (column)*100);
