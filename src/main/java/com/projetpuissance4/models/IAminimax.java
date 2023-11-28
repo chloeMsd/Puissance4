@@ -1,5 +1,7 @@
 package com.projetpuissance4.models;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -26,7 +28,7 @@ public class IAminimax {
     public int minimax(int player, int position, int depth, boolean maximizingPlayer, P4 Grille) {
         P4 Grille2 = new P4(Grille.getMat());
         Grille2.setMatValeur(position, player);
-        System.out.println("grille2 : " + Grille2.toString());
+        //System.out.println("grille2 : " + Grille2.toString());
 
         int[] eval = new int[7];
 
@@ -178,7 +180,7 @@ public class IAminimax {
         eval += tab[column];
 
         if (Grille.JoueurGagnant(player)[0] == 1) {
-            eval = 1000;
+            eval = 1051;
         }
         if (Grille.JoueurGagnant(player2)[0] == 1) {
             eval = -1000;
@@ -267,8 +269,12 @@ public class IAminimax {
         int columnToPlay = 0;
         for (int i=0; i<7; i++) {
             if (!Grille.colonneFull(i)){
-                eval[i] = minimax(player,i,2,true,Grille);
-                System.out.println("colonne" + i + ", eval = " + eval[i]);
+                eval[i] = minimax(player,i,4,true,Grille);
+                if(Grille.isJoueurGagnantWithThisToken(i,2))
+                {
+                    eval[i] = -1000000;
+                }
+                System.out.println("colonne " + i + ", eval = " + eval[i]);
                 if (eval[i] < mineval) {
                     mineval = eval[i];
                     columnToPlay = i;
@@ -278,6 +284,25 @@ public class IAminimax {
         for (int i=0; i<7; i++) {
             System.out.println("eval " + i +" : " + eval[i]);
         }
+
+
+        ArrayList<Integer> indicesOccurrences = new ArrayList<>();
+
+        for (int i = 0; i < eval.length; i++) {
+            if (eval[i] == mineval) {
+                indicesOccurrences.add(i);
+            }
+        }
+        int distanceMin = 99999999;
+
+        for (int indice : indicesOccurrences) {
+            int distance = Math.abs(indice - 3);
+            if (distance < distanceMin) {
+                distanceMin = distance;
+                columnToPlay = indice;
+            }
+        }
+        System.out.println(indicesOccurrences.toString());
         System.out.println("minEvalaution = " + mineval);
         System.out.println("columnToPlay = " + columnToPlay);
         return columnToPlay;

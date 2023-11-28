@@ -94,52 +94,41 @@ public class P4 {
         return -10;
     }
 
-    public boolean isJoueurGagnantWithThisToken(int player, int column) {
-        // on chercher la ligne avec checkGraviter et onajoute un pion à la colonne column et ligne qu'on a trouver
-        int line = 0;
-        if(checkGraviter(column) >= 0)
-        {
-            line = checkGraviter(column);
-        }
-        setMatValeur(column, player);
-        // Vérifiez les directions horizontales, verticales et diagonales
+    public boolean isJoueurGagnantWithThisToken(int column,int player) {
+        P4 GrilleTmp = new P4(this.mat);
+        GrilleTmp.setMatValeur(column, player);
         for (int row = 0; row < LIGNE; row++) {
             for (int col = 0; col < COLONNE; col++) {
-                // Vérifiez l'horizontale (gauche à droite)
                 if (col + 3 < COLONNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row][col + 1] == player &&
-                        this.mat[row][col + 2] == player &&
-                        this.mat[row][col + 3] == player) {
+                        GrilleTmp.getMat()[row][col] == player &&
+                        GrilleTmp.getMat()[row][col + 1] == player &&
+                        GrilleTmp.getMat()[row][col + 2] == player &&
+                        GrilleTmp.getMat()[row][col + 3] == player) {
                     return true;
                 }
-                // Vérifiez la verticale (bas vers le haut)
                 if (row + 3 < LIGNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row + 1][col] == player &&
-                        this.mat[row + 2][col] == player &&
-                        this.mat[row + 3][col] == player) {
+                        GrilleTmp.getMat()[row][col] == player &&
+                        GrilleTmp.getMat()[row + 1][col] == player &&
+                        GrilleTmp.getMat()[row + 2][col] == player &&
+                        GrilleTmp.getMat()[row + 3][col] == player) {
                     return true;
                 }
-                // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
                 if (row + 3 < LIGNE && col + 3 < COLONNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row + 1][col + 1] == player &&
-                        this.mat[row + 2][col + 2] == player &&
-                        this.mat[row + 3][col + 3] == player) {
+                        GrilleTmp.getMat()[row][col] == player &&
+                        GrilleTmp.getMat()[row + 1][col + 1] == player &&
+                        GrilleTmp.getMat()[row + 2][col + 2] == player &&
+                        GrilleTmp.getMat()[row + 3][col + 3] == player) {
                     return true;
                 }
-                // Vérifiez la diagonale descendante (haut gauche vers bas droite)
                 if (row - 3 >= 0 && col + 3 < COLONNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row - 1][col + 1] == player &&
-                        this.mat[row - 2][col + 2] == player &&
-                        this.mat[row - 3][col + 3] == player) {
+                        GrilleTmp.getMat()[row][col] == player &&
+                        GrilleTmp.getMat()[row - 1][col + 1] == player &&
+                        GrilleTmp.getMat()[row - 2][col + 2] == player &&
+                        GrilleTmp.getMat()[row - 3][col + 3] == player) {
                     return true;
                 }
             }
         }
-        this.mat[line][column]=0;
         return false;
     }
 

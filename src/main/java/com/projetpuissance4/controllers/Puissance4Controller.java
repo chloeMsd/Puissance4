@@ -54,7 +54,7 @@ public class Puissance4Controller {
     private int compteurToken =0;
 
     public void initialize() {
-
+        
         invisibleButtonColumn1 = CreationInvisibleButton(1);
         invisibleButtonColumn2 = CreationInvisibleButton(2);
         invisibleButtonColumn3 = CreationInvisibleButton(3);
