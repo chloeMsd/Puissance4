@@ -112,6 +112,10 @@ public class Puissance4Controller {
             invisibleButtonColumn5.setOnAction(event -> ButtonPlayIAminimax(5));
             invisibleButtonColumn6.setOnAction(event -> ButtonPlayIAminimax(6));
             invisibleButtonColumn7.setOnAction(event -> ButtonPlayIAminimax(7));
+            /*while ((Grille.JoueurGagnant(1)[0]==0 && Grille.JoueurGagnant(2)[0]==0) || Grille.TestEgalite()== false )
+            {
+                MinimaxVSminimax();
+            }*/
         }
         else if (gameOption.equals("Jeu contre une IA experte")) {
             AfficherPseudoJoueur1(SaisirPseudo(1));
@@ -244,10 +248,23 @@ public class Puissance4Controller {
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
                 Grille.setMatValeur(iButton-1,1);
+
+                /*if (((Grille.JoueurGagnant(2))[0])==0)
+                {
+                    System.out.println("Grille av minimax \n"+Grille.toString());
+                    int column = IAminimax.jouer(1,Grille);
+                    AddRedToken(CreationRedToken(100,100),column+1,6-Grille.checkGraviter(column));
+                    int ligne = 6 - Grille.checkGraviter(column);
+                    Halo.setX(152 + (column)*100);
+                    Halo.setY(594 - (ligne - 1)*100);
+                    Halo.setVisible(true);
+                    Grille.setMatValeur(column,1);
+                }*/
+
                 if (((Grille.JoueurGagnant(1))[0])==0)
                 {
                     System.out.println("Grille av minimax \n"+Grille.toString());
-                    int column = IAminimax.jouer(2,Grille);
+                    int column = IAminimax.jouer(2,8,Grille);
                     AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
                     ligne = 6 - Grille.checkGraviter(column);
                     Halo.setX(152 + (column)*100);
@@ -289,6 +306,8 @@ public class Puissance4Controller {
             }
         }
     }
+
+    
     public void setOpacityTriangle(double opacity)
     {
         triangle1.setOpacity(opacity);

@@ -212,4 +212,16 @@ public class P4 {
             }
         }
     }
+
+    public static long gridToLong(int[][] grid) {
+        long result = 0L;
+
+        for (int row = 0; row < LIGNE; row++) {
+            for (int col = 0; col < COLONNE; col++) {
+                result <<= 2;
+                result |= grid[row][col];
+            }
+        }
+        return result;
+    }
 }
