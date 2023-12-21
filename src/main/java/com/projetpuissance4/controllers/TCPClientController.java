@@ -47,28 +47,5 @@ public class TCPClientController {
             }
         }
     }
-    public void setClientDot(Stage stage, Circle dotStatut)
-    {
-        stage.getScene().getStylesheets().add(Puissance4.class.getResource("style.css").toExternalForm());
-        Settings settings = new Settings();
-        settings.loadSettings("SettingsClient.ser");
-        if(settings.getPort() == null || settings.getIp() == null || Objects.equals(settings.getPort(), "") || Objects.equals(settings.getIp(), ""))
-        {
-            System.out.println("Connexion au server impossible.");
-        }
-        else {
 
-            client.setServerAddress(settings.getIp());
-            client.setServerPort( Integer.parseInt(settings.getPort()));
-            client.run();
-
-            if(client.isCo())
-            {
-                dotStatut.setFill(Color.GREEN);
-            }
-            else {
-                dotStatut.setFill(Color.RED);
-            }
-        }
-    }
 }

@@ -6,14 +6,10 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import java.util.HashMap;
 public class IAminimax {
-    private int infinity = 9999;
+    private static final int INFINITY = 9999;
     private static final int LIGNE = 6;
     private static final int COLONNE = 7;
-    private int depth;
-    private HashMap<Long,Integer> HM = new HashMap<Long,Integer>();
-    private boolean maximizingPlayer; //true if maximizing the player else false if we need to minimizing the player
-    public IAminimax()
-    {
+    public IAminimax() {
 
     }
 
@@ -42,7 +38,7 @@ public class IAminimax {
         }*/
 
         if (maximizingPlayer) {
-            int maxEval = -infinity;
+            int maxEval = -INFINITY;
             if (player == 1) {
                 player++;
             } else if (player == 2) {
@@ -72,7 +68,7 @@ public class IAminimax {
 
             return maxEval;
         } else {
-            int minEval = infinity;
+            int minEval = INFINITY;
             if (player == 1) {
                 player++;
             } else if (player == 2) {
@@ -118,7 +114,7 @@ public class IAminimax {
             return evaluation(player, position, Grille2);
         }
         if (maximizingPlayer) {
-            int maxEval = -infinity;
+            int maxEval = -INFINITY;
             if (player == 1) {
                 player++;
             } else if (player == 2) {
@@ -138,7 +134,7 @@ public class IAminimax {
             //System.out.println("MAX EVAL = " + maxEval);
             return maxEval;
         } else {
-            int minEval = infinity;
+            int minEval = INFINITY;
             if (player == 1) {
                 player++;
             } else if (player == 2) {
@@ -346,13 +342,13 @@ public class IAminimax {
     {
         long startTime = System.currentTimeMillis();
 
-        int mineval = infinity;
+        int mineval = INFINITY;
         int[] eval = new int[7];
         int columnToPlay = 0;
         for (int i=0; i<7; i++) {
             if (!Grille.colonneFull(i)){
 
-                eval[i] = minimaxAlphaBeta(player,i,-infinity, infinity,depth, true,Grille);
+                eval[i] = minimaxAlphaBeta(player,i,-INFINITY, INFINITY,depth, true,Grille);
                 //eval[i] = minimax(player,i,6, true,Grille);
 
                 if(Grille.isJoueurGagnantWithThisToken(i,player))

@@ -54,7 +54,6 @@ public class Puissance4Controller {
     private int compteurToken =0;
 
     public void initialize() {
-        
         invisibleButtonColumn1 = CreationInvisibleButton(1);
         invisibleButtonColumn2 = CreationInvisibleButton(2);
         invisibleButtonColumn3 = CreationInvisibleButton(3);
@@ -264,7 +263,7 @@ public class Puissance4Controller {
                 if (((Grille.JoueurGagnant(1))[0])==0)
                 {
                     System.out.println("Grille av minimax \n"+Grille.toString());
-                    int column = IAminimax.jouer(2,8,Grille);
+                    int column = IAminimax.jouer(2,7,Grille);
                     AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
                     ligne = 6 - Grille.checkGraviter(column);
                     Halo.setX(152 + (column)*100);

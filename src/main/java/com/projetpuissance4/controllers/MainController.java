@@ -65,13 +65,13 @@ public class MainController {
             if(i%2 == 0)
             {
                 joueur = 2;
-                column = IAminimax.jouer(joueur, 1, p);
+                column = IAminimax.jouer(joueur, 10, p);
                 p.setMatValeur(column,2);
                 System.out.println(p.toString());
             }
             else {
                 joueur = 1;
-                column = IAminimax.jouer(joueur, 0, p);
+                column = IAminimax.jouer(joueur, 10, p);
                 p.setMatValeur(column,1);
                 System.out.println(p.toString());
             }
