@@ -21,13 +21,13 @@ public class TCPClientController {
     /**
      *   Sets client
      *
-     * @param stage the stage
      */
-    public void setClient(Stage stage)
+    public void setClient()
     {
-        stage.getScene().getStylesheets().add(Puissance4.class.getResource("style.css").toExternalForm());
+        //stage.getScene().getStylesheets().add(Puissance4.class.getResource("style.css").toExternalForm());
         Settings settings = new Settings();
-        settings.loadSettings("SettingsClient.ser");
+        settings.setIp("192.168.53.185");
+        settings.setPort("8090");
         if(settings.getPort() == null || settings.getIp() == null || Objects.equals(settings.getPort(), "") || Objects.equals(settings.getIp(), ""))
         {
             System.out.println("Connexion au server impossible.");

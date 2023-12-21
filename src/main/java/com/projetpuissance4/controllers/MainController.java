@@ -111,9 +111,11 @@ public class MainController {
     }
     public static void main(String[] args)
     {
-        MainController control = new MainController();
+        /*MainController control = new MainController();
         P4 p = new P4();
-        control.plusieursGrilles(100, p);
+        control.plusieursGrilles(100, p);*/
+        TCPClientController tcp = new TCPClientController();
+        tcp.setClient();
     }
 
 

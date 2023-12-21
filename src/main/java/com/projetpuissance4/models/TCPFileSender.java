@@ -79,13 +79,17 @@ public class TCPFileSender implements Runnable {
             Socket socket = new Socket(serverAddress, serverPort);
             if(socket.isConnected())
             {
-                isCo = true;
+                while(socket.isConnected())
+                {
+                    System.out.println("L'entier a été envoyé avec succès.");
+                }
+                /*isCo = true;
                 System.out.println("Connecté au serveur " + serverAddress + ":" + serverPort);
                 int value = 42;
                 sendValue(socket, value);
-                socket.close();
+                socket.close();*/
 
-                System.out.println("L'entier a été envoyé avec succès.");
+
             }
             else {
                 isCo = false;

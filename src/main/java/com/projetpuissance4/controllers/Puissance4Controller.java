@@ -20,6 +20,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.util.Random;
+
 
 public class Puissance4Controller {
     @FXML
@@ -50,7 +52,8 @@ public class Puissance4Controller {
     private Polygon triangle7 ;
     private IAnv0 IA = new IAnv0();
     private IAminimax IAminimax = new IAminimax();
-    private static int whoPlay = 0;
+    private static Random rand = new Random();
+    private static int whoPlay = rand.nextInt();
     private int compteurToken =0;
 
     public void initialize() {
@@ -80,8 +83,16 @@ public class Puissance4Controller {
 
         String gameOption = PrintGameOption();
         if (gameOption.equals("Jeu contre un autre joueur")) {
-            AfficherPseudoJoueur1(SaisirPseudo(1));
-            AfficherPseudoJoueur2(SaisirPseudo(2));
+            if(whoPlay % 2 == 0)
+            {
+                AfficherPseudoJoueur1(SaisirPseudo(1) + " commence");
+                AfficherPseudoJoueur2(SaisirPseudo(2));
+            }
+            else {
+                AfficherPseudoJoueur1(SaisirPseudo(1));
+                AfficherPseudoJoueur2(SaisirPseudo(2) + " commence");
+            }
+
             invisibleButtonColumn1.setOnAction(event -> ButtonPlay(1));
             invisibleButtonColumn2.setOnAction(event -> ButtonPlay(2));
             invisibleButtonColumn3.setOnAction(event -> ButtonPlay(3));
@@ -102,8 +113,17 @@ public class Puissance4Controller {
             invisibleButtonColumn7.setOnAction(event -> ButtonPlayIAnv0(7));
         }
         else if (gameOption.equals("Jeu contre une IA intermédiaire")) {
-            AfficherPseudoJoueur1(SaisirPseudo(1));
-            AfficherPseudoJoueur2("IA intermédiaire");
+            if(whoPlay % 2 == 0)
+            {
+                AfficherPseudoJoueur1(SaisirPseudo(1) + " commence");
+                AfficherPseudoJoueur2("IA intermédiaire");
+            }
+            else {
+                AfficherPseudoJoueur1(SaisirPseudo(1));
+                AfficherPseudoJoueur2("IA intermédiaire : commence");
+                IAFirst();
+            }
+
             invisibleButtonColumn1.setOnAction(event -> ButtonPlayIAminimax(1));
             invisibleButtonColumn2.setOnAction(event -> ButtonPlayIAminimax(2));
             invisibleButtonColumn3.setOnAction(event -> ButtonPlayIAminimax(3));
@@ -248,22 +268,10 @@ public class Puissance4Controller {
                 Halo.setVisible(true);
                 Grille.setMatValeur(iButton-1,1);
 
-                /*if (((Grille.JoueurGagnant(2))[0])==0)
-                {
-                    System.out.println("Grille av minimax \n"+Grille.toString());
-                    int column = IAminimax.jouer(1,Grille);
-                    AddRedToken(CreationRedToken(100,100),column+1,6-Grille.checkGraviter(column));
-                    int ligne = 6 - Grille.checkGraviter(column);
-                    Halo.setX(152 + (column)*100);
-                    Halo.setY(594 - (ligne - 1)*100);
-                    Halo.setVisible(true);
-                    Grille.setMatValeur(column,1);
-                }*/
-
                 if (((Grille.JoueurGagnant(1))[0])==0)
                 {
                     System.out.println("Grille av minimax \n"+Grille.toString());
-                    int column = IAminimax.jouer(2,7,Grille);
+                    int column = IAminimax.jouer(2,5,Grille);
                     AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
                     ligne = 6 - Grille.checkGraviter(column);
                     Halo.setX(152 + (column)*100);
@@ -306,7 +314,20 @@ public class Puissance4Controller {
         }
     }
 
-    
+    public void IAFirst()
+    {
+        if (((Grille.JoueurGagnant(1))[0])==0)
+        {
+            System.out.println("Grille av minimax \n"+Grille.toString());
+            int column = IAminimax.jouer(2,5,Grille);
+            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
+            int ligne = 6 - Grille.checkGraviter(column);
+            Halo.setX(152 + (column)*100);
+            Halo.setY(594 - (ligne - 1)*100);
+            Halo.setVisible(true);
+            Grille.setMatValeur(column,2);
+        }
+    }
     public void setOpacityTriangle(double opacity)
     {
         triangle1.setOpacity(opacity);
