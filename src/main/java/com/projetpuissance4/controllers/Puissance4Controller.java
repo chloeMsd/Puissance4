@@ -268,17 +268,7 @@ public class Puissance4Controller {
                 Halo.setVisible(true);
                 Grille.setMatValeur(iButton-1,1);
 
-                if (((Grille.JoueurGagnant(1))[0])==0)
-                {
-                    System.out.println("Grille av minimax \n"+Grille.toString());
-                    int column = IAminimax.jouer(2,5,Grille);
-                    AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
-                    ligne = 6 - Grille.checkGraviter(column);
-                    Halo.setX(152 + (column)*100);
-                    Halo.setY(594 - (ligne - 1)*100);
-                    Halo.setVisible(true);
-                    Grille.setMatValeur(column,2);
-                }
+                IAFirst();
 
                 whoPlay++;
                 System.out.println(Grille.toString());
@@ -319,7 +309,7 @@ public class Puissance4Controller {
         if (((Grille.JoueurGagnant(1))[0])==0)
         {
             System.out.println("Grille av minimax \n"+Grille.toString());
-            int column = IAminimax.jouer(2,5,Grille);
+            int column = IAminimax.jouerV2(2,6,Grille);
             AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
             int ligne = 6 - Grille.checkGraviter(column);
             Halo.setX(152 + (column)*100);

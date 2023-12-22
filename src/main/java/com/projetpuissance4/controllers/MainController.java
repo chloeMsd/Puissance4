@@ -4,6 +4,7 @@ import com.projetpuissance4.models.IAminimax;
 import com.projetpuissance4.models.IAnv0;
 import com.projetpuissance4.models.P4;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class MainController {
@@ -45,33 +46,22 @@ public class MainController {
         IAminimax IAminimax = new IAminimax();
         IAnv0 IAnv0 = new IAnv0();
 
-        int i = 0;
+        Random rand = new Random();
+        int i = 1;
         while((p.JoueurGagnant(1))[0] == 0 && (p.JoueurGagnant(2))[0] == 0 && p.TestEgalite()==false )
         {
-            /*Scanner scanner2 = new Scanner(System.in);
-            System.out.print("Veuillez entrer la colonne : ");
-            int Colonne = scanner2.nextInt();
-            if(i%2 == 0)
-            {
-                p.setMatValeur(Colonne,2);
-            }
-            else {
-                p.setMatValeur(Colonne,1);
-            }
-            System.out.println(p.toString());
-            i++;*/
             int joueur;
             int column;
             if(i%2 == 0)
             {
                 joueur = 2;
-                column = IAminimax.jouer(joueur, 10, p);
+                column = IAminimax.jouerV2(joueur, 2, p);
                 p.setMatValeur(column,2);
                 System.out.println(p.toString());
             }
             else {
                 joueur = 1;
-                column = IAminimax.jouer(joueur, 10, p);
+                column = IAminimax.jouerV2(joueur, 4, p);
                 p.setMatValeur(column,1);
                 System.out.println(p.toString());
             }
@@ -80,13 +70,10 @@ public class MainController {
         if((p.JoueurGagnant(1))[0] == 1)
         {
             return 1;
-            //System.out.println("J1 gagant");
         } else if ((p.JoueurGagnant(2))[0] == 1) {
             return 2;
-            //System.out.println("J2 gagant");
         } else{
             return 0;
-            //System.out.println("aucun gagnant");
         }
     }
 
@@ -106,16 +93,18 @@ public class MainController {
                 J2++;
             else
                 egalite++;
+
+            p.MatriceZero();
         }
         System.out.println("Sur " + nombre + " parties, J1 gagne " + J1 + " fois, J2 gagne " + J2 + " fois, egalité " + egalite + " fois !");
     }
     public static void main(String[] args)
     {
-        /*MainController control = new MainController();
+        MainController control = new MainController();
         P4 p = new P4();
-        control.plusieursGrilles(100, p);*/
-        TCPClientController tcp = new TCPClientController();
-        tcp.setClient();
+        control.plusieursGrilles(1, p);
+        /*TCPClientController tcp = new TCPClientController();
+        tcp.setClient();*/
     }
 
 
