@@ -1,12 +1,14 @@
 package com.projetpuissance4.models;
 
-import java.util.Arrays;
-
 public class P4 {
 
     private static final int LIGNE = 6;
     private static final int COLONNE = 7;
     private int [][] mat = new int[LIGNE][COLONNE];
+
+    /**
+     * Constructor
+     */
     public P4() {
         int [][] mat = new int[LIGNE][COLONNE];
         for(int i = 0; i<LIGNE;i++)
@@ -29,28 +31,55 @@ public class P4 {
         }
     }
 
+    /**
+     * SetMat
+     * @brief Setter Mat
+     * @param mat
+     */
     public void setMat(int[][] mat) {
         this.mat = mat;
     }
 
-    public void setMatValeur(int Col, int Val) {
-        int nvLig = checkGraviter(Col);
+    /**
+     * SetMatValeur
+     * @brief Setter Mat Value
+     * @param Col
+     * @param Val
+     */
+    public void setMatValue(int Col, int Val) {
+        int nvLig = gravityCheck(Col);
         if(nvLig < LIGNE && nvLig >= 0)
         {
             this.mat[nvLig][Col] = Val;
         }
     }
 
+    /**
+     * Getter Matrix
+     * @return the Matrix
+     */
     public int[][] getMat() {
         return mat;
     }
 
 
+    /**
+     * Get Point
+     * @brief Get the point at line/column
+     * @param line
+     * @param column
+     * @return
+     */
     public int getPoint(int line, int column)
     {
         return mat[line][column];
     }
 
+    /**
+     * Grid To String
+     * @brief To String
+     * @return
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -67,7 +96,14 @@ public class P4 {
         }
         return builder.toString();
     }
-    public boolean colonneFull(int colonne)
+
+    /**
+     * Column Full
+     * @brief check if column full
+     * @param colonne
+     * @return
+     */
+    public boolean columnFull(int colonne)
     {
         int ligne = 0;
         for(int i = 0 ; i< LIGNE; i++)
@@ -79,9 +115,16 @@ public class P4 {
         }
         return true;
     }
-    public int checkGraviter(int colonne)
+
+    /**
+     * Gravity Check
+     * @brief Check the gravity
+     * @param colonne
+     * @return the line
+     */
+    public int gravityCheck(int colonne)
     {
-        if(colonne >= 0 && !colonneFull(colonne))
+        if(colonne >= 0 && !columnFull(colonne))
         {
             int ligne = LIGNE - 1;
 
@@ -94,9 +137,16 @@ public class P4 {
         return -10;
     }
 
-    public boolean isJoueurGagnantWithThisToken(int column,int player) {
+    /**
+     * Is player win with this token
+     * @brief Check if a player win with this token
+     * @param column
+     * @param player
+     * @return
+     */
+    public boolean isPlayerWinWithThisToken(int column,int player) {
         P4 GrilleTmp = new P4(this.mat);
-        GrilleTmp.setMatValeur(column, player);
+        GrilleTmp.setMatValue(column, player);
         for (int row = 0; row < LIGNE; row++) {
             for (int col = 0; col < COLONNE; col++) {
                 if (col + 3 < COLONNE &&
@@ -132,7 +182,13 @@ public class P4 {
         return false;
     }
 
-    public int[] JoueurGagnant(int player) {
+    /**
+     * Player Win
+     * @brief Check if player is winning
+     * @param player
+     * @return
+     */
+    public int[] playerWin(int player) {
         int[] retour = new int[9];
         retour[0] = 0;
         // Vérifiez les directions horizontales, verticales et diagonales
@@ -191,7 +247,12 @@ public class P4 {
         return retour;
     }
 
-    public boolean TestEgalite()
+    /**
+     * Check Draw
+     * @brief Check if there is a draw
+     * @return
+     */
+    public boolean checkDraw()
     {
         for (int i=0; i<7 ;i++)
         {
@@ -202,7 +263,12 @@ public class P4 {
         }
         return true;
     }
-    public void MatriceZero()
+
+    /**
+     * Matrix Zero
+     * @brief replace matrix by 0
+     */
+    public void matrixZero()
     {
         for(int i = 0; i<LIGNE;i++)
         {
@@ -213,6 +279,12 @@ public class P4 {
         }
     }
 
+    /**
+     * Grid to long
+     * @brief create a long by the grid
+     * @param grid
+     * @return
+     */
     public static long gridToLong(int[][] grid) {
         long result = 0L;
 

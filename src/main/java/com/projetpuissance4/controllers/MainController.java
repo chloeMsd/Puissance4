@@ -1,11 +1,10 @@
 package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.models.IAminimax;
-import com.projetpuissance4.models.IAnv0;
+import com.projetpuissance4.models.IARandom;
 import com.projetpuissance4.models.P4;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class MainController {
     private P4 p = new P4();
@@ -44,33 +43,33 @@ public class MainController {
     public int Jouer(P4 p)
     {
         IAminimax IAminimax = new IAminimax();
-        IAnv0 IAnv0 = new IAnv0();
+        IARandom IAnv0 = new IARandom();
 
         Random rand = new Random();
         int i = 1;
-        while((p.JoueurGagnant(1))[0] == 0 && (p.JoueurGagnant(2))[0] == 0 && p.TestEgalite()==false )
+        while((p.playerWin(1))[0] == 0 && (p.playerWin(2))[0] == 0 && p.checkDraw()==false )
         {
             int joueur;
             int column;
             if(i%2 == 0)
             {
                 joueur = 2;
-                column = IAminimax.jouerV2(joueur, 2, p);
-                p.setMatValeur(column,2);
+                column = IAminimax.playV2(joueur, 2, p);
+                p.setMatValue(column,2);
                 System.out.println(p.toString());
             }
             else {
                 joueur = 1;
-                column = IAminimax.jouerV2(joueur, 4, p);
-                p.setMatValeur(column,1);
+                column = IAminimax.playV2(joueur, 4, p);
+                p.setMatValue(column,1);
                 System.out.println(p.toString());
             }
             i++;
         }
-        if((p.JoueurGagnant(1))[0] == 1)
+        if((p.playerWin(1))[0] == 1)
         {
             return 1;
-        } else if ((p.JoueurGagnant(2))[0] == 1) {
+        } else if ((p.playerWin(2))[0] == 1) {
             return 2;
         } else{
             return 0;
@@ -94,7 +93,7 @@ public class MainController {
             else
                 egalite++;
 
-            p.MatriceZero();
+            p.matrixZero();
         }
         System.out.println("Sur " + nombre + " parties, J1 gagne " + J1 + " fois, J2 gagne " + J2 + " fois, egalité " + egalite + " fois !");
     }

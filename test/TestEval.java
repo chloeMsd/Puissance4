@@ -10,10 +10,10 @@ public class TestEval {
     public void testEval() {
         P4 Grille = new P4();
         IAminimax IA = new IAminimax();
-        Grille.setMatValeur(3,1);
-        Grille.setMatValeur(2,1);
-        Grille.setMatValeur(1,1);
-        Grille.setMatValeur(4,2);
+        Grille.setMatValue(3,1);
+        Grille.setMatValue(2,1);
+        Grille.setMatValue(1,1);
+        Grille.setMatValue(4,2);
 
     }
 

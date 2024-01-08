@@ -2,7 +2,7 @@ package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.Puissance4;
 import com.projetpuissance4.models.IAminimax;
-import com.projetpuissance4.models.IAnv0;
+import com.projetpuissance4.models.IARandom;
 import com.projetpuissance4.models.P4;
 import com.projetpuissance4.views.OptionView;
 import com.projetpuissance4.views.PseudoView;
@@ -50,7 +50,7 @@ public class Puissance4Controller {
     private Polygon triangle5;
     private Polygon triangle6;
     private Polygon triangle7 ;
-    private IAnv0 IA = new IAnv0();
+    private IARandom IA = new IARandom();
     private IAminimax IAminimax = new IAminimax();
     private static Random rand = new Random();
     private static int whoPlay = rand.nextInt();
@@ -140,35 +140,35 @@ public class Puissance4Controller {
             AfficherPseudoJoueur1(SaisirPseudo(1));
             AfficherPseudoJoueur2("IA experte");
         }
-        System.out.println(Grille.checkGraviter(1));
+        System.out.println(Grille.gravityCheck(1));
     }
 
     public void ButtonPlay(int iButton)
     {
         if(Play)
         {
-            if(Grille.checkGraviter(iButton-1) >= 0)
+            if(Grille.gravityCheck(iButton-1) >= 0)
             {
                 if(whoPlay % 2 == 0){
-                    AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-                    int ligne = 6 - Grille.checkGraviter(iButton-1);
+                    AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
+                    int ligne = 6 - Grille.gravityCheck(iButton-1);
                     Halo.setX(152 + (iButton - 1)*100);
                     Halo.setY(594 - (ligne - 1)*100);
                     Halo.setVisible(true);
-                    Grille.setMatValeur(iButton-1,1);
+                    Grille.setMatValue(iButton-1,1);
                 }
                 else {
-                    AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-                    int ligne = 6 - Grille.checkGraviter(iButton-1);
+                    AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
+                    int ligne = 6 - Grille.gravityCheck(iButton-1);
                     Halo.setX(152 + (iButton - 1)*100);
                     Halo.setY(594 - (ligne - 1)*100);
                     Halo.setVisible(true);
-                    Grille.setMatValeur(iButton-1,2);
+                    Grille.setMatValue(iButton-1,2);
                 }
                 whoPlay++;
                 System.out.println(Grille.toString());
-                int[] Joueur1 = Grille.JoueurGagnant(1);
-                int[] Joueur2 = Grille.JoueurGagnant(2);
+                int[] Joueur1 = Grille.playerWin(1);
+                int[] Joueur2 = Grille.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -188,7 +188,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.TestEgalite())
+                else if (Grille.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -204,27 +204,27 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            if(Grille.checkGraviter(iButton -1) >= 0)
+            if(Grille.gravityCheck(iButton -1) >= 0)
             {
-                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-                int ligne = 6 - Grille.checkGraviter(iButton-1);
+                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
+                int ligne = 6 - Grille.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValeur(iButton-1,1);
+                Grille.setMatValue(iButton-1,1);
 
-                int column = IA.jouer();
-                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
-                ligne = 6 - Grille.checkGraviter(column);
+                int column = IA.Play();
+                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
+                ligne = 6 - Grille.gravityCheck(column);
                 Halo.setX(152 + (column)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValeur(column,2);
+                Grille.setMatValue(column,2);
 
                 whoPlay++;
                 System.out.println(Grille.toString());
-                int[] Joueur1 = Grille.JoueurGagnant(1);
-                int[] Joueur2 = Grille.JoueurGagnant(2);
+                int[] Joueur1 = Grille.playerWin(1);
+                int[] Joueur2 = Grille.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -243,7 +243,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.TestEgalite())
+                else if (Grille.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -259,21 +259,21 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            if(Grille.checkGraviter(iButton -1) >= 0 )
+            if(Grille.gravityCheck(iButton -1) >= 0 )
             {
-                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.checkGraviter(iButton-1));
-                int ligne = 6 - Grille.checkGraviter(iButton-1);
+                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
+                int ligne = 6 - Grille.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValeur(iButton-1,1);
+                Grille.setMatValue(iButton-1,1);
 
                 IAFirst();
 
                 whoPlay++;
                 System.out.println(Grille.toString());
-                int[] Joueur1 = Grille.JoueurGagnant(1);
-                int[] Joueur2 = Grille.JoueurGagnant(2);
+                int[] Joueur1 = Grille.playerWin(1);
+                int[] Joueur2 = Grille.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -292,7 +292,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.TestEgalite())
+                else if (Grille.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -306,16 +306,16 @@ public class Puissance4Controller {
 
     public void IAFirst()
     {
-        if (((Grille.JoueurGagnant(1))[0])==0)
+        if (((Grille.playerWin(1))[0])==0)
         {
             System.out.println("Grille av minimax \n"+Grille.toString());
-            int column = IAminimax.jouerV2(2,6,Grille);
-            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.checkGraviter(column));
-            int ligne = 6 - Grille.checkGraviter(column);
+            int column = IAminimax.playV2(2,6,Grille);
+            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
+            int ligne = 6 - Grille.gravityCheck(column);
             Halo.setX(152 + (column)*100);
             Halo.setY(594 - (ligne - 1)*100);
             Halo.setVisible(true);
-            Grille.setMatValeur(column,2);
+            Grille.setMatValue(column,2);
         }
     }
     public void setOpacityTriangle(double opacity)
@@ -506,7 +506,7 @@ public class Puissance4Controller {
     {
         clearBoard();
         initialize();
-        Grille.MatriceZero();
+        Grille.matrixZero();
         Halo.setVisible(false);
         Play = true;
         replay.setVisible(false);

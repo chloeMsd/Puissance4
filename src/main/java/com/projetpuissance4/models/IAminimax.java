@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import java.util.HashMap;
+
+/**
+ * IAminimax
+ */
 public class IAminimax {
     private static final int INFINITY = 9999;
     private static final int LIGNE = 6;
@@ -13,15 +16,27 @@ public class IAminimax {
 
     }
 
+    /**
+     * Minimax Alpha Beta V2
+     * @brief Algorithm Minimax V2 with Alpha-Beta pruning
+     * @param player
+     * @param position
+     * @param alpha
+     * @param beta
+     * @param depth
+     * @param maximizingPlayer
+     * @param Grille
+     * @return
+     */
     public int minimaxAlphaBetaV2(int player, int position, double alpha, double beta, int depth, boolean maximizingPlayer, P4 Grille)
     {
         P4 Grille2 = new P4(Grille.getMat());
-        Grille2.setMatValeur(position, player);
+        Grille2.setMatValue(position, player);
         //System.out.println("grille2 : " + Grille2.toString());
 
         int[] eval = new int[7];
 
-        if (depth == 0 || Grille2.JoueurGagnant(player)[0] == 1) {
+        if (depth == 0 || Grille2.playerWin(player)[0] == 1) {
             return evaluationV2(player, position, Grille2);
         }
 
@@ -85,15 +100,27 @@ public class IAminimax {
 
     }
 
+    /**
+     * Minimax Alpha Beta V1
+     * @brief Algorithm Minimax V1 with Alpha-Beta pruning
+     * @param player
+     * @param position
+     * @param alpha
+     * @param beta
+     * @param depth
+     * @param maximizingPlayer
+     * @param Grille
+     * @return
+     */
     public int minimaxAlphaBetaV1(int player, int position, double alpha, double beta, int depth, boolean maximizingPlayer, P4 Grille)
     {
         P4 Grille2 = new P4(Grille.getMat());
-        Grille2.setMatValeur(position, player);
+        Grille2.setMatValue(position, player);
         //System.out.println("grille2 : " + Grille2.toString());
 
         int[] eval = new int[7];
 
-        if (depth == 0 || Grille2.JoueurGagnant(player)[0] == 1) {
+        if (depth == 0 || Grille2.playerWin(player)[0] == 1) {
             return evaluation(player, position, Grille2);
         }
 
@@ -156,90 +183,20 @@ public class IAminimax {
 
 
     }
-    public int minimax(int player, int position, int depth, boolean maximizingPlayer, P4 Grille) {
-        P4 Grille2 = new P4(Grille.getMat());
-        Grille2.setMatValeur(position, player);
-        //System.out.println("grille2 : " + Grille2.toString());
 
-        int[] eval = new int[7];
-
-        if (depth == 0 || Grille2.JoueurGagnant(player)[0] == 1) {
-            //System.out.println("eval enfait : "+evaluation(player, position, Grille2,maximizingPlayer));
-            return evaluationV2(player, position, Grille2);
-        }
-        if (maximizingPlayer) {
-            int maxEval = -INFINITY;
-            if (player == 1) {
-                player++;
-            } else if (player == 2) {
-                player--;
-            }
-            for (int i = 0; i < 7; i++) {
-                //System.out.println("bonjour : maximizing player " + player);
-                eval[i] = minimax(player, i, depth - 1, false, Grille2);
-                //System.out.println("maximizing player " + player + " score eval on column " + i + " = " + eval[i] + " on depth = " + depth);
-                maxEval = max(maxEval, eval[i]);
-            }
-            //System.out.println("MAX EVAL = " + maxEval);
-            return maxEval;
-        } else {
-            int minEval = INFINITY;
-            if (player == 1) {
-                player++;
-            } else if (player == 2) {
-                player--;
-            }
-            for (int i = 0; i < 7; i++) {
-                eval[i] = minimax(player, i, depth - 1, true, Grille2);
-                //System.out.println("minimizing player " + player + " score eval on column " + i + " = " + eval[i] + " on depth = " + depth);
-                minEval = min(minEval, eval[i]);
-            }
-            //System.out.println("MIN EVAL = " + minEval);
-            return minEval;
-        }
-
-    }
-    public int[] getValidPosition(P4 Grille)
-    {
-        int[] validPositions = new int[7];
-        for (int i=0; i<7; i++)
-        {
-            if (Grille.checkGraviter(i) != 6 && Grille.checkGraviter(i) >= 0)
-                validPositions[i] = 1;
-            else
-                validPositions[i] = 0;
-        }
-        return validPositions;
-    }
-
-    public int minimaxIT1(int player, P4 Grille)
-    {
-        int[] score = new int[7];
-        int col = -1;
-        int min = 0;
-        for(int i = 0;i<7;i++)
-        {
-            P4 Grille2 = new P4(Grille.getMat());
-            if(!Grille2.colonneFull(i))
-            {
-                Grille2.setMatValeur(i,player);
-                //System.out.println(Grille2.toString());
-                score[i] = -evaluationV2(player,i,Grille2);
-                System.out.println("score " + score[i]);
-                if(score[i] < min) {
-                    min = score[i];
-                    col = i;
-                }
-            }
-        }
-        return col;
-    }
-    //V1
+    /**
+     * Evaluation V1
+     * @brief Evaluate the grid
+     * @param player
+     * @param column
+     * @param Grille
+     * @return
+     */
     public int evaluation(int player, int column, P4 Grille) {
         int eval = 0;
         int line = 0;
-        if (Grille.checkGraviter(column) >= 0) {
-            line = Grille.checkGraviter(column)+1;
+        if (Grille.gravityCheck(column) >= 0) {
+            line = Grille.gravityCheck(column)+1;
         }
 
         int[] tab = {1,2,3,4,3,2,1};
@@ -251,10 +208,10 @@ public class IAminimax {
             player2 =1;
         }
 
-        if (Grille.JoueurGagnant(player)[0] == 1) {
+        if (Grille.playerWin(player)[0] == 1) {
             eval = 1000;
         }
-        if (Grille.JoueurGagnant(player2)[0] == 1) {
+        if (Grille.playerWin(player2)[0] == 1) {
             eval = -1000;
         }
         //System.out.println("colonne eval = " + column);
@@ -333,23 +290,31 @@ public class IAminimax {
         return eval;
     }
 
+    /**
+     * Evaluation V2
+     * @brief Evaluate a grid
+     * @param player
+     * @param column
+     * @param Grille
+     * @return
+     */
     public int evaluationV2(int player, int column, P4 Grille) {
         int eval = 0;
         int line = 0;
 
-        if (Grille.checkGraviter(column) >= 0) {
-            line = Grille.checkGraviter(column) + 1;
+        if (Grille.gravityCheck(column) >= 0) {
+            line = Grille.gravityCheck(column) + 1;
         }
 
         int[] tab = {1, 2, 3, 4, 3, 2, 1};
 
         int player2 = (player == 1) ? 2 : 1;
 
-        if (Grille.JoueurGagnant(player)[0] == 1) {
+        if (Grille.playerWin(player)[0] == 1) {
             eval = 1000;
         }
 
-        if (Grille.JoueurGagnant(player2)[0] == 1) {
+        if (Grille.playerWin(player2)[0] == 1) {
             eval = -1000;
         }
 
@@ -451,7 +416,16 @@ public class IAminimax {
     }
 
 
-    public int jouerV2(int player, int depth, P4 Grille)
+    /**
+     * Play V2
+     * @brief Play with V2 Evaluation
+     * @param player
+     * @param depth
+     * @param Grille
+     * @return
+     */
+
+    public int playV2(int player, int depth, P4 Grille)
     {
         long startTime = System.currentTimeMillis();
 
@@ -459,12 +433,12 @@ public class IAminimax {
         int[] eval = new int[7];
         int columnToPlay = 0;
         for (int i=0; i<7; i++) {
-            if (!Grille.colonneFull(i)){
+            if (!Grille.columnFull(i)){
 
                 eval[i] = minimaxAlphaBetaV2(player,i,-INFINITY, INFINITY,depth, true,Grille);
                 //eval[i] = minimax(player,i,6, true,Grille);
 
-                if(Grille.isJoueurGagnantWithThisToken(i,player))
+                if(Grille.isPlayerWinWithThisToken(i,player))
                 {
                     eval[i] = -1000000;
                 }
@@ -511,7 +485,14 @@ public class IAminimax {
         return columnToPlay;
     }
 
-    public int jouerV1(int player, int depth, P4 Grille)
+    /**
+     *
+     * @param player
+     * @param depth
+     * @param Grille
+     * @return
+     */
+    public int playV1(int player, int depth, P4 Grille)
     {
         long startTime = System.currentTimeMillis();
 
@@ -519,12 +500,12 @@ public class IAminimax {
         int[] eval = new int[7];
         int columnToPlay = 0;
         for (int i=0; i<7; i++) {
-            if (!Grille.colonneFull(i)){
+            if (!Grille.columnFull(i)){
 
                 eval[i] = minimaxAlphaBetaV1(player,i,-INFINITY, INFINITY,depth, true,Grille);
                 //eval[i] = minimax(player,i,6, true,Grille);
 
-                if(Grille.isJoueurGagnantWithThisToken(i,player))
+                if(Grille.isPlayerWinWithThisToken(i,player))
                 {
                     eval[i] = -1000000;
                 }

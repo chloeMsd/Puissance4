@@ -1,4 +1,3 @@
-import org.junit.Before;
 import org.junit.Test;
 import com.projetpuissance4.models.*;
 
@@ -10,52 +9,52 @@ public class TestGrille {
     @Test
     public void testJ1GagnantLigne() {
         P4 Grille = new P4();
-        Grille.setMatValeur(3,1);
-        Grille.setMatValeur(2,1);
-        Grille.setMatValeur(1,1);
-        Grille.setMatValeur(4,1);
-        assertEquals(true, Grille.JoueurGagnant(1));
+        Grille.setMatValue(3,1);
+        Grille.setMatValue(2,1);
+        Grille.setMatValue(1,1);
+        Grille.setMatValue(4,1);
+        assertEquals(true, Grille.playerWin(1));
     }
 
     @Test
     public void testJ1GagnantColonne() {
         P4 Grille = new P4();
-        Grille.setMatValeur(3,1);
-        Grille.setMatValeur(3,1);
-        Grille.setMatValeur(3,1);
-        Grille.setMatValeur(3,1);
-        assertEquals(true, Grille.JoueurGagnant(1));
+        Grille.setMatValue(3,1);
+        Grille.setMatValue(3,1);
+        Grille.setMatValue(3,1);
+        Grille.setMatValue(3,1);
+        assertEquals(true, Grille.playerWin(1));
     }
 
     @Test
     public void testJ1GagnantDiagDroite() {
         P4 Grille = new P4();
-        Grille.setMatValeur(0,1);
-        Grille.setMatValeur(1,2);
-        Grille.setMatValeur(2,2);
-        Grille.setMatValeur(3,2);
-        Grille.setMatValeur(1,1);
-        Grille.setMatValeur(2,2);
-        Grille.setMatValeur(3,2);
-        Grille.setMatValeur(2,1);
-        Grille.setMatValeur(3,2);
-        Grille.setMatValeur(3,1);
-        assertEquals(true, Grille.JoueurGagnant(1));
+        Grille.setMatValue(0,1);
+        Grille.setMatValue(1,2);
+        Grille.setMatValue(2,2);
+        Grille.setMatValue(3,2);
+        Grille.setMatValue(1,1);
+        Grille.setMatValue(2,2);
+        Grille.setMatValue(3,2);
+        Grille.setMatValue(2,1);
+        Grille.setMatValue(3,2);
+        Grille.setMatValue(3,1);
+        assertEquals(true, Grille.playerWin(1));
     }
     @Test
     public void testJ1GagnantDiagGauche() {
         P4 Grille = new P4();
-        Grille.setMatValeur(3,1);
-        Grille.setMatValeur(2,2);
-        Grille.setMatValeur(1,2);
-        Grille.setMatValeur(0,2);
-        Grille.setMatValeur(2,1);
-        Grille.setMatValeur(1,2);
-        Grille.setMatValeur(0,2);
-        Grille.setMatValeur(1,1);
-        Grille.setMatValeur(0,2);
-        Grille.setMatValeur(0,1);
+        Grille.setMatValue(3,1);
+        Grille.setMatValue(2,2);
+        Grille.setMatValue(1,2);
+        Grille.setMatValue(0,2);
+        Grille.setMatValue(2,1);
+        Grille.setMatValue(1,2);
+        Grille.setMatValue(0,2);
+        Grille.setMatValue(1,1);
+        Grille.setMatValue(0,2);
+        Grille.setMatValue(0,1);
         System.out.println(Grille.toString());
-        assertEquals(true, Grille.JoueurGagnant(1));
+        assertEquals(true, Grille.playerWin(1));
     }
 }
