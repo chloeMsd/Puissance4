@@ -10,12 +10,21 @@ import java.util.Optional;
 
 import static com.projetpuissance4.models.Options.*;
 
+/**
+ * Class for the window for options
+ */
 public class OptionView {
     private ChoiceDialog<String> dialog;
     private List<String> options;
     public OptionView() {
         dialog = null;
     }
+
+    /**
+     * Game Options
+     * @brief Window to choose options
+     * @return
+     */
     public String GameOptions()
     {
         options = new ArrayList<>();

@@ -14,7 +14,7 @@ public class IARandom {
      */
     public int Play()
     {
-        int nb = (int) (0 + (Math.random() * (6)));
-        return nb;
+        int columnToPlay = (int) (0 + (Math.random() * (6)));
+        return columnToPlay;
     }
 }

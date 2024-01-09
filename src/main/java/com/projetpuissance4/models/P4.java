@@ -2,31 +2,31 @@ package com.projetpuissance4.models;
 
 public class P4 {
 
-    private static final int LIGNE = 6;
-    private static final int COLONNE = 7;
-    private int [][] mat = new int[LIGNE][COLONNE];
+    private static final int LINE = 6;
+    private static final int COLUMN = 7;
+    private int [][] matrix = new int[LINE][COLUMN];
 
     /**
      * Constructor
      */
     public P4() {
-        int [][] mat = new int[LIGNE][COLONNE];
-        for(int i = 0; i<LIGNE;i++)
+        int [][] mat = new int[LINE][COLUMN];
+        for(int i = 0; i< LINE; i++)
         {
-            for(int j = 0; j<COLONNE;j++)
+            for(int j = 0; j< COLUMN; j++)
             {
                 mat[i][j] = 0;
             }
         }
-        this.mat = mat;
+        this.matrix = mat;
     }
     public P4(int[][] mat) {
 
-        for(int i = 0; i<LIGNE;i++)
+        for(int i = 0; i< LINE; i++)
         {
-            for(int j = 0; j<COLONNE;j++)
+            for(int j = 0; j< COLUMN; j++)
             {
-                this.mat[i][j] = mat[i][j];
+                this.matrix[i][j] = mat[i][j];
             }
         }
     }
@@ -34,10 +34,10 @@ public class P4 {
     /**
      * SetMat
      * @brief Setter Mat
-     * @param mat
+     * @param matrix
      */
-    public void setMat(int[][] mat) {
-        this.mat = mat;
+    public void setMatrix(int[][] matrix) {
+        this.matrix = matrix;
     }
 
     /**
@@ -47,10 +47,10 @@ public class P4 {
      * @param Val
      */
     public void setMatValue(int Col, int Val) {
-        int nvLig = gravityCheck(Col);
-        if(nvLig < LIGNE && nvLig >= 0)
+        int newLine = gravityCheck(Col);
+        if(newLine < LINE && newLine >= 0)
         {
-            this.mat[nvLig][Col] = Val;
+            this.matrix[newLine][Col] = Val;
         }
     }
 
@@ -58,8 +58,8 @@ public class P4 {
      * Getter Matrix
      * @return the Matrix
      */
-    public int[][] getMat() {
-        return mat;
+    public int[][] getMatrix() {
+        return matrix;
     }
 
 
@@ -72,7 +72,7 @@ public class P4 {
      */
     public int getPoint(int line, int column)
     {
-        return mat[line][column];
+        return matrix[line][column];
     }
 
     /**
@@ -83,15 +83,15 @@ public class P4 {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[i].length; j++) {
-                builder.append(mat[i][j]);
-                if (j < mat[i].length - 1) {
-                    builder.append("\t"); // Ajoutez une tabulation entre les éléments de la même ligne
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                builder.append(matrix[i][j]);
+                if (j < matrix[i].length - 1) {
+                    builder.append("\t");
                 }
             }
-            if (i < mat.length - 1) {
-                builder.append("\n"); // Ajoutez un saut de ligne entre les lignes de la matrice
+            if (i < matrix.length - 1) {
+                builder.append("\n");
             }
         }
         return builder.toString();
@@ -100,15 +100,15 @@ public class P4 {
     /**
      * Column Full
      * @brief check if column full
-     * @param colonne
+     * @param column
      * @return
      */
-    public boolean columnFull(int colonne)
+    public boolean columnFull(int column)
     {
-        int ligne = 0;
-        for(int i = 0 ; i< LIGNE; i++)
+        int line = 0;
+        for(int i = 0; i< LINE; i++)
         {
-            if(mat[i][colonne] == 0)
+            if(matrix[i][column] == 0)
             {
                 return false;
             }
@@ -119,20 +119,20 @@ public class P4 {
     /**
      * Gravity Check
      * @brief Check the gravity
-     * @param colonne
+     * @param column
      * @return the line
      */
-    public int gravityCheck(int colonne)
+    public int gravityCheck(int column)
     {
-        if(colonne >= 0 && !columnFull(colonne))
+        if(column >= 0 && !columnFull(column))
         {
-            int ligne = LIGNE - 1;
+            int line = LINE - 1;
 
-            while(mat[ligne][colonne] != 0)
+            while(matrix[line][column] != 0)
             {
-                ligne--;
+                line--;
             }
-            return ligne;
+            return line;
         }
         return -10;
     }
@@ -145,36 +145,36 @@ public class P4 {
      * @return
      */
     public boolean isPlayerWinWithThisToken(int column,int player) {
-        P4 GrilleTmp = new P4(this.mat);
-        GrilleTmp.setMatValue(column, player);
-        for (int row = 0; row < LIGNE; row++) {
-            for (int col = 0; col < COLONNE; col++) {
-                if (col + 3 < COLONNE &&
-                        GrilleTmp.getMat()[row][col] == player &&
-                        GrilleTmp.getMat()[row][col + 1] == player &&
-                        GrilleTmp.getMat()[row][col + 2] == player &&
-                        GrilleTmp.getMat()[row][col + 3] == player) {
+        P4 tmpGrid = new P4(this.matrix);
+        tmpGrid.setMatValue(column, player);
+        for (int row = 0; row < LINE; row++) {
+            for (int col = 0; col < COLUMN; col++) {
+                if (col + 3 < COLUMN &&
+                        tmpGrid.getMatrix()[row][col] == player &&
+                        tmpGrid.getMatrix()[row][col + 1] == player &&
+                        tmpGrid.getMatrix()[row][col + 2] == player &&
+                        tmpGrid.getMatrix()[row][col + 3] == player) {
                     return true;
                 }
-                if (row + 3 < LIGNE &&
-                        GrilleTmp.getMat()[row][col] == player &&
-                        GrilleTmp.getMat()[row + 1][col] == player &&
-                        GrilleTmp.getMat()[row + 2][col] == player &&
-                        GrilleTmp.getMat()[row + 3][col] == player) {
+                if (row + 3 < LINE &&
+                        tmpGrid.getMatrix()[row][col] == player &&
+                        tmpGrid.getMatrix()[row + 1][col] == player &&
+                        tmpGrid.getMatrix()[row + 2][col] == player &&
+                        tmpGrid.getMatrix()[row + 3][col] == player) {
                     return true;
                 }
-                if (row + 3 < LIGNE && col + 3 < COLONNE &&
-                        GrilleTmp.getMat()[row][col] == player &&
-                        GrilleTmp.getMat()[row + 1][col + 1] == player &&
-                        GrilleTmp.getMat()[row + 2][col + 2] == player &&
-                        GrilleTmp.getMat()[row + 3][col + 3] == player) {
+                if (row + 3 < LINE && col + 3 < COLUMN &&
+                        tmpGrid.getMatrix()[row][col] == player &&
+                        tmpGrid.getMatrix()[row + 1][col + 1] == player &&
+                        tmpGrid.getMatrix()[row + 2][col + 2] == player &&
+                        tmpGrid.getMatrix()[row + 3][col + 3] == player) {
                     return true;
                 }
-                if (row - 3 >= 0 && col + 3 < COLONNE &&
-                        GrilleTmp.getMat()[row][col] == player &&
-                        GrilleTmp.getMat()[row - 1][col + 1] == player &&
-                        GrilleTmp.getMat()[row - 2][col + 2] == player &&
-                        GrilleTmp.getMat()[row - 3][col + 3] == player) {
+                if (row - 3 >= 0 && col + 3 < COLUMN &&
+                        tmpGrid.getMatrix()[row][col] == player &&
+                        tmpGrid.getMatrix()[row - 1][col + 1] == player &&
+                        tmpGrid.getMatrix()[row - 2][col + 2] == player &&
+                        tmpGrid.getMatrix()[row - 3][col + 3] == player) {
                     return true;
                 }
             }
@@ -189,62 +189,61 @@ public class P4 {
      * @return
      */
     public int[] playerWin(int player) {
-        int[] retour = new int[9];
-        retour[0] = 0;
-        // Vérifiez les directions horizontales, verticales et diagonales
-        for (int row = 0; row < LIGNE; row++) {
-            for (int col = 0; col < COLONNE; col++) {
+        int[] back = new int[9];
+        back[0] = 0;
+        for (int row = 0; row < LINE; row++) {
+            for (int col = 0; col < COLUMN; col++) {
                 // Vérifiez l'horizontale (gauche à droite)
-                if (col + 3 < COLONNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row][col + 1] == player &&
-                        this.mat[row][col + 2] == player &&
-                        this.mat[row][col + 3] == player) {
-                    retour[0] = 1;
+                if (col + 3 < COLUMN &&
+                        this.matrix[row][col] == player &&
+                        this.matrix[row][col + 1] == player &&
+                        this.matrix[row][col + 2] == player &&
+                        this.matrix[row][col + 3] == player) {
+                    back[0] = 1;
                     for (int i=1; i<5; i++){
-                        retour[2*i -1] = row;
-                        retour[2*i] = col + i - 1;
+                        back[2*i -1] = row;
+                        back[2*i] = col + i - 1;
                     }
                 }
                 // Vérifiez la verticale (bas vers le haut)
-                if (row + 3 < LIGNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row + 1][col] == player &&
-                        this.mat[row + 2][col] == player &&
-                        this.mat[row + 3][col] == player) {
-                    retour[0] = 1;
+                if (row + 3 < LINE &&
+                        this.matrix[row][col] == player &&
+                        this.matrix[row + 1][col] == player &&
+                        this.matrix[row + 2][col] == player &&
+                        this.matrix[row + 3][col] == player) {
+                    back[0] = 1;
                     for (int i=1; i<5; i++){
-                        retour[2*i -1] = row + i - 1;
-                        retour[2*i] = col;
+                        back[2*i -1] = row + i - 1;
+                        back[2*i] = col;
                     }
                 }
                 // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
-                if (row + 3 < LIGNE && col + 3 < COLONNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row + 1][col + 1] == player &&
-                        this.mat[row + 2][col + 2] == player &&
-                        this.mat[row + 3][col + 3] == player) {
-                    retour[0] = 1;
+                if (row + 3 < LINE && col + 3 < COLUMN &&
+                        this.matrix[row][col] == player &&
+                        this.matrix[row + 1][col + 1] == player &&
+                        this.matrix[row + 2][col + 2] == player &&
+                        this.matrix[row + 3][col + 3] == player) {
+                    back[0] = 1;
                     for (int i=1; i<5; i++){
-                        retour[2*i -1] = row + i - 1;
-                        retour[2*i] = col + i - 1;
+                        back[2*i -1] = row + i - 1;
+                        back[2*i] = col + i - 1;
                     }
                 }
                 // Vérifiez la diagonale descendante (haut gauche vers bas droite)
-                if (row - 3 >= 0 && col + 3 < COLONNE &&
-                        this.mat[row][col] == player &&
-                        this.mat[row - 1][col + 1] == player &&
-                        this.mat[row - 2][col + 2] == player &&
-                        this.mat[row - 3][col + 3] == player) {
-                    retour[0] = 1;
+                if (row - 3 >= 0 && col + 3 < COLUMN &&
+                        this.matrix[row][col] == player &&
+                        this.matrix[row - 1][col + 1] == player &&
+                        this.matrix[row - 2][col + 2] == player &&
+                        this.matrix[row - 3][col + 3] == player) {
+                    back[0] = 1;
                     for (int i=1; i<5; i++){
-                        retour[2*i -1] = row - i + 1;
-                        retour[2*i] = col + i - 1;
+                        back[2*i -1] = row - i + 1;
+                        back[2*i] = col + i - 1;
                     }
                 }
             }
         }
-        return retour;
+        return back;
     }
 
     /**
@@ -270,11 +269,11 @@ public class P4 {
      */
     public void matrixZero()
     {
-        for(int i = 0; i<LIGNE;i++)
+        for(int i = 0; i< LINE; i++)
         {
-            for(int j = 0; j<COLONNE;j++)
+            for(int j = 0; j< COLUMN; j++)
             {
-                mat[i][j] = 0;
+                matrix[i][j] = 0;
             }
         }
     }
@@ -288,8 +287,8 @@ public class P4 {
     public static long gridToLong(int[][] grid) {
         long result = 0L;
 
-        for (int row = 0; row < LIGNE; row++) {
-            for (int col = 0; col < COLONNE; col++) {
+        for (int row = 0; row < LINE; row++) {
+            for (int col = 0; col < COLUMN; col++) {
                 result <<= 2;
                 result |= grid[row][col];
             }
