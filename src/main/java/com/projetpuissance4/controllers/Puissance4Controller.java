@@ -309,7 +309,7 @@ public class Puissance4Controller {
         if (((Grille.playerWin(1))[0])==0)
         {
             System.out.println("Grille av minimax \n"+Grille.toString());
-            int column = IAminimax.playV2(2,6,Grille);
+            int column = IAminimax.playV2(2,9,Grille);
             AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
             int ligne = 6 - Grille.gravityCheck(column);
             Halo.setX(152 + (column)*100);
