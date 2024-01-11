@@ -1,5 +1,6 @@
 package com.projetpuissance4.controllers;
 
+import com.projetpuissance4.models.IAExploration;
 import com.projetpuissance4.models.IAminimax;
 import com.projetpuissance4.models.IARandom;
 import com.projetpuissance4.models.P4;
@@ -44,6 +45,7 @@ public class MainController {
     {
         IAminimax IAminimax = new IAminimax();
         IARandom IAnv0 = new IARandom();
+        IAExploration IA = new IAExploration();
 
         Random rand = new Random();
         int i = 1;
@@ -54,13 +56,13 @@ public class MainController {
             if(i%2 == 0)
             {
                 joueur = 2;
-                column = IAminimax.playV2(joueur, 2, p);
+                column = IA.play(p);
                 p.setMatValue(column,2);
                 System.out.println(p.toString());
             }
             else {
                 joueur = 1;
-                column = IAminimax.playV2(joueur, 4, p);
+                column = IAminimax.playV2(1,7,p);
                 p.setMatValue(column,1);
                 System.out.println(p.toString());
             }
