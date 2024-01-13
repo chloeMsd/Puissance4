@@ -1,7 +1,7 @@
 package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.models.IAExploration;
-import com.projetpuissance4.models.IAminimax;
+import com.projetpuissance4.models.IAMinimax;
 import com.projetpuissance4.models.IARandom;
 import com.projetpuissance4.models.P4;
 
@@ -43,7 +43,7 @@ public class MainController {
 
     public int Jouer(P4 p)
     {
-        IAminimax IAminimax = new IAminimax();
+        IAMinimax IAminimax = new IAMinimax();
         IARandom IAnv0 = new IARandom();
         IAExploration IA = new IAExploration();
 
@@ -56,15 +56,15 @@ public class MainController {
             if(i%2 == 0)
             {
                 joueur = 2;
-                column = IA.play(p);
+                column = IAnv0.Play();
                 p.setMatValue(column,joueur);
-                System.out.println(p.toString());
+                //System.out.println(p.toString());
             }
             else {
                 joueur = 1;
-                column = IAminimax.playV2(joueur,7,p);
+                column = IA.play(p);
                 p.setMatValue(column,1);
-                System.out.println(p.toString());
+                //System.out.println(p.toString());
             }
             i++;
         }
@@ -94,7 +94,7 @@ public class MainController {
                 J2++;
             else
                 egalite++;
-
+            System.out.println(p.toString());
             p.matrixZero();
         }
         System.out.println("Sur " + nombre + " parties, J1 gagne " + J1 + " fois, J2 gagne " + J2 + " fois, egalité " + egalite + " fois !");
@@ -103,7 +103,7 @@ public class MainController {
     {
         MainController control = new MainController();
         P4 p = new P4();
-        control.plusieursGrilles(10, p);
+        control.plusieursGrilles(50, p);
         /*TCPClientController tcp = new TCPClientController();
         tcp.setClient();*/
     }

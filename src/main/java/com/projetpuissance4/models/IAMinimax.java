@@ -8,11 +8,11 @@ import static java.lang.Math.min;
 /**
  * IAminimax
  */
-public class IAminimax {
+public class IAMinimax {
     private static final int INFINITY = 9999;
     private static final int LINE = 6;
     private static final int COLUMN = 7;
-    public IAminimax() {
+    public IAMinimax() {
 
     }
 
@@ -331,7 +331,7 @@ public class IAminimax {
         long endTime = System.currentTimeMillis();
 
         long executionTime = endTime - startTime;
-        System.out.println("                    TEMPS D'EXECUTION DE L'ALGORITHME : " + executionTime + " millisecondes");
+        //System.out.println("                    TEMPS D'EXECUTION DE L'ALGORITHME : " + executionTime + " millisecondes");
 
         return columnToPlay;
     }
@@ -369,7 +369,7 @@ public class IAminimax {
             }
         }
         for (int i=0; i<7; i++) {
-            System.out.println("eval " + i +" : " + eval[i]);
+            //System.out.println("eval " + i +" : " + eval[i]);
         }
 
 
@@ -392,7 +392,7 @@ public class IAminimax {
         long endTime = System.currentTimeMillis();
 
         long executionTime = endTime - startTime;
-        System.out.println("                    TEMPS D'EXECUTION DE L'ALGORITHME : " + executionTime + " millisecondes");
+        //System.out.println("                    TEMPS D'EXECUTION DE L'ALGORITHME : " + executionTime + " millisecondes");
 
         return columnToPlay;
     }

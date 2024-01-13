@@ -1,6 +1,4 @@
 import com.projetpuissance4.models.IARandom;
-import com.projetpuissance4.models.IAminimax;
-import com.projetpuissance4.models.P4;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

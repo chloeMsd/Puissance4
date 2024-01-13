@@ -1,7 +1,8 @@
 package com.projetpuissance4.controllers;
 
 import com.projetpuissance4.Puissance4;
-import com.projetpuissance4.models.IAminimax;
+import com.projetpuissance4.models.IAExploration;
+import com.projetpuissance4.models.IAMinimax;
 import com.projetpuissance4.models.IARandom;
 import com.projetpuissance4.models.P4;
 import com.projetpuissance4.views.OptionView;
@@ -50,8 +51,10 @@ public class Puissance4Controller {
     private Polygon triangle5;
     private Polygon triangle6;
     private Polygon triangle7 ;
-    private IARandom IA = new IARandom();
-    private IAminimax IAminimax = new IAminimax();
+    private IARandom IArandom = new IARandom();
+    private IAMinimax IAminimax = new IAMinimax();
+    private IAExploration IAExploration = new IAExploration();
+
     private static Random rand = new Random();
     private static int whoPlay = rand.nextInt();
     private int compteurToken =0;
@@ -121,7 +124,29 @@ public class Puissance4Controller {
             else {
                 AfficherPseudoJoueur1(SaisirPseudo(1));
                 AfficherPseudoJoueur2("IA intermédiaire : commence");
-                IAFirst();
+                IAFirstExploration();
+            }
+
+            invisibleButtonColumn1.setOnAction(event -> ButtonPlayIAexploration(1));
+            invisibleButtonColumn2.setOnAction(event -> ButtonPlayIAexploration(2));
+            invisibleButtonColumn3.setOnAction(event -> ButtonPlayIAexploration(3));
+            invisibleButtonColumn4.setOnAction(event -> ButtonPlayIAexploration(4));
+            invisibleButtonColumn5.setOnAction(event -> ButtonPlayIAexploration(5));
+            invisibleButtonColumn6.setOnAction(event -> ButtonPlayIAexploration(6));
+            invisibleButtonColumn7.setOnAction(event -> ButtonPlayIAexploration(7));
+
+        }
+        else if (gameOption.equals("Jeu contre une IA experte")) {
+
+            if(whoPlay % 2 == 0)
+            {
+                AfficherPseudoJoueur1(SaisirPseudo(1) + " commence");
+                AfficherPseudoJoueur2("IA experte");
+            }
+            else {
+                AfficherPseudoJoueur1(SaisirPseudo(1));
+                AfficherPseudoJoueur2("IA experte : commence");
+                IAFirstMinimax();
             }
 
             invisibleButtonColumn1.setOnAction(event -> ButtonPlayIAminimax(1));
@@ -131,16 +156,8 @@ public class Puissance4Controller {
             invisibleButtonColumn5.setOnAction(event -> ButtonPlayIAminimax(5));
             invisibleButtonColumn6.setOnAction(event -> ButtonPlayIAminimax(6));
             invisibleButtonColumn7.setOnAction(event -> ButtonPlayIAminimax(7));
-            /*while ((Grille.JoueurGagnant(1)[0]==0 && Grille.JoueurGagnant(2)[0]==0) || Grille.TestEgalite()== false )
-            {
-                MinimaxVSminimax();
-            }*/
+
         }
-        else if (gameOption.equals("Jeu contre une IA experte")) {
-            AfficherPseudoJoueur1(SaisirPseudo(1));
-            AfficherPseudoJoueur2("IA experte");
-        }
-        System.out.println(Grille.gravityCheck(1));
     }
 
     public void ButtonPlay(int iButton)
@@ -213,7 +230,7 @@ public class Puissance4Controller {
                 Halo.setVisible(true);
                 Grille.setMatValue(iButton-1,1);
 
-                int column = IA.Play();
+                int column = IArandom.Play();
                 AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
                 ligne = 6 - Grille.gravityCheck(column);
                 Halo.setX(152 + (column)*100);
@@ -268,7 +285,7 @@ public class Puissance4Controller {
                 Halo.setVisible(true);
                 Grille.setMatValue(iButton-1,1);
 
-                IAFirst();
+                IAFirstMinimax();
 
                 whoPlay++;
                 System.out.println(Grille.toString());
@@ -304,12 +321,61 @@ public class Puissance4Controller {
         }
     }
 
-    public void IAFirst()
+    public void ButtonPlayIAexploration(int iButton)
+    {
+        if(Play)
+        {
+            if(Grille.gravityCheck(iButton -1) >= 0 )
+            {
+                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
+                int ligne = 6 - Grille.gravityCheck(iButton-1);
+                Halo.setX(152 + (iButton - 1)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValue(iButton-1,1);
+
+                IAFirstExploration();
+
+                whoPlay++;
+                System.out.println(Grille.toString());
+                int[] Joueur1 = Grille.playerWin(1);
+                int[] Joueur2 = Grille.playerWin(2);
+                if (Joueur2[0] == 1)
+                {
+                    PrintWonTokens(Joueur2);
+                    PrintWon(2);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Joueur1[0] == 1)
+                {
+                    PrintWonTokens(Joueur1);
+                    PrintWon(1);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Grille.checkDraw())
+                {
+                    PrintEqual();
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+            }
+        }
+    }
+
+    public void IAFirstMinimax()
     {
         if (((Grille.playerWin(1))[0])==0)
         {
             System.out.println("Grille av minimax \n"+Grille.toString());
-            int column = IAminimax.playV2(2,9,Grille);
+            int column = IAminimax.playV2(2,7,Grille);
             AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
             int ligne = 6 - Grille.gravityCheck(column);
             Halo.setX(152 + (column)*100);
@@ -318,6 +384,22 @@ public class Puissance4Controller {
             Grille.setMatValue(column,2);
         }
     }
+
+    public void IAFirstExploration()
+    {
+        if (((Grille.playerWin(1))[0])==0)
+        {
+            System.out.println("Grille av exploration \n"+Grille.toString());
+            int column = IAExploration.play(Grille);
+            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
+            int ligne = 6 - Grille.gravityCheck(column);
+            Halo.setX(152 + (column)*100);
+            Halo.setY(594 - (ligne - 1)*100);
+            Halo.setVisible(true);
+            Grille.setMatValue(column,2);
+        }
+    }
+
     public void setOpacityTriangle(double opacity)
     {
         triangle1.setOpacity(opacity);
