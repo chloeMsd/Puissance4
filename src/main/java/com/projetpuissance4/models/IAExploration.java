@@ -70,17 +70,17 @@ public class IAExploration {
             Grille2.setMatValue(j,2);
             P4 Grille3 = new P4(Grille.getMatrix());
             Grille3.setMatValue(j,1);
-            if(Grille3.playerWin(2)[0] == 1)
+            if(Grille3.playerWin(1)[0] == 1)
             {
                 return j;
             }
-            else if (Grille2.playerWin(1)[0] == 1)
+            else if (Grille2.playerWin(2)[0] == 1)
             {
                 return j;
             }
             else{
                 HM.clear();
-                score[j] = Exploration(Grille2,0);
+                score[j] = Exploration(Grille2,0) + 1;
 
                 System.out.println("score at " + j + " : " + score[j]);
                 if(score[j]<min)

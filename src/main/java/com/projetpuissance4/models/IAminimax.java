@@ -85,8 +85,6 @@ public class IAminimax {
             }
             return minEval;
         }
-
-
     }
 
     /**

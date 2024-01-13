@@ -48,7 +48,7 @@ public class MainController {
         IAExploration IA = new IAExploration();
 
         Random rand = new Random();
-        int i = 1;
+        int i = rand.nextInt();
         while((p.playerWin(1))[0] == 0 && (p.playerWin(2))[0] == 0 && p.checkDraw()==false )
         {
             int joueur;
@@ -57,12 +57,12 @@ public class MainController {
             {
                 joueur = 2;
                 column = IA.play(p);
-                p.setMatValue(column,2);
+                p.setMatValue(column,joueur);
                 System.out.println(p.toString());
             }
             else {
                 joueur = 1;
-                column = IAminimax.playV2(1,7,p);
+                column = IAminimax.playV2(joueur,7,p);
                 p.setMatValue(column,1);
                 System.out.println(p.toString());
             }
@@ -103,7 +103,7 @@ public class MainController {
     {
         MainController control = new MainController();
         P4 p = new P4();
-        control.plusieursGrilles(1, p);
+        control.plusieursGrilles(10, p);
         /*TCPClientController tcp = new TCPClientController();
         tcp.setClient();*/
     }
