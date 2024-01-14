@@ -38,7 +38,7 @@ public class Puissance4Controller {
     private ImageView Halo;
     @FXML
     private Button replay;
-    private Grid Grille = new Grid();
+    private Grid grid = new Grid();
     private boolean Play = true;
     private boolean isRunning = true;
     private Button invisibleButtonColumn1;
@@ -233,31 +233,31 @@ public class Puissance4Controller {
         if(Play)
         {
             //if the column is not full
-            if(Grille.gravityCheck(iButton-1) >= 0)
+            if(grid.gravityCheck(iButton-1) >= 0)
             {
                 if(whoPlay % 2 == 0){
                     //Create red token for player 1
-                    AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
-                    int ligne = 6 - Grille.gravityCheck(iButton-1);
+                    AddRedToken(CreationRedToken(100,100),iButton,6- grid.gravityCheck(iButton-1));
+                    int ligne = 6 - grid.gravityCheck(iButton-1);
                     Halo.setX(152 + (iButton - 1)*100);
                     Halo.setY(594 - (ligne - 1)*100);
                     Halo.setVisible(true);
-                    Grille.setMatValue(iButton-1,1);
+                    grid.setMatValue(iButton-1,1);
                 }
                 else {
                     //Create red token for player 2
-                    AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
-                    int ligne = 6 - Grille.gravityCheck(iButton-1);
+                    AddYellowToken(CreationYellowToken(100,100),iButton,6- grid.gravityCheck(iButton-1));
+                    int ligne = 6 - grid.gravityCheck(iButton-1);
                     Halo.setX(152 + (iButton - 1)*100);
                     Halo.setY(594 - (ligne - 1)*100);
                     Halo.setVisible(true);
-                    Grille.setMatValue(iButton-1,2);
+                    grid.setMatValue(iButton-1,2);
                 }
                 whoPlay++;
                 //check if there is a winner
                 //if it's the case we glow the four winner token
-                int[] Joueur1 = Grille.playerWin(1);
-                int[] Joueur2 = Grille.playerWin(2);
+                int[] Joueur1 = grid.playerWin(1);
+                int[] Joueur2 = grid.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -277,7 +277,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.checkDraw())
+                else if (grid.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -297,29 +297,29 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            if(Grille.gravityCheck(iButton -1) >= 0)
+            if(grid.gravityCheck(iButton -1) >= 0)
             {
                 //Red token for real player
-                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
-                int ligne = 6 - Grille.gravityCheck(iButton-1);
+                AddRedToken(CreationRedToken(100,100),iButton,6- grid.gravityCheck(iButton-1));
+                int ligne = 6 - grid.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValue(iButton-1,1);
+                grid.setMatValue(iButton-1,1);
 
                 //then the ia play (Yellow token)
                 int column = IArandom.Play();
-                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
-                ligne = 6 - Grille.gravityCheck(column);
+                AddYellowToken(CreationYellowToken(100,100),column+1,6- grid.gravityCheck(column));
+                ligne = 6 - grid.gravityCheck(column);
                 Halo.setX(152 + (column)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValue(column,2);
+                grid.setMatValue(column,2);
 
                 whoPlay++;
                 //check for winner
-                int[] Joueur1 = Grille.playerWin(1);
-                int[] Joueur2 = Grille.playerWin(2);
+                int[] Joueur1 = grid.playerWin(1);
+                int[] Joueur2 = grid.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -338,7 +338,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.checkDraw())
+                else if (grid.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -358,23 +358,23 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            if(Grille.gravityCheck(iButton -1) >= 0 )
+            if(grid.gravityCheck(iButton -1) >= 0 )
             {
                 //Red token for real player
-                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
-                int ligne = 6 - Grille.gravityCheck(iButton-1);
+                AddRedToken(CreationRedToken(100,100),iButton,6- grid.gravityCheck(iButton-1));
+                int ligne = 6 - grid.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValue(iButton-1,1);
+                grid.setMatValue(iButton-1,1);
 
                 //method to play with the IA Minimax
                 IAFirstMinimax();
                 //then the ia play (Yellow token)
                 whoPlay++;
                 //check for winner
-                int[] Joueur1 = Grille.playerWin(1);
-                int[] Joueur2 = Grille.playerWin(2);
+                int[] Joueur1 = grid.playerWin(1);
+                int[] Joueur2 = grid.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -393,7 +393,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.checkDraw())
+                else if (grid.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -414,21 +414,21 @@ public class Puissance4Controller {
     {
         if(Play)
         {
-            if(Grille.gravityCheck(iButton -1) >= 0 )
+            if(grid.gravityCheck(iButton -1) >= 0 )
             {
-                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
-                int ligne = 6 - Grille.gravityCheck(iButton-1);
+                AddRedToken(CreationRedToken(100,100),iButton,6- grid.gravityCheck(iButton-1));
+                int ligne = 6 - grid.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValue(iButton-1,1);
+                grid.setMatValue(iButton-1,1);
 
                 IAFirstExploration();
 
                 whoPlay++;
-                System.out.println(Grille.toString());
-                int[] Joueur1 = Grille.playerWin(1);
-                int[] Joueur2 = Grille.playerWin(2);
+                System.out.println(grid.toString());
+                int[] Joueur1 = grid.playerWin(1);
+                int[] Joueur2 = grid.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -447,7 +447,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.checkDraw())
+                else if (grid.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -466,22 +466,22 @@ public class Puissance4Controller {
     public void ButtonPlayNetWork(int iButton) {
         if(Play)
         {
-            if(Grille.gravityCheck(iButton -1) >= 0 )
+            if(grid.gravityCheck(iButton -1) >= 0 )
             {
                 CommunicationFileController.writeToFile(String.valueOf(iButton-1),"comToClient.txt");
-                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
-                int ligne = 6 - Grille.gravityCheck(iButton-1);
+                AddRedToken(CreationRedToken(100,100),iButton,6- grid.gravityCheck(iButton-1));
+                int ligne = 6 - grid.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValue(iButton-1,1);
+                grid.setMatValue(iButton-1,1);
 
                 //NetWork();
 
                 whoPlay++;
-                System.out.println(Grille.toString());
-                int[] Joueur1 = Grille.playerWin(1);
-                int[] Joueur2 = Grille.playerWin(2);
+                System.out.println(grid.toString());
+                int[] Joueur1 = grid.playerWin(1);
+                int[] Joueur2 = grid.playerWin(2);
                 if (Joueur2[0] == 1)
                 {
                     PrintWonTokens(Joueur2);
@@ -500,7 +500,7 @@ public class Puissance4Controller {
                     replay.setVisible(true);
                     replay.setOnAction(event -> replay());
                 }
-                else if (Grille.checkDraw())
+                else if (grid.checkDraw())
                 {
                     PrintEqual();
                     Play = false;
@@ -518,51 +518,51 @@ public class Puissance4Controller {
     public void NetWork() {
         if(CommunicationFileController.doesFileExist("comToProcess.txt"))
         {
-            if (((Grille.playerWin(1))[0])==0)
+            if (((grid.playerWin(1))[0])==0)
             {
                 //we catch the column where the other player play
                 int column = Integer.parseInt(CommunicationFileController.readFromFile("comToProcess.txt"));
                 CommunicationFileController.deleteFile("comToProcess.txt");
                 //then we add a yellow token
-                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
-                int ligne = 6 - Grille.gravityCheck(column);
+                AddYellowToken(CreationYellowToken(100,100),column+1,6- grid.gravityCheck(column));
+                int ligne = 6 - grid.gravityCheck(column);
                 Halo.setX(152 + (column)*100);
                 Halo.setY(594 - (ligne - 1)*100);
                 Halo.setVisible(true);
-                Grille.setMatValue(column,2);
+                grid.setMatValue(column,2);
             }
         }
     }
     public void IAFirstMinimax()
     {
-        if (((Grille.playerWin(1))[0])==0)
+        if (((grid.playerWin(1))[0])==0)
         {
             //We call the IA Minimax to choose the column to play
-            int column = IAminimax.playV2(2,7,Grille);
+            int column = IAminimax.playV2(2,7, grid);
             //then we add the yellow token
-            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
-            int ligne = 6 - Grille.gravityCheck(column);
+            AddYellowToken(CreationYellowToken(100,100),column+1,6- grid.gravityCheck(column));
+            int ligne = 6 - grid.gravityCheck(column);
             Halo.setX(152 + (column)*100);
             Halo.setY(594 - (ligne - 1)*100);
             Halo.setVisible(true);
-            Grille.setMatValue(column,2);
+            grid.setMatValue(column,2);
         }
     }
 
 
     public void IAFirstExploration()
     {
-        if (((Grille.playerWin(1))[0])==0)
+        if (((grid.playerWin(1))[0])==0)
         {
             //We call the IA Exploration to choose the column to play
-            int column = IAExploration.play(Grille);
+            int column = IAExploration.play(grid);
             //then we add the yellow token
-            AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
-            int ligne = 6 - Grille.gravityCheck(column);
+            AddYellowToken(CreationYellowToken(100,100),column+1,6- grid.gravityCheck(column));
+            int ligne = 6 - grid.gravityCheck(column);
             Halo.setX(152 + (column)*100);
             Halo.setY(594 - (ligne - 1)*100);
             Halo.setVisible(true);
-            Grille.setMatValue(column,2);
+            grid.setMatValue(column,2);
         }
     }
 
@@ -834,7 +834,7 @@ public class Puissance4Controller {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Grille.matrixZero();
+        grid.matrixZero();
         Halo.setVisible(false);
         Play = true;
         replay.setVisible(false);

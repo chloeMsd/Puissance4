@@ -40,7 +40,7 @@ public class TCPClientP4 implements AutoCloseable {
      *
      * @param IP
      * @param port
-     * @throws IOException
+
      */
     public TCPClientP4(String IP, int port) {
         this.isConnectedToServer = false;
