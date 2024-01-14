@@ -3,6 +3,9 @@ package com.projetpuissance4.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * class for the ia of exploration
+ */
 public class IAExploration {
     private long nodeCount = 0;
     private int[] order = {3, 2, 4, 1, 5, 0, 6};
@@ -10,19 +13,22 @@ public class IAExploration {
 
     private int alpha = 999999999;
 
+
     public IAExploration() {
         this.nodeCount = 0;
     }
 
-    public void resetVar()
-    {
-        HM.clear();
-        nodeCount = 0;
-    }
-    public int Exploration(P4 P, int depht) {
+    /**
+     * The algorithm of exploration
+     * @param P
+     * @param depht
+     * @return
+     */
+    public int Exploration(Grid P, int depht) {
         int retMin = 50;
         nodeCount++;
 
+        //check if there is winning move
         for (int i = 0; i < 7; i++) {
             if (!P.columnFull(i) && P.isPlayerWinWithThisToken(i,2)) {
                 retMin = depht;
@@ -33,6 +39,9 @@ public class IAExploration {
             }
         }
 
+        //check if the grid is in the hash map
+        //if it's true return
+        //if not continue
         depht++;
         if (HM.get(P.gridToLong(P.getMatrix())) != null) {
             Integer val = HM.get(P.gridToLong(P.getMatrix()));
@@ -40,12 +49,14 @@ public class IAExploration {
                 return depht;
             }
         }
+        //Check if we are deeper than the best winning move
         if (alpha < depht) {
             return retMin;
         }
+        //recursive call on each playable column
         for (int j = 0; j < 7; j++) {
             if (!P.columnFull(order[j])) {
-                P4 Grille2 = new P4(P.getMatrix());
+                Grid Grille2 = new Grid(P.getMatrix());
                 Grille2.setMatValue(order[j],2);
                 int ret = Exploration(Grille2, depht);
                 if(ret < retMin)
@@ -54,35 +65,40 @@ public class IAExploration {
                 }
             }
         }
+        //if the hashmap is not full we save the grid
         if (HM.size() < 8388593)
             HM.put(P.gridToLong(P.getMatrix()), depht);
         return retMin;
     }
 
-    public int play(P4 Grille){
+    /**
+     * To play
+     * @param grid
+     * @return
+     */
+    public int play(Grid grid){
         int[] score = new int[7];
         int min = 9999999;
         int itMin = -1;
+        //check if there is no winning move for the ia or the opponent, if not we start the exploration
         for (int j = 0; j < 7; j++)
         {
             score[j] = -1;
-            P4 Grille2 = new P4(Grille.getMatrix());
-            Grille2.setMatValue(j,2);
-            P4 Grille3 = new P4(Grille.getMatrix());
-            Grille3.setMatValue(j,1);
-            if(Grille3.playerWin(1)[0] == 1)
+            Grid grid2 = new Grid(grid.getMatrix());
+            grid2.setMatValue(j,2);
+            Grid grid3 = new Grid(grid.getMatrix());
+            grid3.setMatValue(j,1);
+            if(grid3.playerWin(1)[0] == 1)
             {
                 return j;
             }
-            else if (Grille2.playerWin(2)[0] == 1)
+            else if (grid2.playerWin(2)[0] == 1)
             {
                 return j;
             }
             else{
                 HM.clear();
-                score[j] = Exploration(Grille2,0) + 1;
-
-                System.out.println("score at " + j + " : " + score[j]);
+                score[j] = Exploration(grid2,0) + 1;
                 if(score[j]<min)
                 {
                     itMin = j;
@@ -90,6 +106,8 @@ public class IAExploration {
                 }
             }
         }
+
+        //this part is use if there is some same best score to choose the closest of the center
         ArrayList<Integer> occurenceIndex = new ArrayList<>();
 
         for (int i = 0; i < score.length; i++) {

@@ -9,34 +9,19 @@ import java.util.*;
  * The type TCPServerFile
  */
 public class TCPServerFile implements Runnable {
-    /**
-     * the port
-     */
+
     private int port;
-    /**
-     * the server ip
-     */
+
     private String serverIP;
-    /**
-     * the timer
-     */
     private Timer timer = new Timer();
-    /**
-     * the boolean isServerRunning
-     *
-     * true if the server is running
-     */
+
     private boolean isServerRunning = true;
-    /**
-     * The delay of the timer
-     */
     private long delay = 86000000;
 
     private static int nbClient;
 
     private static List<Socket> listClient;
 
-    private static boolean isTwoPlayersConnected;
 
     /**
      *  Instantiates a new TCPServerFile
@@ -91,15 +76,15 @@ public class TCPServerFile implements Runnable {
      */
     @Override
     public void run() {
-        int port = this.port; // Port d'écoute du serveur
-        String serverIP = this.serverIP; // Adresse IP du serveur
+        int port = this.port;
+        String serverIP = this.serverIP;
 
         try {
             ServerSocket serverSocket = new ServerSocket(port, 50, InetAddress.getByName(serverIP));
             System.out.println("Serveur en attente de connexion sur " + serverIP + ":" + port);
             while(isServerRunning && !serverSocket.isClosed())
             {
-                // Attente d'une connexion cliente
+                // Waiting for a client connection
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connecté : " + clientSocket.getInetAddress().getHostAddress());
 
@@ -120,6 +105,10 @@ public class TCPServerFile implements Runnable {
         }
     }
 
+    /**
+     * Thread for each client
+     * @param clientSocket
+     */
     private void handleClient(Socket clientSocket) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
              PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);) {
@@ -213,46 +202,7 @@ public class TCPServerFile implements Runnable {
             System.err.println("Client Disconnected !");
         }
     }
-    /**
-     *  Start delay timer
-     * @param clientSocket the client socket
-     *
-     * @param inputStream the input stream
-     * @param serverSocket the server socket
-     */
-    private void startTimer(InputStream inputStream,Socket clientSocket,ServerSocket serverSocket) {
-        long delay = this.delay;
 
-        // Exécuter l'action lorsque le délai est écoulé
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Le délai est écoulé. Arrêt du serveur.");
-                isServerRunning = false;
-                stopServer(inputStream,clientSocket,serverSocket);
-            }
-        };
-
-        // Démarrer le timer avec le délai spécifié
-        timer.schedule(task, delay);
-    }
-    /**
-     *  Reset timer
-     *
-     * @param inputStream the input stream
-     * @param clientSocket the client socket
-     * @param serverSocket the server socket
-     */
-    private void resetTimer(InputStream inputStream,Socket clientSocket,ServerSocket serverSocket) {
-        // Annuler le timer actuel
-        timer.cancel();
-
-        // Créer un nouveau timer pour redémarrer le délai
-        timer = new Timer();
-
-        // Démarrer le nouveau timer
-        startTimer(inputStream, clientSocket, serverSocket);
-    }
     /**
      *  Stop server
      *
@@ -280,22 +230,6 @@ public class TCPServerFile implements Runnable {
         }
     }
 
-    public void sendStart() throws IOException {
-        if(nbClient == 2)
-        {
-            for (Socket cSocket : listClient) {
-
-                // We check if the socket is valid or not
-                if (cSocket != null && !cSocket.isClosed()) {
-
-                    // Send the message "Other Player Left" to the client
-                    PrintWriter writ = new PrintWriter(cSocket.getOutputStream(), true);
-                    writ.println("START");
-                    System.out.println("message send");
-                }
-            }
-        }
-    }
 
     public void chooseFirstPlayer() throws IOException {
         // We choose randomly the player who will start the game

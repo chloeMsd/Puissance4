@@ -1,6 +1,9 @@
 package com.projetpuissance4.models;
 
-public class P4 {
+/**
+ * class that is the board game
+ */
+public class Grid {
 
     private static final int LINE = 6;
     private static final int COLUMN = 7;
@@ -9,7 +12,7 @@ public class P4 {
     /**
      * Constructor
      */
-    public P4() {
+    public Grid() {
         int [][] mat = new int[LINE][COLUMN];
         for(int i = 0; i< LINE; i++)
         {
@@ -20,7 +23,12 @@ public class P4 {
         }
         this.matrix = mat;
     }
-    public P4(int[][] mat) {
+
+    /**
+     * constructor
+     * @param mat
+     */
+    public Grid(int[][] mat) {
 
         for(int i = 0; i< LINE; i++)
         {
@@ -33,7 +41,7 @@ public class P4 {
 
     /**
      * SetMat
-     * @brief Setter Mat
+     * Setter Mat
      * @param matrix
      */
     public void setMatrix(int[][] matrix) {
@@ -42,7 +50,7 @@ public class P4 {
 
     /**
      * SetMatValeur
-     * @brief Setter Mat Value
+     * Setter Mat Value
      * @param Col
      * @param Val
      */
@@ -65,7 +73,7 @@ public class P4 {
 
     /**
      * Get Point
-     * @brief Get the point at line/column
+     * Get the point at line/column
      * @param line
      * @param column
      * @return
@@ -77,7 +85,7 @@ public class P4 {
 
     /**
      * Grid To String
-     * @brief To String
+     * To String
      * @return
      */
     @Override
@@ -99,13 +107,12 @@ public class P4 {
 
     /**
      * Column Full
-     * @brief check if column full
+     * check if column full
      * @param column
      * @return
      */
     public boolean columnFull(int column)
     {
-        int line = 0;
         for(int i = 0; i< LINE; i++)
         {
             if(matrix[i][column] == 0)
@@ -118,7 +125,7 @@ public class P4 {
 
     /**
      * Gravity Check
-     * @brief Check the gravity
+     * Check the gravity
      * @param column
      * @return the line
      */
@@ -139,16 +146,19 @@ public class P4 {
 
     /**
      * Is player win with this token
-     * @brief Check if a player win with this token
+     * Check if a player win with this token
      * @param column
      * @param player
      * @return
      */
     public boolean isPlayerWinWithThisToken(int column,int player) {
-        P4 tmpGrid = new P4(this.matrix);
+        //duplicate the grid
+        Grid tmpGrid = new Grid(this.matrix);
         tmpGrid.setMatValue(column, player);
+        //check for every token
         for (int row = 0; row < LINE; row++) {
             for (int col = 0; col < COLUMN; col++) {
+                //check for column
                 if (col + 3 < COLUMN &&
                         tmpGrid.getMatrix()[row][col] == player &&
                         tmpGrid.getMatrix()[row][col + 1] == player &&
@@ -156,6 +166,7 @@ public class P4 {
                         tmpGrid.getMatrix()[row][col + 3] == player) {
                     return true;
                 }
+                //check for line
                 if (row + 3 < LINE &&
                         tmpGrid.getMatrix()[row][col] == player &&
                         tmpGrid.getMatrix()[row + 1][col] == player &&
@@ -163,6 +174,7 @@ public class P4 {
                         tmpGrid.getMatrix()[row + 3][col] == player) {
                     return true;
                 }
+                //check for diagonal
                 if (row + 3 < LINE && col + 3 < COLUMN &&
                         tmpGrid.getMatrix()[row][col] == player &&
                         tmpGrid.getMatrix()[row + 1][col + 1] == player &&
@@ -170,6 +182,7 @@ public class P4 {
                         tmpGrid.getMatrix()[row + 3][col + 3] == player) {
                     return true;
                 }
+                //check for diagonal
                 if (row - 3 >= 0 && col + 3 < COLUMN &&
                         tmpGrid.getMatrix()[row][col] == player &&
                         tmpGrid.getMatrix()[row - 1][col + 1] == player &&
@@ -184,16 +197,17 @@ public class P4 {
 
     /**
      * Player Win
-     * @brief Check if player is winning
+     * Check if player is winning
      * @param player
      * @return
      */
     public int[] playerWin(int player) {
         int[] back = new int[9];
         back[0] = 0;
+        //check for each token
         for (int row = 0; row < LINE; row++) {
             for (int col = 0; col < COLUMN; col++) {
-                // Vérifiez l'horizontale (gauche à droite)
+                // Check horizontal (left to right)
                 if (col + 3 < COLUMN &&
                         this.matrix[row][col] == player &&
                         this.matrix[row][col + 1] == player &&
@@ -205,7 +219,7 @@ public class P4 {
                         back[2*i] = col + i - 1;
                     }
                 }
-                // Vérifiez la verticale (bas vers le haut)
+                // Check vertical (bottom up)
                 if (row + 3 < LINE &&
                         this.matrix[row][col] == player &&
                         this.matrix[row + 1][col] == player &&
@@ -217,7 +231,7 @@ public class P4 {
                         back[2*i] = col;
                     }
                 }
-                // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
+                // Check the ascending diagonal (bottom left to top right)
                 if (row + 3 < LINE && col + 3 < COLUMN &&
                         this.matrix[row][col] == player &&
                         this.matrix[row + 1][col + 1] == player &&
@@ -229,7 +243,7 @@ public class P4 {
                         back[2*i] = col + i - 1;
                     }
                 }
-                // Vérifiez la diagonale descendante (haut gauche vers bas droite)
+                // Check the downward diagonal (top left to bottom right)
                 if (row - 3 >= 0 && col + 3 < COLUMN &&
                         this.matrix[row][col] == player &&
                         this.matrix[row - 1][col + 1] == player &&
@@ -248,7 +262,7 @@ public class P4 {
 
     /**
      * Check Draw
-     * @brief Check if there is a draw
+     * Check if there is a draw
      * @return
      */
     public boolean checkDraw()
@@ -265,7 +279,7 @@ public class P4 {
 
     /**
      * Matrix Zero
-     * @brief replace matrix by 0
+     * replace matrix by 0
      */
     public void matrixZero()
     {
@@ -280,7 +294,7 @@ public class P4 {
 
     /**
      * Grid to long
-     * @brief create a long by the grid
+     * create a long by the grid
      * @param grid
      * @return
      */

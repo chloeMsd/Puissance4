@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
 import com.projetpuissance4.controllers.CommunicationFileController;
 import javafx.application.Platform;
 
+
+/**
+ * TCP Client to play online
+ */
 public class TCPClientP4 implements AutoCloseable {
 
     private Socket clientSocket;
@@ -27,8 +31,7 @@ public class TCPClientP4 implements AutoCloseable {
     private int port;
     private String IP;
     private int numClient;
-    private P4 Grille = new P4();
-
+    private Grid Grille = new Grid();
     private int whoPlay = 0;
 
     private IAExploration IA = new IAExploration();
@@ -135,7 +138,9 @@ public class TCPClientP4 implements AutoCloseable {
         }
     }
 
-
+    /**
+     * To start receive of server message
+     */
     public void startReceive()
     {
         // Get Message of server
@@ -318,31 +323,7 @@ public class TCPClientP4 implements AutoCloseable {
             }
         }
     }
-    /**
-     * Using to change Port / IP of the connection to Server
-     *
-     * @param IP   : IP for connect to the server
-     */
-    public void changeIP_Port(String IP, String Port) {
 
-        System.out.println("Connection to : " + IP + " - " + Port);
-
-        // Actualization of attributes
-        this.IP = IP;
-        this.port = Integer.parseInt(Port);
-
-        isReconnectedToServerInProgress = true;
-
-        // Stop A potential Thread
-        if (isConnectedToServer) {
-            this.writer.println("STOP");
-        }
-
-        // Reconnect with new informations
-        reconnect();
-
-        isReconnectedToServerInProgress = false;
-    }
 
     /**
      * Method that allows to close the client
@@ -358,6 +339,11 @@ public class TCPClientP4 implements AutoCloseable {
         System.out.println("Client closed");
     }
 
+    /**
+     * To send message to the server
+     * @param message
+     * @throws IOException
+     */
     public void sendFile(String message) throws IOException {
         if (!clientSocket.isConnected()) {
             System.out.println("La connexion au serveur est fermée. Impossible d'envoyer le fichier.");

@@ -4,12 +4,10 @@ import com.projetpuissance4.Puissance4;
 import com.projetpuissance4.models.IAExploration;
 import com.projetpuissance4.models.IAMinimax;
 import com.projetpuissance4.models.IARandom;
-import com.projetpuissance4.models.P4;
+import com.projetpuissance4.models.Grid;
 import com.projetpuissance4.views.OptionView;
 import com.projetpuissance4.views.PseudoView;
 import com.projetpuissance4.models.TCPClientP4;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,10 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
-import java.io.IOException;
-import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +38,7 @@ public class Puissance4Controller {
     private ImageView Halo;
     @FXML
     private Button replay;
-    private P4 Grille = new P4();
+    private Grid Grille = new Grid();
     private boolean Play = true;
     private boolean isRunning = true;
     private Button invisibleButtonColumn1;
@@ -67,12 +62,12 @@ public class Puissance4Controller {
 
     private static Random rand = new Random();
     private static int whoPlay = rand.nextInt();
-    private int compteurToken =0;
 
     public void initialize() throws InterruptedException {
         CommunicationFileController.deleteFile("comToProcess.txt");
         CommunicationFileController.deleteFile("comToClient.txt");
 
+        // Creation of invisible button that represent column
         invisibleButtonColumn1 = CreationInvisibleButton(1);
         invisibleButtonColumn2 = CreationInvisibleButton(2);
         invisibleButtonColumn3 = CreationInvisibleButton(3);
@@ -81,6 +76,7 @@ public class Puissance4Controller {
         invisibleButtonColumn6 = CreationInvisibleButton(6);
         invisibleButtonColumn7 = CreationInvisibleButton(7);
 
+        //Create triangle to put on the top of each column
         triangle1 = CreateTriangle(1);
         triangle2 = CreateTriangle(2);
         triangle3 = CreateTriangle(3);
@@ -89,6 +85,7 @@ public class Puissance4Controller {
         triangle6 = CreateTriangle(6);
         triangle7 = CreateTriangle(7);
 
+        //Triangle appear when cursor is on a column
         CursorAppear(invisibleButtonColumn1, triangle1);
         CursorAppear(invisibleButtonColumn2, triangle2);
         CursorAppear(invisibleButtonColumn3, triangle3);
@@ -97,18 +94,22 @@ public class Puissance4Controller {
         CursorAppear(invisibleButtonColumn6, triangle6);
         CursorAppear(invisibleButtonColumn7, triangle7);
 
+
         String gameOption = PrintGameOption();
         if (gameOption.equals("Jeu contre un autre joueur")) {
+            //Write who start
             if(whoPlay % 2 == 0)
             {
-                AfficherPseudoJoueur1(SaisirPseudo(1) + " commence");
-                AfficherPseudoJoueur2(SaisirPseudo(2));
+                //Display pseudo of each player (real player can choose those)
+                displayNamePlayer1(enterPseudo(1) + " commence");
+                displayNamePlayer2(enterPseudo(2));
             }
             else {
-                AfficherPseudoJoueur1(SaisirPseudo(1));
-                AfficherPseudoJoueur2(SaisirPseudo(2) + " commence");
+                displayNamePlayer1(enterPseudo(1));
+                displayNamePlayer2(enterPseudo(2) + " commence");
             }
 
+            //Define what mathod to call when button are pressed
             invisibleButtonColumn1.setOnAction(event -> ButtonPlay(1));
             invisibleButtonColumn2.setOnAction(event -> ButtonPlay(2));
             invisibleButtonColumn3.setOnAction(event -> ButtonPlay(3));
@@ -118,8 +119,8 @@ public class Puissance4Controller {
             invisibleButtonColumn7.setOnAction(event -> ButtonPlay(7));
         }
         else if (gameOption.equals("Jeu contre une IA débutante")) {
-            AfficherPseudoJoueur1(SaisirPseudo(1));
-            AfficherPseudoJoueur2("IA débutante");
+            displayNamePlayer1(enterPseudo(1));
+            displayNamePlayer2("IA débutante");
             invisibleButtonColumn1.setOnAction(event -> ButtonPlayIAnv0(1));
             invisibleButtonColumn2.setOnAction(event -> ButtonPlayIAnv0(2));
             invisibleButtonColumn3.setOnAction(event -> ButtonPlayIAnv0(3));
@@ -131,12 +132,12 @@ public class Puissance4Controller {
         else if (gameOption.equals("Jeu contre une IA intermédiaire")) {
             if(whoPlay % 2 == 0)
             {
-                AfficherPseudoJoueur1(SaisirPseudo(1) + " commence");
-                AfficherPseudoJoueur2("IA intermédiaire");
+                displayNamePlayer1(enterPseudo(1) + " commence");
+                displayNamePlayer2("IA intermédiaire");
             }
             else {
-                AfficherPseudoJoueur1(SaisirPseudo(1));
-                AfficherPseudoJoueur2("IA intermédiaire : commence");
+                displayNamePlayer1(enterPseudo(1));
+                displayNamePlayer2("IA intermédiaire : commence");
                 IAFirstExploration();
             }
 
@@ -153,12 +154,12 @@ public class Puissance4Controller {
 
             if(whoPlay % 2 == 0)
             {
-                AfficherPseudoJoueur1(SaisirPseudo(1) + " commence");
-                AfficherPseudoJoueur2("IA experte");
+                displayNamePlayer1(enterPseudo(1) + " commence");
+                displayNamePlayer2("IA experte");
             }
             else {
-                AfficherPseudoJoueur1(SaisirPseudo(1));
-                AfficherPseudoJoueur2("IA experte : commence");
+                displayNamePlayer1(enterPseudo(1));
+                displayNamePlayer2("IA experte : commence");
                 IAFirstMinimax();
             }
 
@@ -173,24 +174,27 @@ public class Puissance4Controller {
         }
         else if (gameOption.equals("Jeu en réseau")) {
 
-            String player = SaisirPseudo(1);
+            String player = enterPseudo(1);
 
+            //For the online option we lauch the client
             TCPClientP4 tcpClientP4 = new TCPClientP4("127.0.0.3",8090);
             tcpClientP4.connectToServer();
             TimeUnit.SECONDS.sleep(3);
             tcpClientP4.startReceive();
             TimeUnit.SECONDS.sleep(3);
+
+            //Lauch the thread that catch message from the server
             Thread netWork = new Thread(this::handleThread);
             netWork.start();
 
             if(CommunicationFileController.doesFileExist("whoPlay.txt"))
             {
                 whoPlay = 0;
-                AfficherPseudoJoueur1(player+ " : commence");
+                displayNamePlayer1(player+ " : commence");
             }
             else {
                 whoPlay = 1;
-                AfficherPseudoJoueur2("Réseau : Commence");
+                displayNamePlayer2("Réseau : Commence");
             }
             invisibleButtonColumn1.setOnAction(event -> ButtonPlayNetWork(1));
             invisibleButtonColumn2.setOnAction(event -> ButtonPlayNetWork(2));
@@ -203,12 +207,15 @@ public class Puissance4Controller {
         }
     }
 
+    /**
+     * The thread of the online game
+     */
     private void handleThread() {
         while(isRunning)
         {
             Platform.runLater(()->
             {
-                NetWork();
+                NetWork();//Catch server message
             });
             try {
                 sleep(1000);
@@ -217,13 +224,19 @@ public class Puissance4Controller {
         }
     }
 
+    /**
+     * Method to play with two real person (one play and then the other untile the game stop)
+     * @param iButton
+     */
     public void ButtonPlay(int iButton)
     {
         if(Play)
         {
+            //if the column is not full
             if(Grille.gravityCheck(iButton-1) >= 0)
             {
                 if(whoPlay % 2 == 0){
+                    //Create red token for player 1
                     AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
                     int ligne = 6 - Grille.gravityCheck(iButton-1);
                     Halo.setX(152 + (iButton - 1)*100);
@@ -232,6 +245,7 @@ public class Puissance4Controller {
                     Grille.setMatValue(iButton-1,1);
                 }
                 else {
+                    //Create red token for player 2
                     AddYellowToken(CreationYellowToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
                     int ligne = 6 - Grille.gravityCheck(iButton-1);
                     Halo.setX(152 + (iButton - 1)*100);
@@ -240,7 +254,8 @@ public class Puissance4Controller {
                     Grille.setMatValue(iButton-1,2);
                 }
                 whoPlay++;
-                System.out.println(Grille.toString());
+                //check if there is a winner
+                //if it's the case we glow the four winner token
                 int[] Joueur1 = Grille.playerWin(1);
                 int[] Joueur2 = Grille.playerWin(2);
                 if (Joueur2[0] == 1)
@@ -274,12 +289,17 @@ public class Puissance4Controller {
         }
     }
 
+    /**
+     * is use when we play against the IA random
+     * @param iButton
+     */
     public void ButtonPlayIAnv0(int iButton)
     {
         if(Play)
         {
             if(Grille.gravityCheck(iButton -1) >= 0)
             {
+                //Red token for real player
                 AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
                 int ligne = 6 - Grille.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
@@ -287,6 +307,7 @@ public class Puissance4Controller {
                 Halo.setVisible(true);
                 Grille.setMatValue(iButton-1,1);
 
+                //then the ia play (Yellow token)
                 int column = IArandom.Play();
                 AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
                 ligne = 6 - Grille.gravityCheck(column);
@@ -296,7 +317,7 @@ public class Puissance4Controller {
                 Grille.setMatValue(column,2);
 
                 whoPlay++;
-                System.out.println(Grille.toString());
+                //check for winner
                 int[] Joueur1 = Grille.playerWin(1);
                 int[] Joueur2 = Grille.playerWin(2);
                 if (Joueur2[0] == 1)
@@ -329,12 +350,17 @@ public class Puissance4Controller {
         }
     }
 
+    /**
+     * is use when we play against the IA minimax
+     * @param iButton
+     */
     public void ButtonPlayIAminimax(int iButton)
     {
         if(Play)
         {
             if(Grille.gravityCheck(iButton -1) >= 0 )
             {
+                //Red token for real player
                 AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
                 int ligne = 6 - Grille.gravityCheck(iButton-1);
                 Halo.setX(152 + (iButton - 1)*100);
@@ -342,10 +368,11 @@ public class Puissance4Controller {
                 Halo.setVisible(true);
                 Grille.setMatValue(iButton-1,1);
 
+                //method to play with the IA Minimax
                 IAFirstMinimax();
-
+                //then the ia play (Yellow token)
                 whoPlay++;
-                System.out.println(Grille.toString());
+                //check for winner
                 int[] Joueur1 = Grille.playerWin(1);
                 int[] Joueur2 = Grille.playerWin(2);
                 if (Joueur2[0] == 1)
@@ -379,6 +406,10 @@ public class Puissance4Controller {
     }
 
 
+    /**
+     * is use when we play against the IA Exploration
+     * @param iButton
+     */
     public void ButtonPlayIAexploration(int iButton)
     {
         if(Play)
@@ -428,6 +459,10 @@ public class Puissance4Controller {
         }
     }
 
+    /**
+     * is use when we play against an other player/IA but online
+     * @param iButton
+     */
     public void ButtonPlayNetWork(int iButton) {
         if(Play)
         {
@@ -477,13 +512,18 @@ public class Puissance4Controller {
         }
     }
 
+    /**
+     * Catch information of the other player online to put on the grid
+     */
     public void NetWork() {
         if(CommunicationFileController.doesFileExist("comToProcess.txt"))
         {
             if (((Grille.playerWin(1))[0])==0)
             {
+                //we catch the column where the other player play
                 int column = Integer.parseInt(CommunicationFileController.readFromFile("comToProcess.txt"));
                 CommunicationFileController.deleteFile("comToProcess.txt");
+                //then we add a yellow token
                 AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
                 int ligne = 6 - Grille.gravityCheck(column);
                 Halo.setX(152 + (column)*100);
@@ -497,8 +537,9 @@ public class Puissance4Controller {
     {
         if (((Grille.playerWin(1))[0])==0)
         {
-            System.out.println("Grille av minimax \n"+Grille.toString());
+            //We call the IA Minimax to choose the column to play
             int column = IAminimax.playV2(2,7,Grille);
+            //then we add the yellow token
             AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
             int ligne = 6 - Grille.gravityCheck(column);
             Halo.setX(152 + (column)*100);
@@ -513,8 +554,9 @@ public class Puissance4Controller {
     {
         if (((Grille.playerWin(1))[0])==0)
         {
-            System.out.println("Grille av exploration \n"+Grille.toString());
+            //We call the IA Exploration to choose the column to play
             int column = IAExploration.play(Grille);
+            //then we add the yellow token
             AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
             int ligne = 6 - Grille.gravityCheck(column);
             Halo.setX(152 + (column)*100);
@@ -524,6 +566,10 @@ public class Puissance4Controller {
         }
     }
 
+    /**
+     * To set the opacity of triangles
+     * @param opacity
+     */
     public void setOpacityTriangle(double opacity)
     {
         triangle1.setOpacity(opacity);
@@ -534,6 +580,12 @@ public class Puissance4Controller {
         triangle6.setOpacity(opacity);
         triangle7.setOpacity(opacity);
     }
+
+    /**
+     * To create all invisible button
+     * @param column
+     * @return
+     */
     public Button CreationInvisibleButton(int column)
     {
         Button invisibleButton = new Button();
@@ -546,6 +598,12 @@ public class Puissance4Controller {
         return invisibleButton;
     }
 
+    /**
+     * to create red token
+     * @param width
+     * @param height
+     * @return
+     */
     public ImageView CreationRedToken(double width, double height)
     {
         Image image = new Image(Puissance4.class.getResourceAsStream("RedToken.png"));
@@ -555,6 +613,12 @@ public class Puissance4Controller {
         return imageView;
     }
 
+    /**
+     * to create yellow token
+     * @param width
+     * @param height
+     * @return
+     */
     public ImageView CreationYellowToken(double width, double height)
     {
         Image image = new Image(Puissance4.class.getResourceAsStream("YellowToken.png"));
@@ -564,19 +628,37 @@ public class Puissance4Controller {
         return imageView;
     }
 
-    public void AddRedToken(ImageView jetonRouge, int column, int line)
+    /**
+     * To add red token
+     * @param redToken
+     * @param column
+     * @param line
+     */
+    public void AddRedToken(ImageView redToken, int column, int line)
     {
-        AnchorPane.setLeftAnchor(jetonRouge, 150 + (column-1) * jetonRouge.getFitHeight());
-        AnchorPane.setTopAnchor(jetonRouge, 593 - (line-1) * jetonRouge.getFitWidth());
-        myAnchorPane.getChildren().add(jetonRouge);
+        AnchorPane.setLeftAnchor(redToken, 150 + (column-1) * redToken.getFitHeight());
+        AnchorPane.setTopAnchor(redToken, 593 - (line-1) * redToken.getFitWidth());
+        myAnchorPane.getChildren().add(redToken);
     }
 
-    public void AddYellowToken(ImageView jetonJaune, int column, int line)
+    /**
+     * To add yellow token
+     * @param yellowToken
+     * @param column
+     * @param line
+     */
+    public void AddYellowToken(ImageView yellowToken, int column, int line)
     {
-        AnchorPane.setLeftAnchor(jetonJaune,  150 + (column-1) * jetonJaune.getFitHeight());
-        AnchorPane.setTopAnchor(jetonJaune,  593 - (line-1) * jetonJaune.getFitWidth());
-        myAnchorPane.getChildren().add(jetonJaune);
+        AnchorPane.setLeftAnchor(yellowToken,  150 + (column-1) * yellowToken.getFitHeight());
+        AnchorPane.setTopAnchor(yellowToken,  593 - (line-1) * yellowToken.getFitWidth());
+        myAnchorPane.getChildren().add(yellowToken);
     }
+
+    /**
+     * to Create triangle
+     * @param column
+     * @return
+     */
     public Polygon CreateTriangle(int column)
     {
         Polygon triangle = new Polygon();
@@ -587,17 +669,26 @@ public class Puissance4Controller {
         return triangle;
     }
 
+    /**
+     * Set visible triangle when the mouse is on and invisible when is not
+     * @param button
+     * @param triangle
+     */
     public void CursorAppear(Button button, Polygon triangle)
     {
         button.setOnMouseEntered(event -> triangle.setVisible(true));
         button.setOnMouseExited(event -> triangle.setVisible(false));
     }
 
-    public void PrintWon(int numero)
+    /**
+     * Display the winner player
+     * @param number
+     */
+    public void PrintWon(int number)
     {
         board.setOpacity(0.5);
         Text message = new Text();
-        message.setText("Joueur " + numero + "\nGagnant");
+        message.setText("Joueur " + number + "\nGagnant");
         message.setLayoutX(100);
         message.setLayoutY(275);
         message.setFill(Color.BLACK);
@@ -605,6 +696,9 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(message);
     }
 
+    /**
+     * Display if there is a draw
+     */
     public void PrintEqual()
     {
         board.setOpacity(0.5);
@@ -617,13 +711,22 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(message);
     }
 
-    public String SaisirPseudo(int numeroJoueur)
+    /**
+     * To enter pseudo of real player
+     * @param playerNumber
+     * @return
+     */
+    public String enterPseudo(int playerNumber)
     {
         PseudoView P = new PseudoView();
-        return P.Pseudo(numeroJoueur);
+        return P.Pseudo(playerNumber);
     }
 
-    public void AfficherPseudoJoueur1(String name)
+    /**
+     * to display the name of the player 1
+     * @param name
+     */
+    public void displayNamePlayer1(String name)
     {
         Text message = new Text();
         message.setText(name);
@@ -633,7 +736,11 @@ public class Puissance4Controller {
         message.setFont(Font.font("Arial", 20));
         myAnchorPane.getChildren().add(message);
     }
-    public void AfficherPseudoJoueur2(String name)
+    /**
+     * to display the name of the player 2
+     * @param name
+     */
+    public void displayNamePlayer2(String name)
     {
         Text message = new Text();
         message.setText(name);
@@ -644,6 +751,10 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(message);
     }
 
+    /**
+     * To display and enter game option
+     * @return
+     */
     public String PrintGameOption()
     {
         OptionView option = new OptionView();
@@ -658,6 +769,10 @@ public class Puissance4Controller {
         return texte;
     }
 
+    /**
+     * To glow Token that won
+     * @param token
+     */
     public void PrintWonTokens(int[] token)
     {
         Image halo1 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
@@ -668,7 +783,6 @@ public class Puissance4Controller {
         im1.setY(594 - (5 - token[1])*100);
         myAnchorPane.getChildren().add(im1);
 
-        Image halo2 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
         ImageView im2 = new ImageView(halo1);
         im2.setFitWidth(96.0);
         im2.setFitHeight(96.0);
@@ -676,7 +790,6 @@ public class Puissance4Controller {
         im2.setY(594 - (5 - token[3])*100);
         myAnchorPane.getChildren().add(im2);
 
-        Image halo3 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
         ImageView im3 = new ImageView(halo1);
         im3.setFitWidth(96.0);
         im3.setFitHeight(96.0);
@@ -684,7 +797,6 @@ public class Puissance4Controller {
         im3.setY(594 - (5 - token[5])*100);
         myAnchorPane.getChildren().add(im3);
 
-        Image halo4 = new Image(Puissance4.class.getResourceAsStream("halo.png"));
         ImageView im4 = new ImageView(halo1);
         im4.setFitWidth(96.0);
         im4.setFitHeight(96.0);
@@ -693,6 +805,9 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().add(im4);
     }
 
+    /**
+     * To clear the board when we restart the game
+     */
     private void clearBoard()
     {
         ObservableList<Node> children = myAnchorPane.getChildren();
@@ -708,6 +823,9 @@ public class Puissance4Controller {
         myAnchorPane.getChildren().setAll(nodesToKeep);
     }
 
+    /**
+     * Display the replay button
+     */
     private void replay()
     {
         clearBoard();

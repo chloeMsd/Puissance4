@@ -28,9 +28,9 @@ public class IAMinimax {
      * @param Grid
      * @return
      */
-    public int minimaxAlphaBetaV2(int player, int position, double alpha, double beta, int depth, boolean maximizingPlayer, P4 Grid)
+    public int minimaxAlphaBetaV2(int player, int position, double alpha, double beta, int depth, boolean maximizingPlayer, Grid Grid)
     {
-        P4 Grid2 = new P4(Grid.getMatrix());
+        com.projetpuissance4.models.Grid Grid2 = new Grid(Grid.getMatrix());
         Grid2.setMatValue(position, player);
 
         int[] eval = new int[7];
@@ -97,9 +97,9 @@ public class IAMinimax {
      * @param Grid
      * @return
      */
-    public int minimaxV1(int player, int position, int depth, boolean maximizingPlayer, P4 Grid)
+    public int minimaxV1(int player, int position, int depth, boolean maximizingPlayer, Grid Grid)
     {
-        P4 Grid2 = new P4(Grid.getMatrix());
+        com.projetpuissance4.models.Grid Grid2 = new Grid(Grid.getMatrix());
         Grid2.setMatValue(position, player);
 
         int[] eval = new int[7];
@@ -156,7 +156,7 @@ public class IAMinimax {
      * @param Grid
      * @return
      */
-    public int evaluation(int player, int column, P4 Grid) {
+    public int evaluation(int player, int column, Grid Grid) {
         int eval = 0;
         int line = 0;
 
@@ -179,7 +179,7 @@ public class IAMinimax {
         for (int row = 0; row < LINE; row++) {
             for (int col = 0; col < COLUMN; col++) {
                 if (col >= 0 && row >= 0 && col < COLUMN && row < LINE) {
-                    // Vérifiez l'horizontale (gauche à droite)
+                    // Check horizontal (left to right)
                     if (col + 3 < COLUMN) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
@@ -201,7 +201,7 @@ public class IAMinimax {
                         }
                     }
 
-                    // Vérifiez la verticale (bas vers le haut)
+                    // Check vertical (bottom up)
                     if (row + 3 < LINE) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
@@ -223,7 +223,7 @@ public class IAMinimax {
                         }
                     }
 
-                    // Vérifiez la diagonale ascendante (bas gauche vers haut droite)
+                    // Check the ascending diagonal (bottom left to top right)
                     if (row + 3 < LINE && col + 3 < COLUMN) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
@@ -245,7 +245,7 @@ public class IAMinimax {
                         }
                     }
 
-                    // Vérifiez la diagonale descendante (haut gauche vers bas droite)
+                    // Check the downward diagonal (top left to bottom right)
                     if (row - 3 >= 0 && col + 3 < COLUMN) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
@@ -279,26 +279,27 @@ public class IAMinimax {
      * @brief Play with V2 Evaluation
      * @param player
      * @param depth
-     * @param Grille
+     * @param Grid
      * @return
      */
 
-    public int playV2(int player, int depth, P4 Grille)
+    public int playV2(int player, int depth, Grid Grid)
     {
         long startTime = System.currentTimeMillis();
 
         int mineval = INFINITY;
         int[] eval = new int[7];
         int columnToPlay = 0;
+        //we start algorithm of each column that is not full
         for (int i=0; i<7; i++) {
-            if (!Grille.columnFull(i)){
-
-                eval[i] = minimaxAlphaBetaV2(player,i,-INFINITY, INFINITY,depth, true,Grille);
-
-                if(Grille.isPlayerWinWithThisToken(i,player))
+            if (!Grid.columnFull(i)){
+                eval[i] = minimaxAlphaBetaV2(player,i,-INFINITY, INFINITY,depth, true,Grid);
+                //if the IA win at this column we put a better score
+                if(Grid.isPlayerWinWithThisToken(i,player))
                 {
                     eval[i] = -1000000;
                 }
+                //we keep the best move
                 if (eval[i] < mineval) {
                     mineval = eval[i];
                     columnToPlay = i;
@@ -308,9 +309,7 @@ public class IAMinimax {
                 eval[i] = INFINITY;
             }
         }
-        for (int i=0; i<7; i++) {
-        }
-
+        //this part is use if there is some same best score to choose the closest of the center
 
         ArrayList<Integer> occurenceIndex = new ArrayList<>();
 
@@ -343,8 +342,9 @@ public class IAMinimax {
      * @param Grille
      * @return
      */
-    public int playV1(int player, int depth, P4 Grille)
+    public int playV1(int player, int depth, Grid Grille)
     {
+        //same process as the play V2
         long startTime = System.currentTimeMillis();
 
         int mineval = INFINITY;

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6d99ea2a-1309-437b-92c1-48b3dac8d86e" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2WthNrEqdqdCIuq2JhCXv1s2dFS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/enzow/Desktop/DI/4A/projet/Puissance4&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\enzow\Desktop\DI\4A\projet\Puissance4" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\enzow\Desktop\DI\4A\projet\Puissance4\src\main\java\com\example\projetpuissance4" />
+      <recent name="C:\Users\enzow\Desktop\DI\4A\projet\Puissance4\src\main\java\com\example\projetpuissance4\models" />
+      <recent name="C:\Users\enzow\Desktop\DI\4A\projet\Puissance4" />
+      <recent name="C:\Users\enzow\Desktop\DI\4A\projet\Puissance4\src" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.projetpuissance4.models" />
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Appli">
+    <configuration name="Appli" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.projetpuissance4.Puissance4" />
+      <module name="ProjetPuissance4" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainController" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.projetpuissance4.controllers.MainController" />
+      <module name="ProjetPuissance4" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestIARandom.testPlayColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProjetPuissance4" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestIARandom" />
+      <option name="METHOD_NAME" value="testPlayColumn" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Unnamed" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="ProjetPuissance4" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestGrid" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.MainController" />
+      <item itemvalue="Application.Appli" />
+      <item itemvalue="JUnit.Unnamed" />
+      <item itemvalue="JUnit.TestIARandom.testPlayColumn" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.TestIARandom.testPlayColumn" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6d99ea2a-1309-437b-92c1-48b3dac8d86e" name="Changes" comment="" />
+      <created>1697557746669</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1697557746669</updated>
+      <workItem from="1697557747683" duration="194000" />
+      <workItem from="1697609979882" duration="2542000" />
+      <workItem from="1697616544082" duration="413000" />
+      <workItem from="1697617969672" duration="245000" />
+      <workItem from="1697741641750" duration="4005000" />
+      <workItem from="1697809433107" duration="151000" />
+      <workItem from="1697811738281" duration="29000" />
+      <workItem from="1697812513379" duration="140000" />
+      <workItem from="1697813609537" duration="270000" />
+      <workItem from="1698231567190" duration="6000" />
+      <workItem from="1699429926079" duration="4392000" />
+      <workItem from="1699446072903" duration="2028000" />
+      <workItem from="1699457383822" duration="5136000" />
+      <workItem from="1699523499199" duration="1342000" />
+      <workItem from="1699601970067" duration="1358000" />
+      <workItem from="1699703718197" duration="48000" />
+      <workItem from="1701090469440" duration="985000" />
+      <workItem from="1701103704054" duration="2886000" />
+      <workItem from="1701116518144" duration="232000" />
+      <workItem from="1701116757036" duration="5851000" />
+      <workItem from="1701156216491" duration="2826000" />
+      <workItem from="1701189942175" duration="2562000" />
+      <workItem from="1701328799868" duration="19000" />
+      <workItem from="1702209037979" duration="661000" />
+      <workItem from="1702219705421" duration="1447000" />
+      <workItem from="1702373257443" duration="391000" />
+      <workItem from="1702486383557" duration="626000" />
+      <workItem from="1702497799755" duration="1354000" />
+      <workItem from="1703086577201" duration="2962000" />
+      <workItem from="1703105319160" duration="2588000" />
+      <workItem from="1703151148671" duration="6046000" />
+      <workItem from="1703160627789" duration="2698000" />
+      <workItem from="1703182032280" duration="3576000" />
+      <workItem from="1704744436025" duration="2458000" />
+      <workItem from="1704746908778" duration="8000" />
+      <workItem from="1704746929502" duration="953000" />
+      <workItem from="1704804812556" duration="5418000" />
+      <workItem from="1704971545889" duration="2059000" />
+      <workItem from="1705002520180" duration="3411000" />
+      <workItem from="1705064462454" duration="2166000" />
+      <workItem from="1705092191219" duration="2529000" />
+      <workItem from="1705153632391" duration="597000" />
+      <workItem from="1705226402804" duration="13070000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

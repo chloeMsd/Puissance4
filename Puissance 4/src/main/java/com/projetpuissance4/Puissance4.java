@@ -1,8 +1,5 @@
 package com.projetpuissance4;
 
-import com.projetpuissance4.controllers.MainController;
-import com.projetpuissance4.controllers.Puissance4Controller;
-import com.projetpuissance4.models.IARandom;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
