@@ -7,6 +7,10 @@ import com.projetpuissance4.models.IARandom;
 import com.projetpuissance4.models.P4;
 import com.projetpuissance4.views.OptionView;
 import com.projetpuissance4.views.PseudoView;
+import com.projetpuissance4.models.TCPClientP4;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,8 +24,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.Thread.sleep;
 
 
 public class Puissance4Controller {
@@ -59,7 +69,10 @@ public class Puissance4Controller {
     private static int whoPlay = rand.nextInt();
     private int compteurToken =0;
 
-    public void initialize() {
+    public void initialize() throws InterruptedException {
+        CommunicationFileController.deleteFile("comToProcess.txt");
+        CommunicationFileController.deleteFile("comToClient.txt");
+
         invisibleButtonColumn1 = CreationInvisibleButton(1);
         invisibleButtonColumn2 = CreationInvisibleButton(2);
         invisibleButtonColumn3 = CreationInvisibleButton(3);
@@ -157,6 +170,50 @@ public class Puissance4Controller {
             invisibleButtonColumn6.setOnAction(event -> ButtonPlayIAminimax(6));
             invisibleButtonColumn7.setOnAction(event -> ButtonPlayIAminimax(7));
 
+        }
+        else if (gameOption.equals("Jeu en réseau")) {
+
+            String player = SaisirPseudo(1);
+
+            TCPClientP4 tcpClientP4 = new TCPClientP4("127.0.0.3",8090);
+            tcpClientP4.connectToServer();
+            TimeUnit.SECONDS.sleep(3);
+            tcpClientP4.startReceive();
+            TimeUnit.SECONDS.sleep(3);
+            Thread netWork = new Thread(this::handleThread);
+            netWork.start();
+
+            if(CommunicationFileController.doesFileExist("whoPlay.txt"))
+            {
+                whoPlay = 0;
+                AfficherPseudoJoueur1(player+ " : commence");
+            }
+            else {
+                whoPlay = 1;
+                AfficherPseudoJoueur2("Réseau : Commence");
+            }
+            invisibleButtonColumn1.setOnAction(event -> ButtonPlayNetWork(1));
+            invisibleButtonColumn2.setOnAction(event -> ButtonPlayNetWork(2));
+            invisibleButtonColumn3.setOnAction(event -> ButtonPlayNetWork(3));
+            invisibleButtonColumn4.setOnAction(event -> ButtonPlayNetWork(4));
+            invisibleButtonColumn5.setOnAction(event -> ButtonPlayNetWork(5));
+            invisibleButtonColumn6.setOnAction(event -> ButtonPlayNetWork(6));
+            invisibleButtonColumn7.setOnAction(event -> ButtonPlayNetWork(7));
+
+        }
+    }
+
+    private void handleThread() {
+        while(isRunning)
+        {
+            Platform.runLater(()->
+            {
+                NetWork();
+            });
+            try {
+                sleep(1000);
+            } catch (InterruptedException ex) {
+            }
         }
     }
 
@@ -321,6 +378,7 @@ public class Puissance4Controller {
         }
     }
 
+
     public void ButtonPlayIAexploration(int iButton)
     {
         if(Play)
@@ -370,6 +428,71 @@ public class Puissance4Controller {
         }
     }
 
+    public void ButtonPlayNetWork(int iButton) {
+        if(Play)
+        {
+            if(Grille.gravityCheck(iButton -1) >= 0 )
+            {
+                CommunicationFileController.writeToFile(String.valueOf(iButton-1),"comToClient.txt");
+                AddRedToken(CreationRedToken(100,100),iButton,6-Grille.gravityCheck(iButton-1));
+                int ligne = 6 - Grille.gravityCheck(iButton-1);
+                Halo.setX(152 + (iButton - 1)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValue(iButton-1,1);
+
+                //NetWork();
+
+                whoPlay++;
+                System.out.println(Grille.toString());
+                int[] Joueur1 = Grille.playerWin(1);
+                int[] Joueur2 = Grille.playerWin(2);
+                if (Joueur2[0] == 1)
+                {
+                    PrintWonTokens(Joueur2);
+                    PrintWon(2);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Joueur1[0] == 1)
+                {
+                    PrintWonTokens(Joueur1);
+                    PrintWon(1);
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+                else if (Grille.checkDraw())
+                {
+                    PrintEqual();
+                    Play = false;
+                    setOpacityTriangle(0);
+                    replay.setVisible(true);
+                    replay.setOnAction(event -> replay());
+                }
+            }
+        }
+    }
+
+    public void NetWork() {
+        if(CommunicationFileController.doesFileExist("comToProcess.txt"))
+        {
+            if (((Grille.playerWin(1))[0])==0)
+            {
+                int column = Integer.parseInt(CommunicationFileController.readFromFile("comToProcess.txt"));
+                CommunicationFileController.deleteFile("comToProcess.txt");
+                AddYellowToken(CreationYellowToken(100,100),column+1,6-Grille.gravityCheck(column));
+                int ligne = 6 - Grille.gravityCheck(column);
+                Halo.setX(152 + (column)*100);
+                Halo.setY(594 - (ligne - 1)*100);
+                Halo.setVisible(true);
+                Grille.setMatValue(column,2);
+            }
+        }
+    }
     public void IAFirstMinimax()
     {
         if (((Grille.playerWin(1))[0])==0)
@@ -384,6 +507,7 @@ public class Puissance4Controller {
             Grille.setMatValue(column,2);
         }
     }
+
 
     public void IAFirstExploration()
     {
@@ -587,7 +711,11 @@ public class Puissance4Controller {
     private void replay()
     {
         clearBoard();
-        initialize();
+        try {
+            initialize();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         Grille.matrixZero();
         Halo.setVisible(false);
         Play = true;

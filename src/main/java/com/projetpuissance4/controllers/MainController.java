@@ -1,11 +1,10 @@
 package com.projetpuissance4.controllers;
 
-import com.projetpuissance4.models.IAExploration;
-import com.projetpuissance4.models.IAMinimax;
-import com.projetpuissance4.models.IARandom;
-import com.projetpuissance4.models.P4;
+import com.projetpuissance4.models.*;
 
+import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class MainController {
     private P4 p = new P4();
@@ -99,13 +98,17 @@ public class MainController {
         }
         System.out.println("Sur " + nombre + " parties, J1 gagne " + J1 + " fois, J2 gagne " + J2 + " fois, egalité " + egalite + " fois !");
     }
-    public static void main(String[] args)
-    {
-        MainController control = new MainController();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        /*MainController control = new MainController();
         P4 p = new P4();
-        control.plusieursGrilles(50, p);
+        control.plusieursGrilles(50, p);*/
         /*TCPClientController tcp = new TCPClientController();
         tcp.setClient();*/
+
+        TCPClientP4 tcpClientP4 = new TCPClientP4("127.0.0.3",8090);
+        tcpClientP4.connectToServer();
+        TimeUnit.SECONDS.sleep(3);
+        tcpClientP4.startReceive();
     }
 
 
