@@ -312,10 +312,6 @@ public class TCPClientP4 implements AutoCloseable {
                     whoPlay = 0;
                 }
 
-                // Message that says the other player had play
-                else if (finalMessage.matches("\\d+")) {
-                }
-
 
             } catch (IOException IOE) {
                 IOE.printStackTrace();

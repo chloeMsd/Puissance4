@@ -87,6 +87,7 @@ public class IAMinimax {
         }
     }
 
+
     /**
      * Minimax V1
      * @brief Algorithm Minimax V1
@@ -158,13 +159,6 @@ public class IAMinimax {
      */
     public int evaluation(int player, int column, Grid Grid) {
         int eval = 0;
-        int line = 0;
-
-        if (Grid.gravityCheck(column) >= 0) {
-            line = Grid.gravityCheck(column) + 1;
-        }
-
-        int[] tab = {1, 2, 3, 4, 3, 2, 1};
 
         int player2 = (player == 1) ? 2 : 1;
 
@@ -183,6 +177,7 @@ public class IAMinimax {
                     if (col + 3 < COLUMN) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
+                        int empty = 0;
 
                         for (int i = 0; i < 4; i++) {
                             int token = Grid.getPoint(row, col + i);
@@ -191,13 +186,34 @@ public class IAMinimax {
                                 countPlayer++;
                             } else if (token == player2) {
                                 countPlayer2++;
+                            } else if (token == 0) {
+                                empty++;
                             }
                         }
 
-                        if (countPlayer == 3 && countPlayer2 == 0) {
-                            eval += 50;
-                        } else if (countPlayer2 == 3 && countPlayer == 0) {
+                        if (countPlayer == 3 && empty == 1) {
+                            eval += 100;
+                        }
+                        else if (countPlayer == 3 && empty == 0) {
                             eval -= 50;
+                        }
+                        else if (countPlayer == 2 && empty == 2) {
+                            eval += 20;
+                        }
+                        else if (countPlayer == 2 && countPlayer2 != 0) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 3 && empty == 1) {
+                            eval -= 100;
+                        }
+                        else if (countPlayer2 == 3 && empty == 0) {
+                            eval += 50;
+                        }
+                        else if (countPlayer2 == 2 && empty == 2) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 2 && countPlayer != 0) {
+                            eval += 20;
                         }
                     }
 
@@ -205,6 +221,7 @@ public class IAMinimax {
                     if (row + 3 < LINE) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
+                        int empty = 0;
 
                         for (int i = 0; i < 4; i++) {
                             int token = Grid.getPoint(row + i, col);
@@ -213,13 +230,34 @@ public class IAMinimax {
                                 countPlayer++;
                             } else if (token == player2) {
                                 countPlayer2++;
+                            } else if (token == 0) {
+                                empty++;
                             }
                         }
 
-                        if (countPlayer == 3 && countPlayer2 == 0) {
-                            eval += 50;
-                        } else if (countPlayer2 == 3 && countPlayer == 0) {
+                        if (countPlayer == 3 && empty == 1) {
+                            eval += 100;
+                        }
+                        else if (countPlayer == 3 && empty == 0) {
                             eval -= 50;
+                        }
+                        else if (countPlayer == 2 && empty == 2) {
+                            eval += 20;
+                        }
+                        else if (countPlayer == 2 && countPlayer2 != 0) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 3 && empty == 1) {
+                            eval -= 100;
+                        }
+                        else if (countPlayer2 == 3 && empty == 0) {
+                            eval += 50;
+                        }
+                        else if (countPlayer2 == 2 && empty == 2) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 2 && countPlayer != 0) {
+                            eval += 20;
                         }
                     }
 
@@ -227,6 +265,7 @@ public class IAMinimax {
                     if (row + 3 < LINE && col + 3 < COLUMN) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
+                        int empty = 0;
 
                         for (int i = 0; i < 4; i++) {
                             int token = Grid.getPoint(row + i, col + i);
@@ -235,13 +274,34 @@ public class IAMinimax {
                                 countPlayer++;
                             } else if (token == player2) {
                                 countPlayer2++;
+                            } else if (token == 0) {
+                                empty++;
                             }
                         }
 
-                        if (countPlayer == 3 && countPlayer2 == 0) {
-                            eval += 50;
-                        } else if (countPlayer2 == 3 && countPlayer == 0) {
+                        if (countPlayer == 3 && empty == 1) {
+                            eval += 100;
+                        }
+                        else if (countPlayer == 3 && empty == 0) {
                             eval -= 50;
+                        }
+                        else if (countPlayer == 2 && empty == 2) {
+                            eval += 20;
+                        }
+                        else if (countPlayer == 2 && countPlayer2 != 0) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 3 && empty == 1) {
+                            eval -= 100;
+                        }
+                        else if (countPlayer2 == 3 && empty == 0) {
+                            eval += 50;
+                        }
+                        else if (countPlayer2 == 2 && empty == 2) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 2 && countPlayer != 0) {
+                            eval += 20;
                         }
                     }
 
@@ -249,6 +309,7 @@ public class IAMinimax {
                     if (row - 3 >= 0 && col + 3 < COLUMN) {
                         int countPlayer = 0;
                         int countPlayer2 = 0;
+                        int empty = 0;
 
                         for (int i = 0; i < 4; i++) {
                             int token = Grid.getPoint(row - i, col + i);
@@ -257,13 +318,34 @@ public class IAMinimax {
                                 countPlayer++;
                             } else if (token == player2) {
                                 countPlayer2++;
+                            } else if (token == 0) {
+                                empty++;
                             }
                         }
 
-                        if (countPlayer == 3 && countPlayer2 == 0) {
-                            eval += 50;
-                        } else if (countPlayer2 == 3 && countPlayer == 0) {
+                        if (countPlayer == 3 && empty == 1) {
+                            eval += 100;
+                        }
+                        else if (countPlayer == 3 && empty == 0) {
                             eval -= 50;
+                        }
+                        else if (countPlayer == 2 && empty == 2) {
+                            eval += 20;
+                        }
+                        else if (countPlayer == 2 && countPlayer2 != 0) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 3 && empty == 1) {
+                            eval -= 100;
+                        }
+                        else if (countPlayer2 == 3 && empty == 0) {
+                            eval += 50;
+                        }
+                        else if (countPlayer2 == 2 && empty == 2) {
+                            eval -= 20;
+                        }
+                        else if (countPlayer2 == 2 && countPlayer != 0) {
+                            eval += 20;
                         }
                     }
                 }
@@ -339,10 +421,10 @@ public class IAMinimax {
      *
      * @param player
      * @param depth
-     * @param Grille
+     * @param grid
      * @return
      */
-    public int playV1(int player, int depth, Grid Grille)
+    public int playV1(int player, int depth, Grid grid)
     {
         //same process as the play V2
         long startTime = System.currentTimeMillis();
@@ -351,11 +433,11 @@ public class IAMinimax {
         int[] eval = new int[7];
         int columnToPlay = 0;
         for (int i=0; i<7; i++) {
-            if (!Grille.columnFull(i)){
+            if (!grid.columnFull(i)){
 
-                eval[i] = minimaxV1(player, i, depth, true,Grille);
+                eval[i] = minimaxV1(player,i,depth, true,grid);
 
-                if(Grille.isPlayerWinWithThisToken(i,player))
+                if(grid.isPlayerWinWithThisToken(i,player))
                 {
                     eval[i] = -1000000;
                 }

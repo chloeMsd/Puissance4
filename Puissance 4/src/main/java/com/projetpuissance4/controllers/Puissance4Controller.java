@@ -177,7 +177,7 @@ public class Puissance4Controller {
             String player = enterPseudo(1);
 
             //For the online option we lauch the client
-            TCPClientP4 tcpClientP4 = new TCPClientP4("127.0.0.3",8090);
+            TCPClientP4 tcpClientP4 = new TCPClientP4("192.168.205.185",8090);
             tcpClientP4.connectToServer();
             TimeUnit.SECONDS.sleep(3);
             tcpClientP4.startReceive();
